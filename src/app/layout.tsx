@@ -20,9 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Header />
-      <main className={sans.className}>{children}</main>
-      <Footer />
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
