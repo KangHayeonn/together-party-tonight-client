@@ -4,6 +4,14 @@ import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/nameState";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
+import { styled } from "styled-components";
+
+const StyledButton = styled.button`
+  padding: 6px 12px;
+  border: 1px solid lightgray;
+  color: gray;
+  background-color: violet;
+`;
 
 export default function Home() {
   // react-query
@@ -20,17 +28,10 @@ export default function Home() {
     setNameState(e.target.value);
   };
 
-  const exampleApi = async () => {
-    await fetch("/api/example", {
-      method: "GET",
-    }).then((res) => console.log(res));
-  };
-
-  exampleApi();
-
   return (
     <div>
       <h1>Test</h1>
+      <StyledButton>Button</StyledButton>
       <p>Hello, {name}</p>
 
       <input

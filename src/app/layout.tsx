@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
 import ReactQuery from "@/components/ReactQuery";
+import StyledComponentsRegistry from "@/lib/registry";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({
       <body className={sans.className}>
         <Recoil>
           <ReactQuery>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <StyledComponentsRegistry>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </StyledComponentsRegistry>
           </ReactQuery>
         </Recoil>
       </body>
