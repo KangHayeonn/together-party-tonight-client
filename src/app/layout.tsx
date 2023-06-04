@@ -1,7 +1,9 @@
-import Footer from "../components/layout/Footer";
-import Header from "../components/layout/Header";
+import Recoil from "@/components/Recoil";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
+import ReactQuery from "@/components/ReactQuery";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -19,11 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+    <html lang="ko-KR">
+      <body className={sans.className}>
+        <Recoil>
+          <ReactQuery>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </ReactQuery>
+        </Recoil>
       </body>
     </html>
   );
