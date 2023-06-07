@@ -1,17 +1,10 @@
 "use client";
 
 import { fetchPosts } from "@/api/test";
-import { nameState } from "@/recoil/nameState";
+import { nameState } from "@/recoil/sample/sampleState";
+import { StyledButton } from "@/styles/page/sample";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
-import { styled } from "styled-components";
-
-const StyledButton = styled.button`
-  padding: 6px 12px;
-  border: 1px solid lightgray;
-  color: gray;
-  background-color: violet;
-`;
 
 export default function Home() {
   // react-query

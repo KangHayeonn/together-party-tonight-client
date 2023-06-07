@@ -1,12 +1,8 @@
 import Recoil from "@/components/Recoil";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import "./globals.css";
-import { Open_Sans } from "next/font/google";
 import ReactQuery from "@/components/ReactQuery";
-import StyledComponentsRegistry from "@/lib/registry";
-
-const sans = Open_Sans({ subsets: ["latin"] });
+import StyledComponentsRegistry from "@/components/Registry";
 
 export const metadata = {
   title: "투바투",
@@ -23,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko-KR">
-      <body className={sans.className}>
+      <body>
         <Recoil>
           <ReactQuery>
             <StyledComponentsRegistry>
