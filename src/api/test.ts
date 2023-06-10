@@ -1,6 +1,13 @@
 import axios from "axios";
 
-async function fetchPosts() {
+interface Post {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+async function fetchPosts(): Promise<Post[]> {
   const response = await fetch(
     "https://jsonplaceholder.typicode.com/posts?_limit=10&_page=0",
 

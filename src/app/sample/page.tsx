@@ -12,7 +12,6 @@ export default function Home() {
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
-  console.log("query: ", isLoading, error, data);
 
   // recoil
   const [name, setNameState] = useRecoilState(nameState);

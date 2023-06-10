@@ -8,7 +8,7 @@ export const metadata = {
   title: "투바투",
   description: "투게터 파티 투나잇 (Together Party Tonight)",
   icons: {
-    icon: "favicon.ico",
+    icon: "../assets/images/favicon.ico",
   },
 };
 
