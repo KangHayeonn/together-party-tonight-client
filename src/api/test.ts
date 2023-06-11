@@ -14,7 +14,7 @@ async function fetchPosts(): Promise<Post[]> {
     // This request should be cached until manually invalidated.
     // Similar to `getStaticProps`.
     // `force-cache` is the default and can be omitted.
-    { cache: "force-cache" }
+    { cache: "force-cache" },
 
     // This request should be refetched on every request.
     // Similar to `getServerSideProps`.
