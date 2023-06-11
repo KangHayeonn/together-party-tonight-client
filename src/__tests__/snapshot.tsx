@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import Button from "@/components/SampleButton";
 
 describe("Button component", () => {
@@ -15,7 +15,7 @@ describe("Button component", () => {
 
   test("renders button with custom class", () => {
     const { container } = render(
-      <Button text="Click me" className="custom-button" />
+      <Button text="Click me" className="custom-button" />,
     );
     expect(container.firstChild).toMatchSnapshot();
   });
