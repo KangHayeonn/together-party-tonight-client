@@ -73,20 +73,20 @@
 ## Frontend
 
 ### ✨ 기술 설명
-React, TypeScript 를 이용해 Front-end 개발
+Next.js, TypeScript 를 이용해 Front-end 개발
 
 ### 🔥 기술 스택
-> 사용 SPA 라이브러리 : React
+> 사용 SPA 라이브러리 : Nextjs
 
-|  **항목**  |  **기술 스택**      |
-| ---------- | -------------------- |
-| 환경세팅   | React CRA            |
-| 사용언어   | TypeScript           |
-| 스타일링   | CSS, EMOTION         |
-| 상태관리   | Recoil, React Query  |
-| 코드통합   | Prettier             |
-| 에러검출   | Eslint               |
-| API 통신   | Axios                |
+|  **항목**  |     **기술 스택**    |
+| ---------- | --------------------- |
+| 환경세팅   | Next CNA              |
+| 사용언어   | TypeScript            |
+| 스타일링   | CSS, styled-component |
+| 상태관리   | Recoil, React Query   |
+| 코드통합   | Prettier              |
+| 에러검출   | Eslint                |
+| API 통신   | Axios                 |
 
 ### 🔅 코드 컨벤션
 |  **항목**  |    **규칙**      |
@@ -100,13 +100,14 @@ React, TypeScript 를 이용해 Front-end 개발
 
 ### ✔ 추가 라이브러리 & 버전 정보
 
-|  **항목**  |  **버전 정보**    |
-| ---------- | ------------------ |
-| Node       |  v18.14.2          |
-| React      |                    |
-| Redux      |                    |
-| Axios      |                    |
-| Sass       |                    |
+|     **항목**     |  **버전 정보**    |
+| ---------------- | ------------------ |
+| Node             |  v18.14.2          |
+| React            |  v18.2.0           |
+| Next             |  v13.4.4           |
+| Recoil           |  v0.7.7            |
+| Axios            |  v1.4.0            |
+| styled-component |  v6.0.0            |
 
 
 <br>
