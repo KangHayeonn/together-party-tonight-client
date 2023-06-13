@@ -1,8 +1,9 @@
 import Recoil from "@/components/Recoil";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 import ReactQuery from "@/components/ReactQuery";
 import StyledComponentsRegistry from "@/components/Registry";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import Main from "@/components/layout/Main";
 
 export const metadata = {
   title: "투바투",
@@ -23,9 +24,11 @@ export default function RootLayout({
         <Recoil>
           <ReactQuery>
             <StyledComponentsRegistry>
-              <Header />
-              <main>{children}</main>
-              <Footer />
+              <Main>
+                <Header />
+                {children}
+                <Footer />
+              </Main>
             </StyledComponentsRegistry>
           </ReactQuery>
         </Recoil>
