@@ -3,12 +3,13 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import ReactQuery from "@/components/ReactQuery";
 import StyledComponentsRegistry from "@/components/Registry";
+import Main from "@/components/layout/Main";
 
 export const metadata = {
   title: "투바투",
   description: "투게터 파티 투나잇 (Together Party Tonight)",
   icons: {
-    icon: "../assets/images/favicon.ico",
+    icon: "/favicon.ico",
   },
 };
 
@@ -24,7 +25,7 @@ export default function RootLayout({
           <ReactQuery>
             <StyledComponentsRegistry>
               <Header />
-              <main>{children}</main>
+              <Main>{children}</Main>
               <Footer />
             </StyledComponentsRegistry>
           </ReactQuery>
