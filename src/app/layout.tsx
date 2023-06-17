@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import ReactQuery from "@/components/ReactQuery";
 import StyledComponentsRegistry from "@/components/Registry";
+import Main from "@/components/layout/Main";
 
 export const metadata = {
   title: "투바투",
@@ -10,6 +11,7 @@ export const metadata = {
     icon: "images/Logo.png",
   },
   description: "실시간 거리 기반 모임 추천/신청 서비스",
+  metadataBase: new URL("http://localhost:3000"),
   openGraph: {
     author: "TogetherPartyTonight",
     title: "투바투",
@@ -31,7 +33,7 @@ export default function RootLayout({
           <ReactQuery>
             <StyledComponentsRegistry>
               <Header />
-              <main>{children}</main>
+              <Main>{children}</Main>
               <Footer />
             </StyledComponentsRegistry>
           </ReactQuery>

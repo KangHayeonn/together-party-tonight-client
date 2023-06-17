@@ -2,11 +2,15 @@
 
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
-import { StyledButton } from "@/styles/page/sample";
+import { StyledButton } from "@/styles/page/Sample";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
+import TextButton from "@/components/common/TextButton";
 
 export default function Home() {
+  const router = useRouter();
+
   // react-query
   const { isLoading, error, data } = useQuery({
     queryKey: ["posts"],
@@ -20,18 +24,23 @@ export default function Home() {
     setNameState(e.target.value);
   };
 
+  const onClickEvent = () => {
+    router.push("/");
+  };
+
   return (
     <div>
       <h1>Test</h1>
       <StyledButton>Button</StyledButton>
       <p>Hello, {name}</p>
-
       <input
         type="text"
         name="name"
         onChange={updateName}
         placeholder="Enter Name"
       />
+      <h2>Common Components</h2>
+      <TextButton text="모임 만들기" onClick={onClickEvent} />
     </div>
   );
 }
