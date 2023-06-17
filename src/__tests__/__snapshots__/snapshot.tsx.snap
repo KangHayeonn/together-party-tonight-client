@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button component renders button with correct text 1`] = `
+<button>
+  Click me
+</button>
+`;
+
+exports[`Button component renders button with custom class 1`] = `
+<button
+  class="custom-button"
+>
+  Click me
+</button>
+`;
+
+exports[`Button component renders disabled button 1`] = `
+<button
+  disabled=""
+>
+  Submit
+</button>
+`;
