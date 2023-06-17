@@ -6,9 +6,16 @@ import StyledComponentsRegistry from "@/components/Registry";
 
 export const metadata = {
   title: "투바투",
-  description: "투게터 파티 투나잇 (Together Party Tonight)",
   icons: {
-    icon: "../assets/images/favicon.ico",
+    icon: "images/Logo.png",
+  },
+  description: "실시간 거리 기반 모임 추천/신청 서비스",
+  openGraph: {
+    author: "TogetherPartyTonight",
+    title: "투바투",
+    siteName: "TogetherPartyTonight",
+    type: "website",
+    description: "실시간 거리 기반 모임 추천/신청 서비스",
   },
 };
 
