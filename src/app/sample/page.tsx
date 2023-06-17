@@ -2,11 +2,11 @@
 
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
-import { StyledButton } from "@/styles/page/Sample";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import TextButton from "@/components/common/TextButton";
+import { StyledButton } from "@/styles/page/Sample";
 
 export default function Home() {
   const router = useRouter();
