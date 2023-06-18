@@ -5,6 +5,16 @@ const TextWrapper = styled.div`
   position: relative;
 `;
 
+const TextInputForm = styled.div`
+  position: relative;
+
+  img {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
+`;
+
 const TextInput = styled.input`
   font-size: 1rem;
   line-height: 2.1rem;
@@ -16,7 +26,7 @@ const TextInput = styled.input`
   border: 1px solid transparent;
   outline: none;
   padding-left: 5px;
-  padding-right: 10px;
+  padding-right: 40px;
 
   &.error {
     border: 1px solid #ff0000;
@@ -59,4 +69,4 @@ const TextMessage = styled.div`
   }
 `;
 
-export { TextWrapper, TextInput, TextMessage };
+export { TextWrapper, TextInputForm, TextInput, TextMessage };
