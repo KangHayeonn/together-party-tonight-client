@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
+import { StyledButton } from "@/styles/page/Sample";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { StyledButton } from "@/styles/page/sample";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import SearchForm from "@/components/common/SearchForm";

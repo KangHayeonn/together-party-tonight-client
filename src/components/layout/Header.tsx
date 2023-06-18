@@ -15,7 +15,7 @@ export default function Header() {
     <WrapHeader>
       <WrapLogo href="/">
         <Image
-          src="/Logo.png"
+          src="/images/Logo.png"
           width={50}
           height={50}
           alt="Picture of the author"
