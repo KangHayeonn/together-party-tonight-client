@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { StyledButton } from "@/styles/page/sample";
 import TextButton from "@/components/common/TextButton";
+import TextField from "@/components/common/TextField";
 
 export default function Home() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function Home() {
       />
       <h2>Common Components</h2>
       <TextButton text="모임 만들기" onClick={onClickEvent} />
+      <TextField />
     </div>
   );
 }
