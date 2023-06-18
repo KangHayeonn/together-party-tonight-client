@@ -13,6 +13,7 @@ import SearchForm from "@/components/common/SearchForm";
 import NumberForm from "@/components/common/NumberForm";
 import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
+import RoundButton from "@/components/common/RoundButton";
 
 export default function Home() {
   const router = useRouter();
@@ -45,6 +46,10 @@ export default function Home() {
     setSearch(e.target.value);
   };
 
+  const onClickRoundBtnEvent = () => {
+    console.log("check");
+  };
+
   return (
     <div>
       <h1>Test</h1>
@@ -65,6 +70,7 @@ export default function Home() {
       {isShowToast && (
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
+      <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
     </div>
   );
 }
