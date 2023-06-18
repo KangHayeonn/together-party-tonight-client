@@ -12,11 +12,13 @@ import TextField from "@/components/common/TextField";
 import SearchForm from "@/components/common/SearchForm";
 import NumberForm from "@/components/common/NumberForm";
 import CheckBox from "@/components/common/CheckBox";
+import ToastBox from "@/components/common/ToastBox";
 
 export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [search, setSearch] = useState<string>("");
+  const [isShowToast, setIsShowToast] = useState<boolean>(false);
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -60,6 +62,9 @@ export default function Home() {
       <SearchForm search={search} onChangeSearch={onChangeSearch} />
       <NumberForm min={0} max={10} />
       <CheckBox text="한식" />
+      {isShowToast && (
+        <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
+      )}
     </div>
   );
 }
