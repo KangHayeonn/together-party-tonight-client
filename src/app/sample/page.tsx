@@ -10,6 +10,7 @@ import { StyledButton } from "@/styles/page/sample";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import SearchForm from "@/components/common/SearchForm";
+import NumberForm from "@/components/common/NumberForm";
 
 export default function Home() {
   const router = useRouter();
@@ -55,9 +56,8 @@ export default function Home() {
       <h2>Common Components</h2>
       <TextButton text="모임 만들기" onClick={onClickEvent} />
       <TextField message={message} onChangeText={onChangeMessage} />
-      <div style={{ width: "361px" }}>
-        <SearchForm search={search} onChangeSearch={onChangeSearch} />
-      </div>
+      <SearchForm search={search} onChangeSearch={onChangeSearch} />
+      <NumberForm min={0} max={10} />
     </div>
   );
 }

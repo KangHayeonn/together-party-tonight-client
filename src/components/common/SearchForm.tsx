@@ -50,7 +50,7 @@ const SearchForm = ({ placeholder, onChangeSearch, ...props }: SearchProps) => {
             onChange={onChangeSearch}
             onFocus={onFocusSearch}
             {...props}
-          ></SearchInput>
+          />
           <Image
             src="images/searchIcon.svg"
             width={16}
