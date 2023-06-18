@@ -15,14 +15,14 @@ export interface TextProps {
   onChangeText?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const TextField: React.FC<TextProps> = ({
+const TextField = ({
   disabled,
   className,
   placeholder,
   isError,
   errorMessage,
   onChangeText,
-}) => {
+}: TextProps) => {
   return (
     <TextWrapper>
       <TextInput
