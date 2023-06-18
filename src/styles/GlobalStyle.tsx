@@ -19,6 +19,10 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     cursor: pointer;
   }
+  ul, li{
+    padding : 0;
+    margin: 0;
+  }
 `;
 
 export default GlobalStyle;

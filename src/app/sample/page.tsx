@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
 import { useQuery } from "@tanstack/react-query";
@@ -8,9 +9,12 @@ import { useRouter } from "next/navigation";
 import { StyledButton } from "@/styles/page/sample";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
+import SearchForm from "@/components/common/SearchForm";
 
 export default function Home() {
   const router = useRouter();
+  const [message, setMessage] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -29,6 +33,14 @@ export default function Home() {
     router.push("/");
   };
 
+  const onChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <div>
       <h1>Test</h1>
@@ -42,7 +54,10 @@ export default function Home() {
       />
       <h2>Common Components</h2>
       <TextButton text="모임 만들기" onClick={onClickEvent} />
-      <TextField />
+      <TextField message={message} onChangeText={onChangeMessage} />
+      <div style={{ width: "361px" }}>
+        <SearchForm search={search} onChangeSearch={onChangeSearch} />
+      </div>
     </div>
   );
 }

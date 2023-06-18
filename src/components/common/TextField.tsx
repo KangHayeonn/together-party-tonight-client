@@ -11,6 +11,8 @@ export interface TextProps {
   placeholder?: string | undefined;
   isError?: boolean | undefined;
   errorMessage?: string | undefined;
+  message?: string | undefined;
+  onChangeText?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const TextField: React.FC<TextProps> = ({
@@ -19,12 +21,14 @@ const TextField: React.FC<TextProps> = ({
   placeholder,
   isError,
   errorMessage,
+  onChangeText,
 }) => {
   return (
     <TextWrapper>
       <TextInput
         className={className}
         placeholder={placeholder}
+        onChange={onChangeText}
         disabled={disabled}
       ></TextInput>
       <TextMessage className={`${isError && "error"}`}>
