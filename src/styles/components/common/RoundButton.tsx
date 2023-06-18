@@ -13,6 +13,10 @@ const RoundBtnWrapper = styled.button<RoundBtnProps>`
   &:hover {
     background-color: #778da9;
   }
+  &.active {
+    background-color: #bdc8d6;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export { RoundBtnWrapper };

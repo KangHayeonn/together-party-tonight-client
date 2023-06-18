@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   const onClickRoundBtnEvent = () => {
-    console.log("check");
+    // console.log("check");
   };
 
   return (

@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { RoundBtnWrapper } from "@/styles/components/common/RoundButton";
 
 export interface RoundBtnProps {
@@ -18,8 +20,19 @@ const RoundButton = ({
   disabled = false,
   ...props
 }: RoundBtnProps) => {
+  const [btnActive, setBtnActive] = useState<boolean>(false);
+
+  const onClickBtn = () => {
+    setBtnActive((check: boolean) => !check);
+  };
+
   return (
-    <RoundBtnWrapper onClick={onClick} disabled={disabled} {...props}>
+    <RoundBtnWrapper
+      className={`${btnActive && "active"}`}
+      onClick={onClickBtn}
+      disabled={disabled}
+      {...props}
+    >
       {text}
     </RoundBtnWrapper>
   );
