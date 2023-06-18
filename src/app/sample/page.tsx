@@ -11,6 +11,7 @@ import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import SearchForm from "@/components/common/SearchForm";
 import NumberForm from "@/components/common/NumberForm";
+import CheckBox from "@/components/common/CheckBox";
 
 export default function Home() {
   const router = useRouter();
@@ -58,6 +59,7 @@ export default function Home() {
       <TextField message={message} onChangeText={onChangeMessage} />
       <SearchForm search={search} onChangeSearch={onChangeSearch} />
       <NumberForm min={0} max={10} />
+      <CheckBox text="한식" />
     </div>
   );
 }
