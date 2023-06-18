@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, Dispatch, SetStateAction } from "react";
+import React, { useEffect, SetStateAction } from "react";
 import styled from "styled-components";
 
 interface ToastBoxProps {

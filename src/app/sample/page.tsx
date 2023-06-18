@@ -14,6 +14,7 @@ import NumberForm from "@/components/common/NumberForm";
 import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
 import RoundButton from "@/components/common/RoundButton";
+import DropDown from "@/components/common/DropDown";
 
 export default function Home() {
   const router = useRouter();
@@ -71,6 +72,7 @@ export default function Home() {
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
       <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
+      <DropDown />
     </div>
   );
 }
