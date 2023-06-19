@@ -10,7 +10,7 @@ import {
   SimpleLogin,
   SocialButton,
   SocialWrapper,
-  EyeImg,
+  EyeButton,
   PwdWrapper,
 } from "@/styles/page/Login";
 import Image from "next/image";
@@ -24,12 +24,14 @@ export default function Login() {
         <LoginInput type="text" placeholder="이메일을 입력하세요." />
         <PwdWrapper>
           <LoginInput type="text" placeholder="비밀번호를 입력하세요." />
-          <EyeImg
-            src="/images/EyeEmpty.png"
-            width={28}
-            height={18}
-            alt="비밀번호 보기"
-          />
+          <EyeButton>
+            <Image
+              src="/images/EyeEmpty.png"
+              width={28}
+              height={18}
+              alt="비밀번호 보기"
+            />
+          </EyeButton>
         </PwdWrapper>
         <LoginButton>로그인</LoginButton>
         <LoginMore>

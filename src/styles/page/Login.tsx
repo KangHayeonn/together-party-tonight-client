@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { styled } from "styled-components";
 
 const LoginWrapper = styled.div`
@@ -37,10 +36,13 @@ const LoginInput = styled.input`
 const PwdWrapper = styled.div`
   position: relative;
 `;
-const EyeImg = styled(Image)`
+const EyeButton = styled.button`
   position: absolute;
   top: 18px;
   right: 20px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const LoginButton = styled.button`
@@ -107,6 +109,6 @@ export {
   Hr,
   SocialWrapper,
   SocialButton,
-  EyeImg,
+  EyeButton,
   PwdWrapper,
 };
