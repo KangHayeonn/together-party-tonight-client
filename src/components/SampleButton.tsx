@@ -7,11 +7,7 @@ type ButtonProps = {
   className?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({
-  text,
-  disabled = false,
-  className,
-}) => {
+const Button = ({ text, disabled = false, className }: ButtonProps) => {
   return (
     <button className={className} disabled={disabled}>
       {text}

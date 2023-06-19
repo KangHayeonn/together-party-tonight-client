@@ -6,6 +6,23 @@ const GlobalStyle = createGlobalStyle`
   html,body {height:100%}
   a {text-decoration:none}
   table {border-collapse:collapse;border-spacing:0}
+  fieldset, img {
+    border: 0 none;
+  }
+  button {
+    border: 0 none;
+    cursor: pointer;
+  }
+  a {
+    border: 0;
+    outline: 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  ul, li{
+    padding : 0;
+    margin: 0;
+  }
 `;
 
 export default GlobalStyle;
