@@ -26,7 +26,7 @@ export default function Login() {
           <LoginInput type="text" placeholder="비밀번호를 입력하세요." />
           <EyeButton>
             <Image
-              src="/images/EyeEmpty.png"
+              src="/images/eyeOn.svg"
               width={28}
               height={18}
               alt="비밀번호 보기"
