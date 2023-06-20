@@ -24,15 +24,6 @@ const Logininner = styled.div`
   background-color: rgba(255, 255, 255, 0.7);
 `;
 
-const LoginInput = styled.input`
-  border-radius: 5px;
-  border: none;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  width: 400px;
-`;
-
 const PwdWrapper = styled.div`
   position: relative;
 `;
@@ -52,6 +43,7 @@ const LoginButton = styled.button`
   background-color: #0d3471;
   color: #fff;
   font-weight: 600;
+  width: 400px;
 `;
 
 const LoginMore = styled.div`
@@ -101,7 +93,6 @@ export {
   LoginWrapper,
   LoginTitle,
   Logininner,
-  LoginInput,
   LoginButton,
   LoginMore,
   Line,

@@ -19,6 +19,9 @@ export interface TextProps {
   textType?: string | undefined;
   inputType?: string | undefined;
   onChangeText?: React.ChangeEventHandler<HTMLInputElement>;
+  paddingLeft?: number | undefined;
+  height?: number | undefined;
+  background?: string | undefined;
 }
 
 const TextField = ({
@@ -30,6 +33,7 @@ const TextField = ({
   textType,
   inputType,
   onChangeText,
+  ...props
 }: TextProps) => {
   const [type, setType] = useState<string>(textType || "text");
 
@@ -47,11 +51,12 @@ const TextField = ({
           placeholder={placeholder}
           onChange={onChangeText}
           disabled={disabled}
+          {...props}
         />
         {inputType === "pw" ? (
           <Image
             src={`${
-              type === "text" ? "images/eyeOff.svg" : "images/eyeOn.svg"
+              type === "text" ? "images/eyeOn.svg" : "images/eyeOff.svg"
             }`}
             width={27}
             height={27}

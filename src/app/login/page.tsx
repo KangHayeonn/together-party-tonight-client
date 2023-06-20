@@ -1,8 +1,8 @@
+import TextField from "@/components/common/TextField";
 import {
   Hr,
   Line,
   LoginButton,
-  LoginInput,
   LoginMore,
   LoginTitle,
   Logininner,
@@ -21,18 +21,20 @@ export default function Login() {
     <LoginWrapper>
       <LoginTitle>로그인</LoginTitle>
       <Logininner>
-        <LoginInput type="text" placeholder="이메일을 입력하세요." />
-        <PwdWrapper>
-          <LoginInput type="text" placeholder="비밀번호를 입력하세요." />
-          <EyeButton>
-            <Image
-              src="/images/eyeOn.svg"
-              width={28}
-              height={18}
-              alt="비밀번호 보기"
-            />
-          </EyeButton>
-        </PwdWrapper>
+        <TextField
+          placeholder="비밀번호를 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+        />
+        <TextField
+          placeholder="이메일을 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+          textType="password"
+          inputType="pw"
+        />
         <LoginButton>로그인</LoginButton>
         <LoginMore>
           <Link href="/">비밀번호 찾기</Link>

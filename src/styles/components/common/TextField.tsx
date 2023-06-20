@@ -1,3 +1,4 @@
+import { TextProps } from "@/components/common/TextField";
 import styled from "styled-components";
 
 const TextWrapper = styled.div`
@@ -11,21 +12,22 @@ const TextInputForm = styled.div`
   img {
     position: absolute;
     right: 10px;
-    top: 5px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `;
 
-const TextInput = styled.input`
+const TextInput = styled.input<TextProps>`
   font-size: 1rem;
   line-height: 2.1rem;
   letter-spacing: 0.25px;
   width: 100%;
-  height: 2.5rem;
-  background-color: #f5f5f5;
+  height: ${({ height }) => `${height || 3.5}rem`};
+  background-color: ${({ background }) => background || "#f5f5f5"};
   border-radius: 3px;
   border: 1px solid transparent;
   outline: none;
-  padding-left: 5px;
+  padding-left: ${({ paddingLeft }) => `${paddingLeft || 5}px`};
   padding-right: 40px;
 
   &.error {
