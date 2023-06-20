@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
-import { StyledButton } from "@/styles/page/Sample";
+import { StyledButton } from "@/styles/page/sample";
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
