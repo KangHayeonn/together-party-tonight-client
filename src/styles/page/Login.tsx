@@ -24,22 +24,15 @@ const Logininner = styled.div`
   background-color: rgba(255, 255, 255, 0.7);
 `;
 
-const PwdWrapper = styled.div`
-  position: relative;
-`;
-const EyeButton = styled.button`
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
-`;
+interface LoginBtnProps {
+  margin?: string | undefined;
+}
 
-const LoginButton = styled.button`
+const LoginButton = styled.button<LoginBtnProps>`
   border-radius: 8px;
   border: none;
   padding: 10px;
+  margin: ${({ margin }) => margin || "0px"};
   background-color: #0d3471;
   color: #fff;
   font-weight: 600;
@@ -100,6 +93,4 @@ export {
   Hr,
   SocialWrapper,
   SocialButton,
-  EyeButton,
-  PwdWrapper,
 };

@@ -1,13 +1,10 @@
+import TextField from "@/components/common/TextField";
 import {
   LoginButton,
-  LoginInput,
   LoginTitle,
   Logininner,
   LoginWrapper,
-  EyeButton,
-  PwdWrapper,
 } from "@/styles/page/Login";
-import Image from "next/image";
 
 export default function Signup() {
   return (
@@ -15,34 +12,38 @@ export default function Signup() {
       <LoginTitle>회원가입</LoginTitle>
       <Logininner>
         이메일
-        <LoginInput type="text" placeholder="이메일을 입력하세요." />
+        <TextField
+          placeholder="이메일을 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+        />
         비밀번호
-        <PwdWrapper>
-          <LoginInput type="text" placeholder="비밀번호를 입력하세요." />
-          <EyeButton>
-            <Image
-              src="/images/eyeOn.svg"
-              width={28}
-              height={18}
-              alt="비밀번호 보기"
-            />
-          </EyeButton>
-        </PwdWrapper>
+        <TextField
+          placeholder="비밀번호를 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+          textType="password"
+          inputType="pw"
+        />
         비밀번호 확인
-        <PwdWrapper>
-          <LoginInput type="text" placeholder="비밀번호를 입력하세요." />
-          <EyeButton>
-            <Image
-              src="/images/eyeOn.svg"
-              width={28}
-              height={18}
-              alt="비밀번호 보기"
-            />
-          </EyeButton>
-        </PwdWrapper>
+        <TextField
+          placeholder="비밀번호를 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+          textType="password"
+          inputType="pw"
+        />
         닉네임
-        <LoginInput type="text" placeholder="닉네임을 입력하세요." />
-        <LoginButton>회원가입</LoginButton>
+        <TextField
+          placeholder="이메일을 입력하세요."
+          paddingLeft={15}
+          height={3}
+          background={"rgba(255, 255, 255, 0.7)"}
+        />
+        <LoginButton margin={"15px 0 25px"}>회원가입</LoginButton>
       </Logininner>
     </LoginWrapper>
   );

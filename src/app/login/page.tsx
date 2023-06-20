@@ -10,8 +10,6 @@ import {
   SimpleLogin,
   SocialButton,
   SocialWrapper,
-  EyeButton,
-  PwdWrapper,
 } from "@/styles/page/Login";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,13 +20,13 @@ export default function Login() {
       <LoginTitle>로그인</LoginTitle>
       <Logininner>
         <TextField
-          placeholder="비밀번호를 입력하세요."
+          placeholder="이메일을 입력하세요."
           paddingLeft={15}
           height={3}
           background={"rgba(255, 255, 255, 0.7)"}
         />
         <TextField
-          placeholder="이메일을 입력하세요."
+          placeholder="비밀번호를 입력하세요."
           paddingLeft={15}
           height={3}
           background={"rgba(255, 255, 255, 0.7)"}
