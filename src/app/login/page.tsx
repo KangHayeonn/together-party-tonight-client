@@ -1,8 +1,10 @@
+"use client";
+
+import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import {
   Hr,
   Line,
-  LoginButton,
   LoginMore,
   LoginTitle,
   LoginInner,
@@ -35,7 +37,15 @@ export default function Login() {
           inputType="pw"
           autoComplete="current-password"
         />
-        <LoginButton>로그인</LoginButton>
+        <TextButton
+          text="로그인"
+          onClick={() => {
+            console.log("Login Check");
+          }}
+          width={400}
+          height={50}
+          fontSize={16}
+        />
         <LoginMore>
           <Link href="/">비밀번호 찾기</Link>
           <Line />
