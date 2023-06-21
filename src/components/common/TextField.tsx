@@ -19,9 +19,11 @@ export interface TextProps {
   textType?: string | undefined;
   inputType?: string | undefined;
   onChangeText?: React.ChangeEventHandler<HTMLInputElement>;
-  paddingLeft?: number | undefined;
+  paddingleft?: number | undefined;
   height?: number | undefined;
   background?: string | undefined;
+  wrapperwidth?: string | undefined;
+  autoComplete?: string | undefined;
 }
 
 const TextField = ({
@@ -33,6 +35,7 @@ const TextField = ({
   textType,
   inputType,
   onChangeText,
+  autoComplete,
   ...props
 }: TextProps) => {
   const [type, setType] = useState<string>(textType || "text");
@@ -43,7 +46,7 @@ const TextField = ({
   };
 
   return (
-    <TextWrapper>
+    <TextWrapper {...props}>
       <TextInputForm>
         <TextInput
           type={type}
@@ -51,12 +54,13 @@ const TextField = ({
           placeholder={placeholder}
           onChange={onChangeText}
           disabled={disabled}
+          autoComplete={autoComplete}
           {...props}
         />
         {inputType === "pw" ? (
           <Image
             src={`${
-              type === "text" ? "images/eyeOn.svg" : "images/eyeOff.svg"
+              type === "text" ? "images/eyeOff.svg" : "images/eyeOn.svg"
             }`}
             width={27}
             height={27}

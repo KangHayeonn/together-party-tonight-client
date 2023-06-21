@@ -5,7 +5,7 @@ import {
   LoginButton,
   LoginMore,
   LoginTitle,
-  Logininner,
+  LoginInner,
   LoginWrapper,
   SimpleLogin,
   SocialButton,
@@ -18,20 +18,22 @@ export default function Login() {
   return (
     <LoginWrapper>
       <LoginTitle>로그인</LoginTitle>
-      <Logininner>
+      <LoginInner>
         <TextField
           placeholder="이메일을 입력하세요."
-          paddingLeft={15}
+          paddingleft={15}
           height={3}
           background={"rgba(255, 255, 255, 0.7)"}
+          autoComplete="username"
         />
         <TextField
           placeholder="비밀번호를 입력하세요."
-          paddingLeft={15}
+          paddingleft={15}
           height={3}
           background={"rgba(255, 255, 255, 0.7)"}
           textType="password"
           inputType="pw"
+          autoComplete="current-password"
         />
         <LoginButton>로그인</LoginButton>
         <LoginMore>
@@ -47,7 +49,7 @@ export default function Login() {
         <SocialWrapper>
           <SocialButton>
             <Image
-              src="/images/Kakao.png"
+              src="/images/Kakao.svg"
               width={45}
               height={45}
               alt="Kakao 로그인"
@@ -55,7 +57,7 @@ export default function Login() {
           </SocialButton>
           <SocialButton>
             <Image
-              src="/images/Naver.png"
+              src="/images/Naver.svg"
               width={45}
               height={45}
               alt="Naver 로그인"
@@ -63,14 +65,14 @@ export default function Login() {
           </SocialButton>
           <SocialButton>
             <Image
-              src="/images/Google.png"
+              src="/images/Google.svg"
               width={45}
               height={45}
               alt="Google 로그인"
             />
           </SocialButton>
         </SocialWrapper>
-      </Logininner>
+      </LoginInner>
     </LoginWrapper>
   );
 }

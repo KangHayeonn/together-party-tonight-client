@@ -1,8 +1,8 @@
 import { TextProps } from "@/components/common/TextField";
 import styled from "styled-components";
 
-const TextWrapper = styled.div`
-  width: 100%;
+const TextWrapper = styled.div<TextProps>`
+  width: ${({ wrapperwidth }) => wrapperwidth || "100%"};
   position: relative;
 `;
 
@@ -27,7 +27,7 @@ const TextInput = styled.input<TextProps>`
   border-radius: 3px;
   border: 1px solid transparent;
   outline: none;
-  padding-left: ${({ paddingLeft }) => `${paddingLeft || 5}px`};
+  padding-left: ${({ paddingleft }) => `${paddingleft || 5}px`};
   padding-right: 40px;
 
   &.error {

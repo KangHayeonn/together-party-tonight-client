@@ -17,11 +17,12 @@ const LoginTitle = styled.h2`
   margin-bottom: 15px;
 `;
 
-const Logininner = styled.div`
+const LoginInner = styled.form`
   display: flex;
   flex-direction: column;
   padding: 60px 60px 30px;
   background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
 `;
 
 interface LoginBtnProps {
@@ -82,10 +83,16 @@ const SocialButton = styled.button`
   cursor: pointer;
 `;
 
+const EmailWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
 export {
   LoginWrapper,
   LoginTitle,
-  Logininner,
+  LoginInner,
   LoginButton,
   LoginMore,
   Line,
@@ -93,4 +100,5 @@ export {
   Hr,
   SocialWrapper,
   SocialButton,
+  EmailWrapper,
 };
