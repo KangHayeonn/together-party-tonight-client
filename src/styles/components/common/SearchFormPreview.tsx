@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const SearchPreviewWrapper = styled.div`
-  width: calc(100% - 10px);
+  // width: calc(100% - 10px);
+  width: 100%;
   background-color: #f0efef;
   height: 11rem;
   overflow-y: auto;
