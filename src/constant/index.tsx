@@ -1,5 +1,5 @@
 const MyPageBtnStyleObj = {
-  width: 180,
+  width: 160,
   height: 50,
   fontSize: 16,
 };

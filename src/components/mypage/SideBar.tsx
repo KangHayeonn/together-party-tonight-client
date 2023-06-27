@@ -1,10 +1,14 @@
 "use client";
 
-import { MyPageTitle, SideBarWrapper } from "@/styles/page/MyPage";
 import React from "react";
 import TextButton from "../common/TextButton";
 import { useRouter, usePathname } from "next/navigation";
 import { MyPageBtnStyleObj, MyPageList } from "@/constant";
+import {
+  ChatBtn,
+  MyPageTitle,
+  SideBarWrapper,
+} from "@/styles/components/mypage/SideBar";
 
 type MyPageListItem = {
   id: string;
@@ -39,6 +43,9 @@ export default function SideBar() {
               />
             </li>
           ))}
+          <li>
+            <ChatBtn href="/">채팅하기</ChatBtn>
+          </li>
         </ul>
       </nav>
     </SideBarWrapper>
