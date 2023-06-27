@@ -3,7 +3,7 @@
 import { MyPageTitle, SideBarWrapper } from "@/styles/page/MyPage";
 import React from "react";
 import TextButton from "../common/TextButton";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MyPageBtnStyleObj, MyPageList } from "@/constant";
 
 type MyPageListItem = {
@@ -12,8 +12,10 @@ type MyPageListItem = {
 };
 
 export default function SideBar() {
-  const { slug } = useParams();
   const router = useRouter();
+  const path = usePathname();
+  const curMenu = path?.split("/").at(-1);
+  console.log(curMenu);
 
   const handleClickMenu = (item: string) => {
     router.push(`/mypage/${item}`);
@@ -29,8 +31,8 @@ export default function SideBar() {
               <TextButton
                 text={item.text}
                 onClick={() => handleClickMenu(item.id)}
-                color={item.id === slug ? "#fff" : "#000"}
-                background={item.id === slug ? "#0d3471" : "#eef3f9"}
+                color={item.id === curMenu ? "#fff" : "#000"}
+                background={item.id === curMenu ? "#0d3471" : "#eef3f9"}
                 hoverbackgroundcolor="#0d3471"
                 hovercolor="#fff"
                 {...MyPageBtnStyleObj}
