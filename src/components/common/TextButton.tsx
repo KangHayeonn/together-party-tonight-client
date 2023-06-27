@@ -12,6 +12,8 @@ export interface ButtonProps {
   weight?: number | undefined;
   border?: boolean | undefined;
   margin?: string | undefined;
+  hovercolor?: string | undefined;
+  hoverbackgroundcolor?: string | undefined;
   onClick: React.MouseEventHandler<HTMLElement>;
 }
 

@@ -17,6 +17,9 @@ const BtnWrapper = styled.button<ButtonProps>`
 >>>>>>> bce97e4 ([UPDATE] : 로그인, 회원가입 버튼 TextButton 컴포넌트 적용)
 
   &:hover {
+    color: ${({ hovercolor }) => hovercolor || "none"};
+    background-color: ${({ hoverbackgroundcolor }) =>
+      hoverbackgroundcolor || "none"};
     opacity: 0.8;
   }
 `;
