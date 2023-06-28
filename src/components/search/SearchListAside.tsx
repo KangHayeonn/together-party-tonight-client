@@ -5,7 +5,8 @@ import { SearchListAsideWrapper } from "@/styles/components/search/SearchListAsi
 import SearchForm from "@/components/common/SearchForm";
 import SearchFilter from "@/components/search/SearchFilter";
 import SearchTagList from "@/components/search/SearchTagList";
-import { searchTagList } from "@/utils/mock/search";
+import SearchResult from "./SearchResult";
+import { searchTagList, clubList } from "@/utils/mock/search";
 
 const SearchListAside = () => {
   const [search, setSearch] = useState<string>("");
@@ -19,6 +20,7 @@ const SearchListAside = () => {
       <SearchForm search={search} onChangeSearch={onChangeSearch} />
       <SearchFilter />
       <SearchTagList tagList={searchTagList} />
+      <SearchResult searchResult={clubList} />
     </SearchListAsideWrapper>
   );
 };
