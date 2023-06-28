@@ -12,7 +12,9 @@ import {
 import SearchForm from "../common/SearchForm";
 import NumberForm from "../common/NumberForm";
 import SliderForm from "../common/SliderForm";
+import SearchCategory from "./SearchCategory";
 import SearchStatus from "./SearchStatus";
+import { searchCategoryList } from "@/utils/mock/search";
 
 const SearchListAside = () => {
   const [search, setSearch] = useState<string>("");
@@ -43,7 +45,9 @@ const SearchListAside = () => {
         <SearchTableBody>
           <SearchTableRow>
             <SearchDataTitle>모임 카테고리</SearchDataTitle>
-            <SearchDataContent>category</SearchDataContent>
+            <SearchDataContent>
+              <SearchCategory categoryList={searchCategoryList} />
+            </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
             <SearchDataTitle>모집 상태</SearchDataTitle>
