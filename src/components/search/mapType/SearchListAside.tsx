@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { SearchListAsideWrapper } from "@/styles/components/search/SearchListAside";
+import { SearchListAsideWrapper } from "@/styles/components/search/mapType/SearchListAside";
 import SearchForm from "@/components/common/SearchForm";
-import SearchFilter from "@/components/search/SearchFilter";
-import SearchTagList from "@/components/search/SearchTagList";
-import SearchOption from "@/components/search/SearchOption";
-import SearchResult from "@/components/search/SearchResult";
+import SearchFilter from "@/components/search/mapType/SearchFilter";
+import SearchTagList from "@/components/search/mapType/SearchTagList";
+import SearchOption from "@/components/search/mapType/SearchOption";
+import SearchResult from "@/components/search/mapType/SearchResult";
 import { searchTagList, clubList } from "@/utils/mock/search";
 
 const SearchListAside = () => {

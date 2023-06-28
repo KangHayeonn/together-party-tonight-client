@@ -4,7 +4,7 @@ import {
   SearchTagItem,
   SearchTagItemInput,
   SearchTagItemLabel,
-} from "@/styles/components/search/SearchTagList";
+} from "@/styles/components/search/mapType/SearchTagList";
 
 interface SearchTagList {
   tagList: Array<string>;

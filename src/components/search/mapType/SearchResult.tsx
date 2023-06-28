@@ -14,7 +14,7 @@ import {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
-} from "@/styles/components/search/SearchResult";
+} from "@/styles/components/search/mapType/SearchResult";
 
 interface searchResultItem {
   clubId: number;

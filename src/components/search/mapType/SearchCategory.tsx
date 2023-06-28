@@ -1,6 +1,6 @@
 import React from "react";
-import CheckBox from "../common/CheckBox";
-import { SearchCategoryWrapper } from "@/styles/components/search/SearchCategory";
+import CheckBox from "@/components/common/CheckBox";
+import { SearchCategoryWrapper } from "@/styles/components/search/mapType/SearchCategory";
 
 interface SearchCategoryProps {
   categoryList?: Array<string>;

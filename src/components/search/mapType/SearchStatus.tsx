@@ -5,7 +5,7 @@ import {
   SearchStatusWrapper,
   SearchStatusRadio,
   SearchStatusRadioLabel,
-} from "@/styles/components/search/SearchStatus";
+} from "@/styles/components/search/mapType/SearchStatus";
 
 interface SearchStatusProps {
   defaultValue?: string;

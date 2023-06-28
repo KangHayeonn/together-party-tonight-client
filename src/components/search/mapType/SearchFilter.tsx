@@ -5,11 +5,11 @@ import {
   SearchTableRow,
   SearchDataTitle,
   SearchDataContent,
-} from "@/styles/components/search/SearchListAside";
-import NumberForm from "../common/NumberForm";
-import SliderForm from "../common/SliderForm";
-import SearchCategory from "./SearchCategory";
-import SearchStatus from "./SearchStatus";
+} from "@/styles/components/search/mapType/SearchListAside";
+import NumberForm from "@/components/common/NumberForm";
+import SliderForm from "@/components/common/SliderForm";
+import SearchCategory from "@/components/search/mapType/SearchCategory";
+import SearchStatus from "@/components/search/mapType/SearchStatus";
 import { searchCategoryList } from "@/utils/mock/search";
 
 const SearchFilter = () => {

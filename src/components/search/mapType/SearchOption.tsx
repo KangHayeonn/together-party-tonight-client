@@ -1,7 +1,7 @@
 import React from "react";
-import DropDown from "../common/DropDown";
-import RoundButton from "../common/RoundButton";
-import { SearchOptionWrapper } from "@/styles/components/search/SearchOption";
+import DropDown from "@/components/common/DropDown";
+import RoundButton from "@/components/common/RoundButton";
+import { SearchOptionWrapper } from "@/styles/components/search/mapType/SearchOption";
 
 const SearchOption = () => {
   const onClickRoundBtnEvent = () => {

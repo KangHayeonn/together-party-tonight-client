@@ -7,6 +7,7 @@ const SearchPreviewWrapper = styled.div`
   height: 11rem;
   overflow-y: auto;
   border-radius: 7px;
+  z-index: 999;
 
   &::-webkit-scrollbar {
     width: 7px;
