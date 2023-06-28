@@ -105,6 +105,7 @@ const Review = styled.p`
 const ReviewInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 225px;
 `;
 
 const Meet = styled.p`
