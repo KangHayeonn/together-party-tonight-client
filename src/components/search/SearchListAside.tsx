@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   SearchListAsideWrapper,
@@ -11,6 +12,7 @@ import {
 import SearchForm from "../common/SearchForm";
 import NumberForm from "../common/NumberForm";
 import SliderForm from "../common/SliderForm";
+import SearchStatus from "./SearchStatus";
 
 const SearchListAside = () => {
   const [search, setSearch] = useState<string>("");
@@ -45,7 +47,9 @@ const SearchListAside = () => {
           </SearchTableRow>
           <SearchTableRow>
             <SearchDataTitle>모집 상태</SearchDataTitle>
-            <SearchDataContent>status</SearchDataContent>
+            <SearchDataContent>
+              <SearchStatus defaultValue="전체" />
+            </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
             <SearchDataTitle>인원수</SearchDataTitle>
