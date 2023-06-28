@@ -32,6 +32,7 @@ const TextField = ({
   placeholder,
   isError,
   errorMessage,
+  message,
   textType,
   inputType,
   onChangeText,

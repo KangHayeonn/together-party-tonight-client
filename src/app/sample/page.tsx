@@ -15,6 +15,7 @@ import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
 import RoundButton from "@/components/common/RoundButton";
 import DropDown from "@/components/common/DropDown";
+import KakaoMap from "../../components/search/map/KakaoMap";
 
 export default function Home() {
   const router = useRouter();
@@ -73,6 +74,7 @@ export default function Home() {
       )}
       <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
       <DropDown />
+      <KakaoMap />
     </div>
   );
 }
