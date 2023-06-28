@@ -4,7 +4,6 @@ const SearchResultList = styled.ul`
   border: 1px solid rgb(189, 200, 214, 0.75);
   border-radius: 3px;
   max-height: 21rem;
-  margin-top: 20px;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
