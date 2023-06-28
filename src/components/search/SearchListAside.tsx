@@ -10,6 +10,7 @@ import {
 } from "@/styles/components/search/SearchListAside";
 import SearchForm from "../common/SearchForm";
 import NumberForm from "../common/NumberForm";
+import SliderForm from "../common/SliderForm";
 
 const SearchListAside = () => {
   const [search, setSearch] = useState<string>("");
@@ -25,7 +26,14 @@ const SearchListAside = () => {
         <SearchTableBody>
           <SearchTableRow>
             <SearchDataTitle>거리</SearchDataTitle>
-            <SearchDataContent>distance</SearchDataContent>
+            <SearchDataContent>
+              <SliderForm
+                sliderType="distance"
+                minText="0km"
+                maxText="10km"
+                defaultValue={5}
+              />
+            </SearchDataContent>
           </SearchTableRow>
         </SearchTableBody>
       </SearchTable>
