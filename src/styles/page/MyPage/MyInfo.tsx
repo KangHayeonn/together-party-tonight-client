@@ -118,6 +118,43 @@ const MeetDate = styled.p`
   color: #727272;
 `;
 
+const UpdateWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #dee3ea;
+  margin-bottom: 25px;
+`;
+const UpdateTitle = styled.h3`
+  margin-left: 20px;
+  font-size: 23px;
+  font-weight: 700;
+`;
+
+const EditInfoWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 15fr 1fr;
+  margin-bottom: 10px;
+`;
+const EditPwInfoWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 16fr;
+  margin-bottom: 10px;
+`;
+
+const EditBtn = styled.button`
+  height: 30px;
+  border: 0;
+  background-color: transparent;
+  margin-left: 10px;
+`;
+
+const ConfirmBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`;
+
 export {
   MyPageWrapper,
   InfoWrapper,
@@ -139,4 +176,10 @@ export {
   ReviewInfo,
   Meet,
   MeetDate,
+  UpdateWrapper,
+  UpdateTitle,
+  EditInfoWrapper,
+  EditPwInfoWrapper,
+  EditBtn,
+  ConfirmBox,
 };

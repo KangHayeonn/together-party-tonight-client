@@ -1,19 +1,95 @@
 "use client";
 
+import TextButton from "@/components/common/TextButton";
+import EditInfo from "@/components/mypage/info/EditInfo";
+import EditPwInfo from "@/components/mypage/info/EditPwInfo";
 import MyInfo from "@/components/mypage/info/MyInfo";
 import MyRating from "@/components/mypage/info/MyRating";
 import MyReviewList from "@/components/mypage/info/MyReviewList";
-import { InfoWrapper } from "@/styles/page/MyPage";
+import {
+  ConfirmBox,
+  EditInfoWrapper,
+  InfoWrapper,
+  UpdateTitle,
+  UpdateWrapper,
+} from "@/styles/page/MyPage/MyInfo";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Info() {
-  const [isUpdateInfo, setIsUpdateInfo] = useState(false);
+  const [isUpdateInfo, setIsUpdateInfo] = useState<boolean>(false);
+  const [isEditPw, setIsEditPw] = useState<boolean>(false);
 
   return (
     <InfoWrapper>
-      <MyInfo />
-      <MyRating />
-      <MyReviewList />
+      {!isUpdateInfo ? (
+        <>
+          <MyInfo setIsUpdateInfo={setIsUpdateInfo} />
+          <MyRating />
+          <MyReviewList />
+        </>
+      ) : (
+        <>
+          <UpdateWrapper>
+            <Image
+              src="/images/Profile.svg"
+              width={45}
+              height={45}
+              alt="프로필 이미지"
+            />
+            <UpdateTitle>프로필 수정</UpdateTitle>
+          </UpdateWrapper>
+          <div>
+            <EditInfo label="닉네임" placeholder="닉네임을 입력하세요." />
+            <EditInfo
+              label="소개"
+              placeholder="간단하게 자기소개를 해보세요."
+            />
+            {isEditPw ? (
+              <>
+                <EditPwInfo
+                  label="기존 비밀번호"
+                  placeholder="비밀번호를 입력하세요."
+                />
+                <EditPwInfo
+                  label="신규 비밀번호"
+                  placeholder="비밀번호를 입력하세요."
+                />
+                <EditPwInfo
+                  label="신규 비밀번호 확인"
+                  placeholder="비밀번호를 입력하세요."
+                />
+                <ConfirmBox>
+                  <TextButton
+                    text="변경 완료"
+                    onClick={() => {
+                      setIsEditPw && setIsEditPw((val) => !val);
+                    }}
+                    fontSize={14}
+                    width={90}
+                    height={40}
+                  />
+                </ConfirmBox>
+              </>
+            ) : (
+              <>
+                <EditInfoWrapper>
+                  <label>비밀번호</label>
+                  <TextButton
+                    text="비밀번호 변경"
+                    onClick={() => {
+                      setIsEditPw && setIsEditPw((val) => !val);
+                    }}
+                    fontSize={14}
+                    width={120}
+                    height={40}
+                  />
+                </EditInfoWrapper>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </InfoWrapper>
   );
 }

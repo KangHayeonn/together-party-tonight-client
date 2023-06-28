@@ -9,7 +9,7 @@ import {
   ReviewInfo,
   Meet,
   MeetDate,
-} from "@/styles/page/MyPage";
+} from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 
 export default function MyReviewList() {

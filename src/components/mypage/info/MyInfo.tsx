@@ -6,10 +6,15 @@ import {
   UserInfo,
   UserInfoWrapper,
   UserName,
-} from "@/styles/page/MyPage";
+} from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
+import React from "react";
 
-export default function MyInfo() {
+type Props = {
+  setIsUpdateInfo: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function MyInfo({ setIsUpdateInfo }: Props) {
   return (
     <UserInfoWrapper>
       <UserInfo>
@@ -26,7 +31,9 @@ export default function MyInfo() {
       </UserInfo>
       <TextButton
         text="수정하기"
-        onClick={() => console.log("채팅하기 이동")}
+        onClick={() => {
+          setIsUpdateInfo((val) => !val);
+        }}
         width={100}
         height={35}
         fontSize={14}

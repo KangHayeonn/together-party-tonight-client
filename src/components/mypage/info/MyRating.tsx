@@ -1,5 +1,10 @@
 "use client";
-import { Em, Rating, RatingTitle, RatingWrapper } from "@/styles/page/MyPage";
+import {
+  Em,
+  Rating,
+  RatingTitle,
+  RatingWrapper,
+} from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 
 export default function MyRating() {
