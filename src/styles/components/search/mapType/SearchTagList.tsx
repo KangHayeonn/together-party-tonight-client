@@ -4,7 +4,7 @@ const SearchTagListWrapper = styled.div`
   display: grid;
   grid-template-rows: repeat(2, 40px);
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin-top: -15px;
+  margin-top: -20px;
 `;
 
 const SearchTagItem = styled.div`

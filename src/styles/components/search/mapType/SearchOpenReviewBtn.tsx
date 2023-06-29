@@ -4,6 +4,8 @@ const SearchOpenReviewBtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 25px;
 `;
 
 const SearchOpenReviewBtnBox = styled.div`

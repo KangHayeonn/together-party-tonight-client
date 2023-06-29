@@ -24,6 +24,7 @@ export interface TextProps {
   background?: string | undefined;
   wrapperwidth?: string | undefined;
   autoComplete?: string | undefined;
+  fontSize?: number | undefined;
 }
 
 const TextField = ({
