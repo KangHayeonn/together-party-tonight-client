@@ -10,4 +10,12 @@ const SearchItemAsideWrapper = styled.div`
   gap: 1rem;
 `;
 
-export { SearchItemAsideWrapper };
+const SearchItemDetailWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0px 23px;
+  border-bottom: 1px solid rgb(189, 200, 214, 0.75);
+`;
+
+export { SearchItemAsideWrapper, SearchItemDetailWrapper };
