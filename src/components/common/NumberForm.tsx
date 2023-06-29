@@ -30,7 +30,7 @@ const NumberForm = ({ min = 0, max = 20 }: NumberProps) => {
   return (
     <NumberWrapper>
       <Image
-        src="images/minusIcon.svg"
+        src="/images/minusIcon.svg"
         width={30}
         height={30}
         alt="Number Minus Icon"
@@ -38,7 +38,7 @@ const NumberForm = ({ min = 0, max = 20 }: NumberProps) => {
       />
       <NumberInput type="number" value={number} disabled />
       <Image
-        src="images/plusIcon.svg"
+        src="/images/plusIcon.svg"
         width={30}
         height={30}
         alt="Number Plus Icon"

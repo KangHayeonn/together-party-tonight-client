@@ -52,7 +52,7 @@ const SearchForm = ({ placeholder, onChangeSearch, ...props }: SearchProps) => {
             {...props}
           />
           <Image
-            src="images/searchIcon.svg"
+            src="/images/searchIcon.svg"
             width={16}
             height={16}
             alt="Search Icon"

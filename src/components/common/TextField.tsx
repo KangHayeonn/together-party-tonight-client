@@ -60,7 +60,7 @@ const TextField = ({
         {inputType === "pw" ? (
           <Image
             src={`${
-              type === "text" ? "images/eyeOff.svg" : "images/eyeOn.svg"
+              type === "text" ? "/images/eyeOff.svg" : "/images/eyeOn.svg"
             }`}
             width={27}
             height={27}

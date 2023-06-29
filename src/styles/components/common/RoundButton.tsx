@@ -11,7 +11,7 @@ const RoundBtnWrapper = styled.button<RoundBtnProps>`
   padding: 7px 22px;
 
   &:hover {
-    background-color: #778da9;
+    opacity: 0.7;
   }
   &.active {
     background-color: #bdc8d6;
