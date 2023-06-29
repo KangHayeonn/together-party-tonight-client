@@ -16,7 +16,7 @@ const SearchTagList = ({ tagList }: SearchTagList) => {
 
   const onCloseItems = useCallback(() => {
     const tempList = tagList?.filter((item, index) => index < 7);
-    setNewTagList(tempList ? tempList : []);
+    setNewTagList(tempList);
   }, [tagList]);
 
   const onOpenItems = () => {
