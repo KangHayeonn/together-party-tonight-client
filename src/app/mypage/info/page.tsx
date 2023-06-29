@@ -9,9 +9,12 @@ import MyReviewList from "@/components/mypage/info/MyReviewList";
 import {
   ConfirmBox,
   EditInfoWrapper,
+  EditWrapper,
   InfoWrapper,
   UpdateTitle,
   UpdateWrapper,
+  Withdrawal,
+  WithdrawalBtn,
 } from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 import { useState } from "react";
@@ -39,7 +42,7 @@ export default function Info() {
             />
             <UpdateTitle>프로필 수정</UpdateTitle>
           </UpdateWrapper>
-          <div>
+          <EditWrapper>
             <EditInfo label="닉네임" placeholder="닉네임을 입력하세요." />
             <EditInfo
               label="소개"
@@ -87,7 +90,10 @@ export default function Info() {
                 </EditInfoWrapper>
               </>
             )}
-          </div>
+          </EditWrapper>
+          <Withdrawal>
+            <WithdrawalBtn>회원탈퇴</WithdrawalBtn>
+          </Withdrawal>
         </>
       )}
     </InfoWrapper>

@@ -155,6 +155,22 @@ const ConfirmBox = styled.div`
   margin-top: 40px;
 `;
 
+const EditWrapper = styled.div`
+  border-bottom: 1px solid #dee3ea;
+  padding-bottom: 25px;
+`;
+
+const Withdrawal = styled.div`
+  float: right;
+  padding-top: 20px;
+`;
+const WithdrawalBtn = styled.button`
+  border: 0;
+  background-color: transparent;
+  text-decoration: underline;
+  color: #ba1a1a;
+`;
+
 export {
   MyPageWrapper,
   InfoWrapper,
@@ -182,4 +198,7 @@ export {
   EditPwInfoWrapper,
   EditBtn,
   ConfirmBox,
+  EditWrapper,
+  Withdrawal,
+  WithdrawalBtn,
 };
