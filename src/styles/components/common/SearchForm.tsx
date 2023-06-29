@@ -21,7 +21,7 @@ const SearchInputForm = styled.div`
   align-items: center;
   width: 100%;
   height: 2.5rem;
-  padding: 5px;
+  // padding: 5px;
   gap: 10px;
 
   img {
