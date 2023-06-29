@@ -51,6 +51,16 @@ export default function Home() {
     // console.log("check");
   };
 
+  const dropDownList = [
+    "운동",
+    "스터디",
+    "맛집",
+    "취미",
+    "여행",
+    "봉사",
+    "친목",
+  ];
+
   return (
     <div>
       <h1>Test</h1>
@@ -72,7 +82,7 @@ export default function Home() {
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
       <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
-      <DropDown />
+      <DropDown dataList={dropDownList} width={100} />
     </div>
   );
 }
