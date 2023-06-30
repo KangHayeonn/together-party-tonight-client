@@ -37,16 +37,6 @@ const SearchDetailContent = styled.span`
   letter-spacing: 0.25px;
 `;
 
-const SearchDetailDate = styled.span``;
-
-const SearchDetailTimeType = styled.span``;
-
-const SearchDetailTime = styled.span``;
-
-const SearchDetailStatus = styled.span``;
-
-const SearchDetailStatusNumber = styled.span``;
-
 export {
   SearchDetailWrapper,
   SearchDetailTitle,

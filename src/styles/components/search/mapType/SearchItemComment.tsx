@@ -42,7 +42,7 @@ const SearchCommentList = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    margin: 8px;
+    margin: 2px;
   }
 `;
 
