@@ -58,7 +58,7 @@ const SearchSliderWrapper = styled.div`
 const SearchOptionContent = styled.td`
   display: flex;
   justify-content: flex-end;
-  margin: 10px;
+  margin: 15px 10px;
 `;
 
 export {

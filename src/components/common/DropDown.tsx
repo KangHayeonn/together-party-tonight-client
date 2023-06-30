@@ -48,7 +48,7 @@ const DropDown = ({ defaultText, ...props }: DropDownProps) => {
       <DropDownBtn>
         {title}
         <Image
-          src={`${!isOpen ? "images/arrowDown.svg" : "images/arrowUp.svg"}`}
+          src={`${!isOpen ? "/images/arrowDown.svg" : "/images/arrowUp.svg"}`}
           width={12}
           height={12}
           alt="DropDown Button"
