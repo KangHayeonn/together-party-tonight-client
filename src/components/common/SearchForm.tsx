@@ -17,7 +17,12 @@ export interface SearchProps {
   onChangeSearch?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const SearchForm = ({ placeholder, onChangeSearch, ...props }: SearchProps) => {
+const SearchForm = ({
+  placeholder,
+  onChangeSearch,
+  search,
+  ...props
+}: SearchProps) => {
   const searchInput = useRef<HTMLInputElement>(null);
   const searchWrap = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
