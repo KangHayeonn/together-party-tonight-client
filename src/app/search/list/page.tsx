@@ -5,7 +5,7 @@ import SearchResult from "@/components/search/listType/SearchResult";
 
 const page = () => {
   return (
-    <SearchTemplate>
+    <SearchTemplate classType="list">
       <SearchNav />
       <SearchResult />
     </SearchTemplate>
