@@ -99,3 +99,34 @@ export const commentList = [
     updatedDate: "2023/06/04",
   },
 ];
+
+export const kakaoMapData = [
+  {
+    content: {
+      clubId: 1,
+      clubName: "테니스 같이 하실 분 구해요",
+    },
+    latlng: { lat: 33.450705, lng: 126.570677 },
+  },
+  {
+    content: {
+      clubId: 2,
+      clubName: "강남에서 모각코 하실 분",
+    },
+    latlng: { lat: 33.450936, lng: 126.569477 },
+  },
+  {
+    content: {
+      clubId: 3,
+      clubName: "연남동에서 신상 카페 투어",
+    },
+    latlng: { lat: 33.450879, lng: 126.56994 },
+  },
+  {
+    content: {
+      clubId: 4,
+      clubName: "독서모임 구합니다",
+    },
+    latlng: { lat: 33.451393, lng: 126.570738 },
+  },
+];

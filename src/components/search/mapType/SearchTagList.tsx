@@ -39,7 +39,7 @@ const SearchTagList = ({ tagList }: SearchTagList) => {
       {newTagList &&
         newTagList.map((item, index) => {
           return (
-            <SearchTagItem key={index}>
+            <SearchTagItem key={item}>
               <SearchTagItemInput type="checkbox" id={item} value={item} />
               <SearchTagItemLabel htmlFor={item} className="label-tag">
                 {item}
