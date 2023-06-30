@@ -1,3 +1,13 @@
+import React from "react";
+import SearchTemplate from "@/components/search/SearchTemplate";
+import SearchListAside from "@/components/search/mapType/SearchListAside";
+import KakaoMap from "@/components/search/map/KakaoMap";
+
 export default function Search() {
-  return <div>Search</div>;
+  return (
+    <SearchTemplate>
+      <SearchListAside />
+      <KakaoMap />
+    </SearchTemplate>
+  );
 }
