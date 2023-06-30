@@ -19,6 +19,7 @@
         "name": "next"
       }
     ],
+    "types": ["kakao.maps.d.ts"],
     "paths": {
       "@/*": ["./src/*"]
     },
