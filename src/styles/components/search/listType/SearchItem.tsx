@@ -5,7 +5,7 @@ const SearchItemWrapper = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 2.5rem;
-  margin-bottom: 4rem;
+  margin-bottom: 5.5rem;
 `;
 
 const SearchItemBox = styled.div`
