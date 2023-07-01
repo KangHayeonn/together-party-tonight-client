@@ -5,6 +5,7 @@ const SearchItemDetailWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 40px;
+  border-bottom: 1px solid #1852af;
 `;
 
 const SearchItemDetailContent = styled.div`
