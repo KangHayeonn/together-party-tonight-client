@@ -17,7 +17,7 @@ const SearchItemTagList = ({ tagList, classType }: SearchItemTagList) => {
 
   const onCloseItems = useCallback(() => {
     const tempList = tagList?.filter((item, index) => index < 7);
-    setNewTagList(tempList ? tempList : []);
+    setNewTagList(tempList);
   }, [tagList]);
 
   useEffect(() => {
