@@ -1,3 +1,5 @@
+import { ICategory } from "@/types/mypage";
+
 const MyPageBtnStyleObj = {
   width: 160,
   height: 50,
@@ -10,17 +12,23 @@ const MyPageList = [
     text: "내 정보",
   },
   {
-    id: "meeting",
+    id: "list/meeting",
     text: "내 모임",
   },
   {
-    id: "request",
+    id: "list/apply",
     text: "신청한 모임",
   },
   {
-    id: "review",
+    id: "list/review",
     text: "내가 쓴 리뷰",
   },
 ];
 
-export { MyPageBtnStyleObj, MyPageList };
+const mypageCategory: ICategory = {
+  meeting: "내 모임",
+  apply: "신청한 모임",
+  review: "내가 쓴 리뷰",
+};
+
+export { MyPageBtnStyleObj, MyPageList, mypageCategory };

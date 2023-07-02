@@ -34,7 +34,7 @@ export default function SideBar() {
               <TextButton
                 text={item.text}
                 onClick={() => handleClickMenu(item.id)}
-                color={item.id === curMenu ? "#fff" : "#000"}
+                color={item.id === curMenu ? "#010000" : "#000"}
                 background={item.id === curMenu ? "#0d3471" : "#ecf2ff"}
                 hoverbackgroundcolor="#0d3471"
                 hovercolor="#fff"
