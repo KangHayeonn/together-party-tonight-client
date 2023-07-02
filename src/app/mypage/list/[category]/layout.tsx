@@ -1,5 +1,6 @@
 "use client";
 
+import DropDown from "@/components/common/DropDown";
 import { mypageCategory } from "@/constant";
 import {
   MeetingInfo,
@@ -17,14 +18,12 @@ export default function CategoryLayout({
   children,
   params: { category },
 }: Props) {
-  console.log(category);
-
   return (
     <MeetingWrapper>
       <MeetingTitle>{mypageCategory[category]}</MeetingTitle>
       <MeetingInfo>
         <TotalMeeting>총 12개</TotalMeeting>
-        <div>select</div>
+        <DropDown width={70} />
       </MeetingInfo>
       {children}
     </MeetingWrapper>

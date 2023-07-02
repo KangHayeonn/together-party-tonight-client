@@ -21,7 +21,8 @@ export default function SideBar() {
   const curMenu = path?.split("/").at(-1);
 
   const handleClickMenu = (item: string) => {
-    router.push(`/mypage/${item}`);
+    const newPath = item === "info" ? item : `list/${item}`;
+    router.push(`/mypage/${newPath}`);
   };
 
   return (
@@ -34,7 +35,7 @@ export default function SideBar() {
               <TextButton
                 text={item.text}
                 onClick={() => handleClickMenu(item.id)}
-                color={item.id === curMenu ? "#010000" : "#000"}
+                color={item.id === curMenu ? "#fff" : "#000"}
                 background={item.id === curMenu ? "#0d3471" : "#ecf2ff"}
                 hoverbackgroundcolor="#0d3471"
                 hovercolor="#fff"

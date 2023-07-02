@@ -12,15 +12,15 @@ const MyPageList = [
     text: "내 정보",
   },
   {
-    id: "list/meeting",
+    id: "meeting",
     text: "내 모임",
   },
   {
-    id: "list/apply",
+    id: "apply",
     text: "신청한 모임",
   },
   {
-    id: "list/review",
+    id: "review",
     text: "내가 쓴 리뷰",
   },
 ];

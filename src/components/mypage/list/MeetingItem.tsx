@@ -7,9 +7,14 @@ import {
   ListItem,
   MeetingMoreBtn,
   TagList,
-} from "@/styles/page/MyPage/Meeting";
+} from "@/styles/components/mypage/ListItem";
 
-export default function MeetingItem() {
+type Props = {
+  category: string;
+};
+
+export default function MeetingItem({ category }: Props) {
+  const isMyMeeting = category === "meeting";
   return (
     <ListItem>
       <ItemInfo>
@@ -23,7 +28,7 @@ export default function MeetingItem() {
       </TagList>
       <ItemDateWrapper>
         <ItemDate>2023.06.04 (월) 13:25</ItemDate>
-        <MeetingMoreBtn>정산하기</MeetingMoreBtn>
+        <MeetingMoreBtn>{isMyMeeting ? "정산하기" : "채팅하기"}</MeetingMoreBtn>
       </ItemDateWrapper>
     </ListItem>
   );
