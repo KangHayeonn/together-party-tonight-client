@@ -47,7 +47,7 @@ const SearchItemComment = () => {
           background="#bdc8d6"
           color="#fff"
           weight={500}
-          width={107}
+          width={95}
           height={35}
         />
       </SearchCommentInputForm>
