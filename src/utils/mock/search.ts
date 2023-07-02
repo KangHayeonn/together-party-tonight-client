@@ -27,6 +27,7 @@ export const clubList = [
     clubId: 1,
     clubName: "테니스 같이 하실 분 구해요",
     clubCategory: "운동",
+    clubContent: "초보여도 괜찮습니다 ~",
     clubTags: ["테니스", "신나는"],
     latitude: 37.5304843, // 위도
     longitude: 126.881641, // 경도
@@ -38,6 +39,7 @@ export const clubList = [
     clubId: 2,
     clubName: "강남에서 모각코 하실 분",
     clubCategory: "스터디",
+    clubContent: "끝나고 저녁도 같이 먹어요!!",
     clubTags: ["코딩", "조용한"],
     latitude: 37.4950242,
     longitude: 127.029687,
@@ -49,6 +51,7 @@ export const clubList = [
     clubId: 3,
     clubName: "연남동에서 신상 카페 투어",
     clubCategory: "맛집",
+    clubContent: "커피 좋아하시고 사진 찍는 것도 좋아하시는 분 같이 가요",
     clubTags: ["연인추천", "신나는", "사진맛집", "뷰맛집"],
     latitude: 37.5615052,
     longitude: 126.924668,
@@ -60,6 +63,7 @@ export const clubList = [
     clubId: 4,
     clubName: "독서모임 구합니다",
     clubCategory: "취미",
+    clubContent: "일주일에 한권씩 책 읽으실 분 구합니다.",
     clubTags: ["조용한", "독서", "교양"],
     latitude: 37.5084353,
     longitude: 127.080056,
