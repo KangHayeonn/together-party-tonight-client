@@ -9,12 +9,8 @@ const BtnWrapper = styled.button<ButtonProps>`
   color: ${({ color }) => color || "#fff"};
   background-color: ${({ background }) => background || "#0d3471"};
   border: ${({ border }) => (border ? "1px solid #808080;" : "0 none;")};
-<<<<<<< HEAD
   border-radius: 5px;
-=======
-  border-radius: 10px;
   margin: ${({ margin }) => margin || "0"};
->>>>>>> bce97e4 ([UPDATE] : 로그인, 회원가입 버튼 TextButton 컴포넌트 적용)
 
   &:hover {
     color: ${({ hovercolor }) => hovercolor || "none"};
