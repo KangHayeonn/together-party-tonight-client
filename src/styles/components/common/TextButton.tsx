@@ -9,7 +9,7 @@ const BtnWrapper = styled.button<ButtonProps>`
   color: ${({ color }) => color || "#fff"};
   background-color: ${({ background }) => background || "#0d3471"};
   border: ${({ border }) => (border ? "1px solid #808080;" : "0 none;")};
-  border-radius: 10px;
+  border-radius: 5px;
 
   &:hover {
     opacity: 0.8;
