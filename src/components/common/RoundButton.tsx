@@ -10,7 +10,7 @@ export interface RoundBtnProps {
   background?: string | undefined;
   color?: string | undefined;
   weight?: number | undefined;
-  border?: boolean | undefined;
+  border?: number | undefined;
   onClick: React.MouseEventHandler<HTMLElement>;
 }
 
