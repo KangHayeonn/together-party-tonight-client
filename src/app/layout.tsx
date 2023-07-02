@@ -8,7 +8,7 @@ import Main from "@/components/layout/Main";
 export const metadata = {
   title: "투바투",
   icons: {
-    icon: "images/Logo.png",
+    icon: "/images/Logo.svg",
   },
   description: "실시간 거리 기반 모임 추천/신청 서비스",
   metadataBase: new URL("http://localhost:3000"),

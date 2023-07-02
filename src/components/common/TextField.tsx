@@ -24,6 +24,7 @@ export interface TextProps {
   background?: string | undefined;
   wrapperwidth?: string | undefined;
   autoComplete?: string | undefined;
+  fontSize?: number | undefined;
 }
 
 const TextField = ({
@@ -60,7 +61,7 @@ const TextField = ({
         {inputType === "pw" ? (
           <Image
             src={`${
-              type === "text" ? "images/eyeOff.svg" : "images/eyeOn.svg"
+              type === "text" ? "/images/eyeOff.svg" : "/images/eyeOn.svg"
             }`}
             width={27}
             height={27}

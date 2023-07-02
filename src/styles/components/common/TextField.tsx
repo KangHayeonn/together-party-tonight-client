@@ -18,7 +18,7 @@ const TextInputForm = styled.div`
 `;
 
 const TextInput = styled.input<TextProps>`
-  font-size: 1rem;
+  font-size: ${({ fontSize }) => `${fontSize || 1}rem`};
   line-height: 2.1rem;
   letter-spacing: 0.25px;
   width: 100%;
@@ -39,7 +39,7 @@ const TextInput = styled.input<TextProps>`
   }
 
   &:not(.error):focus {
-    border: 1px solid #2a82f0;
+    border: 1px solid rgba(0, 0, 0, 0.15);
   }
 
   &:focus {
