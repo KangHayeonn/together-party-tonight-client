@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
 const SearchTagListWrapper = styled.div`
-  display: grid;
-  grid-template-rows: repeat(2, 40px);
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
   margin-top: -20px;
+  margin-bottom: 5px;
 `;
 
 const SearchTagItem = styled.div`
@@ -28,15 +27,15 @@ const SearchTagItemLabel = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.875rem;
-  width: 90px;
+  height: 1.75rem;
+  width: 80px;
   color: #000;
   background-color: #eef3f9;
   cursor: pointer;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1rem;
-  border-radius: 15px;
+  border-radius: 7px;
 
   &.secondary {
     color: #fff;

@@ -8,10 +8,10 @@ const RoundBtnWrapper = styled.button<RoundBtnProps>`
   background-color: ${({ background }) => background || "#EEF3F9"};
   border: ${({ border }) => (border ? "1px solid #808080;" : "0 none;")};
   border-radius: 30px;
-  padding: 7px 22px;
+  padding: ${({ border }) => (border ? "3px 22px" : "7px 22px")};
 
   &:hover {
-    background-color: #778da9;
+    opacity: 0.7;
   }
   &.active {
     background-color: #bdc8d6;

@@ -11,11 +11,11 @@ const CheckBoxInput = styled.input`
   height: 0.875rem;
   margin: 0;
   appearance: none;
-  background: url("images/checkbox.svg") no-repeat;
+  background: url("/images/checkbox.svg") no-repeat;
   cursor: pointer;
 
   &:checked {
-    background: url("images/checkbox_checked.svg") no-repeat;
+    background: url("/images/checkbox_checked.svg") no-repeat;
   }
 
   &:disabled {
