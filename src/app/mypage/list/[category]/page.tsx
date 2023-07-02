@@ -7,7 +7,6 @@ type Props = {
 };
 
 export default function Category({ params: { category } }: Props) {
-  console.log(category);
   return (
     <ul>
       {category === "review" ? (
