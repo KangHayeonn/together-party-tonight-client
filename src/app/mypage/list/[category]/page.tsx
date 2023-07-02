@@ -2,7 +2,6 @@ import MeetingItem from "@/components/mypage/list/MeetingItem";
 import ReviewItem from "@/components/mypage/list/ReviewItem";
 
 type Props = {
-  children: React.ReactNode;
   params: { category: string };
 };
 
