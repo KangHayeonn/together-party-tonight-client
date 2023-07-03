@@ -5,6 +5,7 @@ import {
 } from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 import ReviewItem from "../list/ReviewItem";
+import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 
 export default function MyReviewList() {
   return (
@@ -20,11 +21,11 @@ export default function MyReviewList() {
           />
         </ArrowBtn>
       </ReviewTitle>
-      <ul>
+      <MypageListWrapper>
         <li>
           <ReviewItem />
         </li>
-      </ul>
+      </MypageListWrapper>
     </ReviewWrapper>
   );
 }
