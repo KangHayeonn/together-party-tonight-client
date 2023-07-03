@@ -23,7 +23,7 @@ export default function CategoryLayout({
       <MeetingTitle>{mypageCategory[category]}</MeetingTitle>
       <MeetingInfo>
         <TotalMeeting>총 12개</TotalMeeting>
-        <DropDown width={70} />
+        <DropDown width={90} />
       </MeetingInfo>
       {children}
     </MeetingWrapper>

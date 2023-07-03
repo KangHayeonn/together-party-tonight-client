@@ -6,8 +6,8 @@ import {
   ItemDate,
   ItemDateWrapper,
   ItemDesc,
+  ReviewRating,
 } from "@/styles/components/mypage/ListItem";
-import { ReviewRating } from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 
 export default function ReviewItem() {

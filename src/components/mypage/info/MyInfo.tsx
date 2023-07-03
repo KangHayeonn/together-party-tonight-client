@@ -34,7 +34,7 @@ export default function MyInfo({ setIsUpdateInfo }: Props) {
         onClick={() => {
           setIsUpdateInfo((val) => !val);
         }}
-        width={100}
+        width={80}
         height={35}
         fontSize={14}
       />

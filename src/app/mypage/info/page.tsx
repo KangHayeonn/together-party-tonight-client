@@ -11,6 +11,7 @@ import {
   EditInfoWrapper,
   EditWrapper,
   InfoWrapper,
+  TopWrapper,
   UpdateTitle,
   UpdateWrapper,
   Withdrawal,
@@ -34,13 +35,24 @@ export default function Info() {
       ) : (
         <>
           <UpdateWrapper>
-            <Image
-              src="/images/Profile.svg"
-              width={45}
-              height={45}
-              alt="프로필 이미지"
+            <TopWrapper>
+              <Image
+                src="/images/Profile.svg"
+                width={45}
+                height={45}
+                alt="프로필 이미지"
+              />
+              <UpdateTitle>프로필 수정</UpdateTitle>
+            </TopWrapper>
+            <TextButton
+              text="돌아가기"
+              onClick={() => {
+                setIsUpdateInfo((val) => !val);
+              }}
+              width={80}
+              height={35}
+              fontSize={14}
             />
-            <UpdateTitle>프로필 수정</UpdateTitle>
           </UpdateWrapper>
           <EditWrapper>
             <EditInfo label="닉네임" placeholder="닉네임을 입력하세요." />

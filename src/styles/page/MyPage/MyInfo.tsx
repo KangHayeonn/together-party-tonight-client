@@ -14,6 +14,11 @@ const InfoWrapper = styled.div`
   padding: 30px 0;
 `;
 
+const TopWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const UserInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -59,14 +64,6 @@ const Em = styled.em`
 
 const ReviewWrapper = styled.div`
   padding: 30px 5px;
-
-  & ul li {
-    margin-bottom: 15px;
-    background-color: #fff;
-    padding: 20px 30px;
-    border: 1px solid rgba(17, 17, 17, 0.1);
-    border-radius: 10px;
-  }
 `;
 
 const ReviewTitle = styled.div`
@@ -80,46 +77,9 @@ const ArrowBtn = styled.button`
   margin-left: 12px;
 `;
 
-const ReviewrWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Reviewer = styled.p`
-  padding: 0 15px;
-`;
-
-const ReviewRating = styled.em`
-  font-size: 14px;
-  font-weight: 500;
-  color: #2a82f0;
-  margin-left: 8px;
-`;
-
-const Review = styled.p`
-  font-size: 16px;
-  padding: 15px 0;
-  word-break: break-all;
-`;
-
-const ReviewInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  min-width: 225px;
-`;
-
-const Meet = styled.p`
-  font-size: 14px;
-  color: #4b4b4b;
-`;
-
-const MeetDate = styled.p`
-  font-size: 14px;
-  color: #727272;
-`;
-
 const UpdateWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-bottom: 25px;
   border-bottom: 1px solid #dee3ea;
@@ -168,6 +128,7 @@ const WithdrawalBtn = styled.button`
   border: 0;
   background-color: transparent;
   text-decoration: underline;
+  text-underline-position: under;
   color: #ba1a1a;
 `;
 
@@ -185,13 +146,6 @@ export {
   ReviewWrapper,
   ReviewTitle,
   ArrowBtn,
-  ReviewrWrapper,
-  Reviewer,
-  ReviewRating,
-  Review,
-  ReviewInfo,
-  Meet,
-  MeetDate,
   UpdateWrapper,
   UpdateTitle,
   EditInfoWrapper,
@@ -201,4 +155,5 @@ export {
   EditWrapper,
   Withdrawal,
   WithdrawalBtn,
+  TopWrapper,
 };

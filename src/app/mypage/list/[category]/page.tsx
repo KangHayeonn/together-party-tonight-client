@@ -1,3 +1,4 @@
+import MyReviewList from "@/components/mypage/info/MyReviewList";
 import MeetingItem from "@/components/mypage/list/MeetingItem";
 import ReviewItem from "@/components/mypage/list/ReviewItem";
 

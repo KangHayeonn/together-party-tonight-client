@@ -8,6 +8,7 @@ const ListItem = styled.li`
   border: 1px solid #808080;
   border-radius: 10px;
   margin-bottom: 20px;
+  max-width: 800px;
 `;
 
 const ItemInfo = styled.div`
@@ -20,6 +21,12 @@ const ItemTitle = styled.h4`
 `;
 
 const ItemDesc = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 60px;
   padding: 10px 0;
 `;
 
@@ -72,6 +79,13 @@ const MeetingName = styled.p`
   color: #4b4b4b;
 `;
 
+const ReviewRating = styled.em`
+  font-size: 14px;
+  font-weight: 500;
+  color: #2a82f0;
+  margin-left: 8px;
+`;
+
 export {
   UserWrapper,
   ReviewListItem,
@@ -85,4 +99,5 @@ export {
   ItemDateWrapper,
   ItemDate,
   MeetingMoreBtn,
+  ReviewRating,
 };
