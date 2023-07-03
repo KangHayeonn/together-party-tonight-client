@@ -3,7 +3,6 @@
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import {
-  LoginButton,
   LoginTitle,
   LoginInner,
   LoginWrapper,
@@ -63,7 +62,16 @@ export default function Signup() {
           background={"rgba(255, 255, 255, 0.7)"}
           autoComplete="username"
         />
-        <LoginButton margin={"15px 0 45px"}>회원가입</LoginButton>
+        <TextButton
+          text="회원가입"
+          onClick={() => {
+            console.log("Signup Check");
+          }}
+          width={400}
+          height={50}
+          fontSize={16}
+          margin="15px 0 45px"
+        />
       </LoginInner>
     </LoginWrapper>
   );
