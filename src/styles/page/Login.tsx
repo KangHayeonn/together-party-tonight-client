@@ -29,17 +29,6 @@ interface LoginBtnProps {
   margin?: string | undefined;
 }
 
-const LoginButton = styled.button<LoginBtnProps>`
-  border-radius: 8px;
-  border: none;
-  padding: 10px;
-  margin: ${({ margin }) => margin || "0px"};
-  background-color: #0d3471;
-  color: #fff;
-  font-weight: 600;
-  width: 400px;
-`;
-
 const LoginMore = styled.div`
   display: flex;
   justify-content: center;
@@ -93,7 +82,6 @@ export {
   LoginWrapper,
   LoginTitle,
   LoginInner,
-  LoginButton,
   LoginMore,
   Line,
   SimpleLogin,
