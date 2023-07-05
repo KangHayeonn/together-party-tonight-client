@@ -1,78 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import {
-  ChatRoomFormWrapper,
-  ChatRoomFormTitle,
-  ChatRoomName,
-  ChatList,
-  ChatItem,
-  ChatDateBox,
-  ChatDate,
-  ChatContentBox,
-  ChatTime,
-  ChatContent,
-  ChatRoomFormBottom,
-  ChatInput,
-} from "@/styles/components/chat/ChatRoomForm";
-import { chatList } from "@/utils/mock/chat";
+import React, { useEffect } from "react";
+import { ChatRoomFormWrapper } from "@/styles/components/chat/ChatRoomForm";
+import ChatRoomFormTop from "@/components/chat/ChatRoomFormTop";
+import ChatMessageList from "@/components/chat/ChatMessageList";
+import ChatRoomFormBottom from "@/components/chat/ChatRoomFormBottom";
 
 const ChatRoomForm = () => {
-  const userId = 1;
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
   }, []);
 
   return (
     <ChatRoomFormWrapper>
-      <ChatRoomFormTitle>
-        <ChatRoomName>
-          만두만둘
-          <Image
-            src="/images/chatEdit.svg"
-            width={20}
-            height={20}
-            alt="Chat Title Edit Icon"
-          />
-        </ChatRoomName>
-        <Image
-          src="/images/chatExit.svg"
-          width={25}
-          height={25}
-          alt="ChatRoom Exit Icon"
-        />
-      </ChatRoomFormTitle>
-      <ChatList>
-        {chatList &&
-          chatList.map((item, index) => {
-            return (
-              <ChatItem key={index}>
-                {(index === 0 || index % 4 === 0) && (
-                  <ChatDateBox>
-                    <ChatDate>{item.updatedDate}</ChatDate>
-                  </ChatDateBox>
-                )}
-                <ChatContentBox
-                  className={`${item.memberId !== userId && "opposite"}`}
-                >
-                  <ChatTime>{item.updatedTime}</ChatTime>
-                  <ChatContent>{item.message}</ChatContent>
-                </ChatContentBox>
-              </ChatItem>
-            );
-          })}
-      </ChatList>
-      <ChatRoomFormBottom>
-        <ChatInput type="text" placeholder="메시지 입력" />
-        <Image
-          src="/images/chatSend.svg"
-          width={21}
-          height={21}
-          alt="Chat Message Send Icon"
-        />
-      </ChatRoomFormBottom>
+      <ChatRoomFormTop />
+      <ChatMessageList />
+      <ChatRoomFormBottom />
     </ChatRoomFormWrapper>
   );
 };
