@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   ChatRoomFormWrapper,
@@ -8,12 +8,22 @@ import {
   ChatRoomName,
   ChatList,
   ChatItem,
+  ChatDateBox,
   ChatDate,
+  ChatContentBox,
+  ChatTime,
   ChatContent,
   ChatRoomFormBottom,
 } from "@/styles/components/chat/ChatRoomForm";
+import { chatList } from "@/utils/mock/chat";
 
 const ChatRoomForm = () => {
+  const userId = 1;
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
+
   return (
     <ChatRoomFormWrapper>
       <ChatRoomFormTitle>
@@ -34,11 +44,24 @@ const ChatRoomForm = () => {
         />
       </ChatRoomFormTitle>
       <ChatList>
-        채팅창
-        <ChatItem>
-          <ChatDate>날짜</ChatDate>
-          <ChatContent>채팅</ChatContent>
-        </ChatItem>
+        {chatList &&
+          chatList.map((item, index) => {
+            return (
+              <ChatItem key={index}>
+                {(index === 0 || index % 4 === 0) && (
+                  <ChatDateBox>
+                    <ChatDate>{item.updatedDate}</ChatDate>
+                  </ChatDateBox>
+                )}
+                <ChatContentBox
+                  className={`${item.memberId !== userId && "opposite"}`}
+                >
+                  <ChatTime>{item.updatedTime}</ChatTime>
+                  <ChatContent>{item.message}</ChatContent>
+                </ChatContentBox>
+              </ChatItem>
+            );
+          })}
       </ChatList>
       <ChatRoomFormBottom>
         <div>input</div>
