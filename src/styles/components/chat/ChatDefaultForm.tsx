@@ -13,7 +13,7 @@ const ChatDefaultInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100rem;
+  width: calc(100% - 28rem);
 `;
 
 const ChatDefaultTitle = styled.div`
