@@ -1,3 +1,5 @@
+"use client";
+
 import {
   MeetingName,
   ReviewListItem,
@@ -9,10 +11,18 @@ import {
   ReviewRating,
 } from "@/styles/components/mypage/ListItem";
 import Image from "next/image";
+import DetailModal from "../DetailModal";
+import { useState } from "react";
 
 export default function ReviewItem() {
+  const [isOpenReivew, setIsOpenReview] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setIsOpenReview((val) => !val);
+  };
+
   return (
-    <ReviewListItem>
+    <ReviewListItem onClick={() => handleCloseModal()}>
       <UserWrapper>
         <Image
           src="/images/Profile.svg"
@@ -29,6 +39,8 @@ export default function ReviewItem() {
         <MeetingName>모임명: 테니스 모임회</MeetingName>
         <ItemDate>2023년 6월 4일</ItemDate>
       </ItemDateWrapper>
+
+      {isOpenReivew && <DetailModal />}
     </ReviewListItem>
   );
 }
