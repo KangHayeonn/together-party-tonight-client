@@ -39,13 +39,77 @@ const ChatRoomName = styled.div`
   }
 `;
 
-const ChatList = styled.div``;
+const ChatList = styled.div`
+  min-height: 52rem;
+  max-height: 52rem;
+  width: calc(100% - 28rem);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
 
-const ChatItem = styled.div``;
+  &::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+  }
 
-const ChatDate = styled.div``;
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
 
-const ChatContent = styled.div``;
+  &::-webkit-scrollbar-track {
+    margin: 2px;
+  }
+`;
+
+const ChatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+`;
+
+const ChatDateBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0px;
+`;
+
+const ChatDate = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: #7e7c7c;
+`;
+
+const ChatContentBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  &.opposite {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    justify-content: flex-end;
+  }
+`;
+
+const ChatTime = styled.div`
+  font-size: 0.85rem;
+  line-height: 0.15px;
+  margin: 4px 10px 0px 10px;
+  color: #9c9c9c;
+`;
+
+const ChatContent = styled.div`
+  display: block;
+  max-width: 27rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  padding: 8px 20px 5px 20px;
+  border-radius: 25px;
+  background-color: #fff;
+`;
 
 const ChatRoomFormBottom = styled.div``;
 
@@ -55,7 +119,10 @@ export {
   ChatRoomName,
   ChatList,
   ChatItem,
+  ChatDateBox,
   ChatDate,
+  ChatContentBox,
   ChatContent,
+  ChatTime,
   ChatRoomFormBottom,
 };
