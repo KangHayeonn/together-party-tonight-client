@@ -111,7 +111,7 @@ const ChatContent = styled.div`
   background-color: #fff;
 `;
 
-const ChatRoomFormBottom = styled.div`
+const ChatInputForm = styled.div`
   position: relative;
   width: calc(100% - 28rem);
   padding: 20px 20px 20px 20px;
@@ -148,6 +148,6 @@ export {
   ChatContentBox,
   ChatContent,
   ChatTime,
-  ChatRoomFormBottom,
+  ChatInputForm,
   ChatInput,
 };
