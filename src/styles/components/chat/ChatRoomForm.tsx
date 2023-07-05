@@ -40,8 +40,8 @@ const ChatRoomName = styled.div`
 `;
 
 const ChatList = styled.div`
-  min-height: 52rem;
-  max-height: 52rem;
+  min-height: 51.5rem;
+  max-height: 51.5rem;
   width: calc(100% - 28rem);
   overflow-y: auto;
   display: flex;
@@ -111,7 +111,31 @@ const ChatContent = styled.div`
   background-color: #fff;
 `;
 
-const ChatRoomFormBottom = styled.div``;
+const ChatRoomFormBottom = styled.div`
+  position: relative;
+  width: calc(100% - 28rem);
+  padding: 20px 20px 20px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+
+  & > img {
+    position: absolute;
+    top: 31px;
+    right: 45px;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+`;
+
+const ChatInput = styled.input`
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  padding: 8px 70px 5px 20px;
+  border-radius: 25px;
+  background-color: #fff;
+  outline: none;
+`;
 
 export {
   ChatRoomFormWrapper,
@@ -125,4 +149,5 @@ export {
   ChatContent,
   ChatTime,
   ChatRoomFormBottom,
+  ChatInput,
 };

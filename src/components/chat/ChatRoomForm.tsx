@@ -14,6 +14,7 @@ import {
   ChatTime,
   ChatContent,
   ChatRoomFormBottom,
+  ChatInput,
 } from "@/styles/components/chat/ChatRoomForm";
 import { chatList } from "@/utils/mock/chat";
 
@@ -64,8 +65,13 @@ const ChatRoomForm = () => {
           })}
       </ChatList>
       <ChatRoomFormBottom>
-        <div>input</div>
-        <div>image</div>
+        <ChatInput type="text" placeholder="메시지 입력" />
+        <Image
+          src="/images/chatSend.svg"
+          width={21}
+          height={21}
+          alt="Chat Message Send Icon"
+        />
       </ChatRoomFormBottom>
     </ChatRoomFormWrapper>
   );
