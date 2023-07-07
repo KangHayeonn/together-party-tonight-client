@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 "use client";
 
+import { ModalAtom } from "@/recoil/modal/atom";
 import {
   CloseBtn,
   InnerLayer,
@@ -9,17 +10,20 @@ import {
   ModalTop,
 } from "@/styles/components/common/Modal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useSetRecoilState } from "recoil";
 
 type Props = {
   children: React.ReactNode;
   title: string;
 };
+
 export default function Modal({ children, title }: Props) {
   const [mounted, setMounted] = useState(false);
+  const setIsOpen = useSetRecoilState(ModalAtom);
 
-  React.useEffect(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   return mounted
     ? createPortal(
@@ -27,7 +31,7 @@ export default function Modal({ children, title }: Props) {
           <InnerLayer>
             <ModalTop>
               <ModalTitle>{title}</ModalTitle>
-              <CloseBtn>
+              <CloseBtn onClick={() => setIsOpen(false)}>
                 <Image
                   src="/images/closeWhite.svg"
                   width={25}

@@ -6,8 +6,12 @@ import {
 import Image from "next/image";
 import ReviewItem from "../list/ReviewItem";
 import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
+import { useSetRecoilState } from "recoil";
+import { ModalAtom } from "@/recoil/modal/atom";
 
 export default function MyReviewList() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
+
   return (
     <ReviewWrapper>
       <ReviewTitle>
@@ -22,8 +26,11 @@ export default function MyReviewList() {
         </ArrowBtn>
       </ReviewTitle>
       <MypageListWrapper>
+        {/* TODO: list map */}
         <li>
-          <ReviewItem />
+          <button onClick={() => setIsOpen(true)}>
+            <ReviewItem />
+          </button>
         </li>
       </MypageListWrapper>
     </ReviewWrapper>
