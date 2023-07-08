@@ -3,7 +3,7 @@
 import MeetingItem from "@/components/mypage/list/MeetingItem";
 import ReviewItem from "@/components/mypage/list/ReviewItem";
 import { ModalAtom } from "@/recoil/modal/atom";
-import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
+import { MypageBtn, MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 import { useSetRecoilState } from "recoil";
 
 type Props = {
@@ -20,14 +20,14 @@ export default function Category({ params: { category } }: Props) {
         {category === "review" ? (
           <>
             <li>
-              <button onClick={() => setIsOpen(true)}>
+              <MypageBtn onClick={() => setIsOpen(true)}>
                 <ReviewItem />
-              </button>
+              </MypageBtn>
             </li>
             <li>
-              <button>
+              <MypageBtn>
                 <ReviewItem />
-              </button>
+              </MypageBtn>
             </li>
           </>
         ) : (
