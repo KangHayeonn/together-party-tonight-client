@@ -5,7 +5,7 @@ import {
 } from "@/styles/page/MyPage/MyInfo";
 import Image from "next/image";
 import ReviewItem from "../list/ReviewItem";
-import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
+import { MypageBtn, MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 import { useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 
@@ -28,9 +28,9 @@ export default function MyReviewList() {
       <MypageListWrapper>
         {/* TODO: list map */}
         <li>
-          <button onClick={() => setIsOpen(true)}>
+          <MypageBtn onClick={() => setIsOpen(true)}>
             <ReviewItem />
-          </button>
+          </MypageBtn>
         </li>
       </MypageListWrapper>
     </ReviewWrapper>

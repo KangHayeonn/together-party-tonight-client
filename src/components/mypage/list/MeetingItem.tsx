@@ -28,7 +28,7 @@ export default function MeetingItem({ category }: Props) {
       </TagList>
       <ItemDateWrapper>
         <ItemDate>2023.06.04 (월) 13:25</ItemDate>
-        <MeetingMoreBtn>{isMyMeeting ? "정산하기" : "채팅하기"}</MeetingMoreBtn>
+        <MeetingMoreBtn>{isMyMeeting ? "신청내역" : "채팅하기"}</MeetingMoreBtn>
       </ItemDateWrapper>
     </ListItem>
   );

@@ -8,20 +8,19 @@ const MypageListWrapper = styled.ul`
   -ms-overflow-style: none;
   scrollbar-width: none;
 
-  & button {
-    max-width: 700px;
-    border: 0;
-    background-color: transparent;
-    width: 100%;
-
-    & p {
-      text-align-last: left;
-    }
-  }
-
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
-export { MypageListWrapper };
+const MypageBtn = styled.button`
+  max-width: 700px;
+  border: 0;
+  background-color: transparent;
+  width: 100%;
+  & p {
+    text-align-last: left;
+  }
+`;
+
+export { MypageListWrapper, MypageBtn };

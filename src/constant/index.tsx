@@ -23,6 +23,10 @@ const MyPageList = [
     id: "review",
     text: "내가 쓴 리뷰",
   },
+  {
+    id: "calculate",
+    text: "정산하기",
+  },
 ];
 
 const mypageCategory: ICategory = {
