@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { CalculateSelect } from "@/recoil/mypage/atom";
 import {
   ItemDate,
   ItemDateWrapper,
@@ -8,13 +10,43 @@ import {
   MeetingMoreBtn,
   TagList,
 } from "@/styles/components/mypage/ListItem";
+import { useMemo } from "react";
+import { useRecoilValue } from "recoil";
 
 type Props = {
   category: string;
 };
 
+type ItemBtnObjType = {
+  [key: string]: {
+    btnName: string;
+    handleFunc: () => void;
+  };
+};
+
 export default function MeetingItem({ category }: Props) {
-  const isMyMeeting = category === "meeting";
+  const curCalculate = useRecoilValue(CalculateSelect);
+  console.log(curCalculate);
+
+  const itemBtnObj: ItemBtnObjType = useMemo(() => {
+    return {
+      meeting: {
+        btnName: "신청내역",
+        handleFunc: () => {},
+      },
+      apply: {
+        btnName: "채팅하기",
+        handleFunc: () => {},
+      },
+      calculate: {
+        btnName: curCalculate === "myMeeting" ? "정산 만들기" : "정산하기",
+        handleFunc: () => {},
+      },
+    };
+  }, [curCalculate]);
+
+  console.log(itemBtnObj);
+
   return (
     <ListItem>
       <ItemInfo>
@@ -28,7 +60,7 @@ export default function MeetingItem({ category }: Props) {
       </TagList>
       <ItemDateWrapper>
         <ItemDate>2023.06.04 (월) 13:25</ItemDate>
-        <MeetingMoreBtn>{isMyMeeting ? "신청내역" : "채팅하기"}</MeetingMoreBtn>
+        <MeetingMoreBtn>{itemBtnObj[category].btnName}</MeetingMoreBtn>
       </ItemDateWrapper>
     </ListItem>
   );

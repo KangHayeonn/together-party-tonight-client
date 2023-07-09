@@ -2,33 +2,21 @@
 
 import MeetingItem from "@/components/mypage/list/MeetingItem";
 import ReviewItem from "@/components/mypage/list/ReviewItem";
-import { ModalAtom } from "@/recoil/modal/atom";
-import { MypageBtn, MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
-import { useSetRecoilState } from "recoil";
+import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 
 type Props = {
   params: { category: string };
 };
 
 export default function Category({ params: { category } }: Props) {
-  const setIsOpen = useSetRecoilState(ModalAtom);
-
   return (
     <MypageListWrapper>
       {/* TODO: list map */}
       <ul>
         {category === "review" ? (
           <>
-            <li>
-              <MypageBtn onClick={() => setIsOpen(true)}>
-                <ReviewItem />
-              </MypageBtn>
-            </li>
-            <li>
-              <MypageBtn>
-                <ReviewItem />
-              </MypageBtn>
-            </li>
+            <ReviewItem />
+            <ReviewItem />
           </>
         ) : (
           <MeetingItem category={category} />

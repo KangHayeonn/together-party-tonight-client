@@ -27,11 +27,9 @@ export default function MyReviewList() {
       </ReviewTitle>
       <MypageListWrapper>
         {/* TODO: list map */}
-        <li>
-          <MypageBtn onClick={() => setIsOpen(true)}>
-            <ReviewItem />
-          </MypageBtn>
-        </li>
+        <ReviewItem />
+        <ReviewItem />
+        <ReviewItem />
       </MypageListWrapper>
     </ReviewWrapper>
   );
