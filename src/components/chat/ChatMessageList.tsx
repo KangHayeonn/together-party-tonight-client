@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ChatList,
   ChatItem,
@@ -9,9 +10,14 @@ import {
   ChatContent,
 } from "@/styles/components/chat/ChatRoomForm";
 import { chatList } from "@/utils/mock/chat";
+import { fetchLogin } from "@/api/test";
 
 const ChatMessageList = () => {
   const userId = 1;
+  const { isLoading, error, data } = useQuery(["login"], fetchLogin, {
+    refetchOnWindowFocus: false,
+    retry: 0,
+  });
 
   return (
     <ChatList>
