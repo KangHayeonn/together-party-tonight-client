@@ -20,18 +20,20 @@ type Props = {
 };
 
 export default function Modal({ children, title }: Props) {
-  const [mounted, setMounted] = useState(false);
+  const [isComponentDidMount, setIsComponentDidMount] = useState(false);
   const setIsOpen = useSetRecoilState(ModalAtom);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => setIsComponentDidMount(true), []);
 
-  return mounted
+  return isComponentDidMount
     ? createPortal(
         <ModalLayer>
           <InnerLayer>
             <ModalTop>
               <ModalTitle>{title}</ModalTitle>
-              <CloseBtn onClick={() => setIsOpen(false)}>
+              <CloseBtn
+                onClick={() => setIsOpen((val) => ({ ...val, isOpen: false }))}
+              >
                 <Image
                   src="/images/closeWhite.svg"
                   width={25}

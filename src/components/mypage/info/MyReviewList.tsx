@@ -30,6 +30,9 @@ export default function MyReviewList() {
         <ReviewItem />
         <ReviewItem />
         <ReviewItem />
+        <ReviewItem />
+        <ReviewItem />
+        <ReviewItem />
       </MypageListWrapper>
     </ReviewWrapper>
   );

@@ -17,7 +17,11 @@ import {
 import { ReviewRating } from "@/styles/components/mypage/ListItem";
 import { useState } from "react";
 
-export default function DetailModal() {
+type Props = {
+  title: string;
+};
+
+export default function DetailModal({ title }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
 
@@ -25,7 +29,7 @@ export default function DetailModal() {
     setText(e.target.value);
   };
   return (
-    <Modal title="모달제목">
+    <Modal title={title}>
       <ModalInner>
         <ReviewerInfo>
           <Reviewer>

@@ -20,7 +20,11 @@ export default function ReviewItem() {
 
   return (
     <li>
-      <MypageBtn onClick={() => setIsOpen(true)}>
+      <MypageBtn
+        onClick={() =>
+          setIsOpen((val) => ({ isOpen: true, title: "모임 이름123" }))
+        }
+      >
         <ReviewListItem>
           <UserWrapper>
             <Image

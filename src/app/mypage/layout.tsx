@@ -12,13 +12,13 @@ type Props = {
 };
 
 function MyPageLayout({ children }: Props) {
-  const isOpen = useRecoilValue(ModalAtom);
+  const modal = useRecoilValue(ModalAtom);
 
   return (
     <MyPageWrapper>
       <SideBar />
       {children}
-      {isOpen && <DetailModal />}
+      {modal.isOpen && <DetailModal title={modal.title} />}
     </MyPageWrapper>
   );
 }

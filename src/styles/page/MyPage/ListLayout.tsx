@@ -5,11 +5,27 @@ import { styled } from "styled-components";
 const MypageListWrapper = styled.ul`
   max-height: 600px;
   overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+  & li:last-child {
+    & button {
+      & div {
+        margin-bottom: 0;
+      }
+    }
+  }
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 5px;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin: 2px;
   }
 `;
 
