@@ -31,6 +31,7 @@ const MypageListWrapper = styled.ul`
 
 const MypageBtn = styled.button`
   max-width: 700px;
+  min-width: 280px;
   border: 0;
   background-color: transparent;
   width: 100%;
