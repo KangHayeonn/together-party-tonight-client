@@ -30,6 +30,10 @@ const ClubImage = styled.div`
   }
 `;
 
+const ClubImageInput = styled.input`
+  display: none;
+`;
+
 const ImageText = styled.span`
   font-size: 0.725rem;
   color: #b1b1b1;
@@ -38,6 +42,17 @@ const ImageText = styled.span`
 
 const Button = styled.button`
   appearance: none;
+  background-color: transparent;
+  font-size: 0.75rem;
+  letter-spacing: 0.25px;
+  color: #b1b1b1;
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const ClubImageUpdateBtn = styled.span`
   background-color: transparent;
   font-size: 0.75rem;
   letter-spacing: 0.25px;
@@ -58,7 +73,9 @@ export {
   ClubWriteImageWrapper,
   ClubWriteImageBtn,
   ClubImage,
+  ClubImageInput,
   ImageText,
   Button,
+  ClubImageUpdateBtn,
   Line,
 };

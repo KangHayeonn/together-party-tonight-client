@@ -15,8 +15,8 @@ export default function Home() {
         소중한 사람들과 즐겁고 따뜻한 시간을 만들어요.
       </HomeDesc>
       <HomeBtnWrapper>
-        <MeetingBtn href="/">모임 만들기</MeetingBtn>
-        <MeetingBtn href="/">모임 참여하기</MeetingBtn>
+        <MeetingBtn href="/write">모임 만들기</MeetingBtn>
+        <MeetingBtn href="/search">모임 참여하기</MeetingBtn>
       </HomeBtnWrapper>
     </HomeWrapper>
   );
