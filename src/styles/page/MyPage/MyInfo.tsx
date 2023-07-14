@@ -12,6 +12,7 @@ const MyPageWrapper = styled.section`
 const InfoWrapper = styled.div`
   flex-grow: 1;
   padding: 30px 0;
+  max-width: 700px;
 `;
 
 const TopWrapper = styled.div`

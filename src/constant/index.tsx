@@ -23,12 +23,17 @@ const MyPageList = [
     id: "review",
     text: "내가 쓴 리뷰",
   },
+  {
+    id: "calculate",
+    text: "정산하기",
+  },
 ];
 
 const mypageCategory: ICategory = {
   meeting: "내 모임",
   apply: "신청한 모임",
   review: "내가 쓴 리뷰",
+  calculate: "정산하기",
 };
 
 export { MyPageBtnStyleObj, MyPageList, mypageCategory };
