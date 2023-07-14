@@ -23,6 +23,8 @@ const ClubWriteImage = () => {
       const uploadFile = e.target.files[0];
       const reader = new FileReader();
 
+      if (!imageFileValid(uploadFile)) return;
+
       reader.onload = (e) => {
         setFile(uploadFile);
         setPreviewURL(reader.result as string);
@@ -32,6 +34,33 @@ const ClubWriteImage = () => {
         reader.readAsDataURL(uploadFile);
       }
     }
+  };
+
+  const imageFileValid = (file: File): boolean => {
+    // image extension check
+    const lastIndex = file?.name.lastIndexOf(".");
+    if (lastIndex < 0) return false;
+
+    const fileType =
+      file?.name.substring(lastIndex + 1).toLowerCase() || undefined;
+    const ALLOW_FILE_EXTENSION = "jpg,jpeg,png,svg";
+
+    if (!fileType || !ALLOW_FILE_EXTENSION.includes(fileType)) {
+      alert(
+        `업로드 가능한 확장자가 아닙니다. [가능한 확장자 : ${ALLOW_FILE_EXTENSION}]`,
+      );
+      return false;
+    }
+
+    // image capacity check
+    const imgSize = file.size;
+    const ALLOW_MAX_SIZE = 2 * 1024 * 1024; // 2MB
+    if (imgSize > ALLOW_MAX_SIZE) {
+      alert("이미지 용량은 2MB 이내로 등록 가능합니다.");
+      return false;
+    }
+
+    return true;
   };
 
   const deleteImage = () => {
