@@ -23,4 +23,28 @@ const TotalMeeting = styled.p`
   margin-right: 23px;
 `;
 
-export { MeetingWrapper, MeetingTitle, MeetingInfo, TotalMeeting };
+const SelectWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 165px;
+  margin-right: 25px;
+  font-size: 18px;
+
+  & button {
+    background-color: transparent;
+    color: #9c9c9c;
+
+    &.selected {
+      color: #000;
+      border-bottom: 2px solid #000;
+    }
+  }
+`;
+
+export {
+  MeetingWrapper,
+  MeetingTitle,
+  MeetingInfo,
+  TotalMeeting,
+  SelectWrapper,
+};
