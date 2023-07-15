@@ -1,5 +1,6 @@
 "use client";
 
+import { instance } from "@/api";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import {
@@ -12,45 +13,60 @@ import {
   SimpleLogin,
   SocialButton,
   SocialWrapper,
+  ErrorMessage,
 } from "@/styles/page/Login";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-type LoginProps = {
+type LoginFormValues = {
   email: string;
   password: string;
 };
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formValues, setFormValues] = useState<LoginFormValues>({
+    email: "",
+    password: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_APP_JS_KEY_LOGIN;
   const redirect_uri = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
 
-  const loginMutation = useMutation({
-    mutationFn: (data: LoginProps) => {
-      console.log("data", data);
-      return axios.post("/login", data);
-    },
-  });
-
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+  const loginMutation = useMutation((credentials: LoginFormValues) =>
+    instance
+      .post("/api/members/login", credentials)
+      .then((response) => response.data),
+  );
 
-  const handleSubmit = () => {
-    console.log(email);
-    loginMutation.mutate({ email, password });
+  const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginMutation.mutate(formValues, {
+      onSuccess: (response) => {
+        if (response.success === "fail") {
+          setErrorMessage(response.errorMessage);
+        } else {
+          setErrorMessage("");
+          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+          localStorage.setItem("userId", response.data.userId);
+          window.location.href = "/";
+        }
+      },
+    });
   };
 
   const handleKakaoLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,55 +74,21 @@ export default function Login() {
     window.location.href = kakaoURL;
   };
 
-  const loginPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const res = await axios.post(
-      "http://ec2-43-200-160-194.ap-northeast-2.compute.amazonaws.com/api/members/login",
-      {
-        email,
-        password,
-        // eslint-disable-next-line prettier/prettier
-      }
-    );
-    console.log("res", res);
-    return res.data;
-  };
-
-  const kakaoLoginPost = async (code: string) => {
-    const res = await axios.post(
-      "http://43.200.160.194/api/members/oauth/kakao/token",
-      {
-        authorizationCode: code,
-        redirectUri: "http://localhost:3000/login",
-        // eslint-disable-next-line prettier/prettier
-      }
-    );
-    console.log("res", res);
-    return res.data;
-  };
-
-  useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get("code");
-
-    if (code) {
-      console.log(code);
-      kakaoLoginPost(code);
-    }
-  }, []);
-
   return (
     <LoginWrapper>
       <LoginTitle>로그인</LoginTitle>
       <LoginInner>
         <TextField
+          name="email"
           placeholder="이메일을 입력하세요."
           paddingleft={15}
           height={3}
           background={"rgba(255, 255, 255, 0.7)"}
           autoComplete="username"
-          onChangeText={handleChangeEmail}
+          onChangeText={handleChange}
         />
         <TextField
+          name="password"
           placeholder="비밀번호를 입력하세요."
           paddingleft={15}
           height={3}
@@ -114,15 +96,16 @@ export default function Login() {
           textType="password"
           inputType="pw"
           autoComplete="current-password"
-          onChangeText={handleChangePassword}
+          onChangeText={handleChange}
         />
         <TextButton
           text="로그인"
-          onClick={loginPost}
+          onClick={handleFormSubmit}
           width={400}
           height={50}
           fontSize={16}
         />
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <LoginMore>
           <Link href="/">비밀번호 찾기</Link>
           <Line />
