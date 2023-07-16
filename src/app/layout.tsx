@@ -7,9 +7,17 @@ import Main from "@/components/layout/Main";
 
 export const metadata = {
   title: "투바투",
-  description: "투게터 파티 투나잇 (Together Party Tonight)",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/Logo.svg",
+  },
+  description: "실시간 거리 기반 모임 추천/신청 서비스",
+  metadataBase: new URL("http://localhost:3000"),
+  openGraph: {
+    author: "TogetherPartyTonight",
+    title: "투바투",
+    siteName: "TogetherPartyTonight",
+    type: "website",
+    description: "실시간 거리 기반 모임 추천/신청 서비스",
   },
 };
 
