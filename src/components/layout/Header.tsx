@@ -25,7 +25,7 @@ export default function Header() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userId");
-    window.location.reload();
+    setIsLoggedIn(false);
   };
 
   useEffect(() => {

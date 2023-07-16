@@ -26,7 +26,6 @@ type ItemBtnObjType = {
 
 export default function MeetingItem({ category }: Props) {
   const curCalculate = useRecoilValue(CalculateSelect);
-  console.log(curCalculate);
 
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
     return {
@@ -44,8 +43,6 @@ export default function MeetingItem({ category }: Props) {
       },
     };
   }, [curCalculate]);
-
-  console.log(itemBtnObj);
 
   return (
     <ListItem>
