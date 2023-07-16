@@ -78,6 +78,14 @@ const EmailWrapper = styled.div`
   justify-content: space-between;
 `;
 
+const ErrorMessage = styled.p`
+  display: flex;
+  justify-content: center;
+  color: #ee0d0d;
+  font-size: 14px;
+  margin-top: 15px;
+`;
+
 export {
   LoginWrapper,
   LoginTitle,
@@ -89,4 +97,5 @@ export {
   SocialWrapper,
   SocialButton,
   EmailWrapper,
+  ErrorMessage,
 };
