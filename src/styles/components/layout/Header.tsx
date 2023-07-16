@@ -28,6 +28,8 @@ const Menu = styled.div`
   align-items: center;
 `;
 const MenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
   margin-right: 35px;
   padding-bottom: 3px;
   font-size: 20px;
@@ -35,4 +37,11 @@ const MenuItem = styled(Link)`
   color: #0d3471;
 `;
 
-export { WrapHeader, WrapLogo, Title, Menu, MenuItem };
+const MenuIconItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  padding-bottom: 3px;
+`;
+
+export { WrapHeader, WrapLogo, Title, Menu, MenuItem, MenuIconItem };

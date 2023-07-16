@@ -7,6 +7,9 @@ const createInstance = () => {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
     },
+    validateStatus: (status) => {
+      return status >= 200 && status < 400;
+    },
   });
 };
 
@@ -15,6 +18,9 @@ const createInstanceWithAuth = () => {
     baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
+    },
+    validateStatus: (status) => {
+      return status >= 200 && status < 400;
     },
   });
 
