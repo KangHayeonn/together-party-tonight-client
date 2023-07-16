@@ -113,6 +113,6 @@ Next.js, TypeScript 를 이용해 Front-end 개발
 <br>
 
 ---
-![image](https://github.com/KangHayeonn/together-party-tonight-client/assets/78534650/2771f51a-eaef-40dc-99d1-5e5109f2986d)
+![topato](./topato.png)
 
 🔗 [TOGETHER-PARTY-TONIGHT(투바투)](https://www.topato.site/)
