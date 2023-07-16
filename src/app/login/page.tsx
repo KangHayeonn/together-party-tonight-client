@@ -1,6 +1,7 @@
 "use client";
 
 import { instance } from "@/api";
+import { kakaoURL } from "@/api/login";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
 import {
@@ -18,7 +19,6 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type LoginFormValues = {
@@ -32,11 +32,6 @@ export default function Login() {
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-
-  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_APP_JS_KEY_LOGIN;
-  const redirect_uri = process.env.NEXT_PUBLIC_REDIRECT_URI;
-
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
