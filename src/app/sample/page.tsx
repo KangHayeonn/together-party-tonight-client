@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
 import { StyledButton } from "@/styles/page/sample";
@@ -15,12 +15,19 @@ import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
 import RoundButton from "@/components/common/RoundButton";
 import DropDown from "@/components/common/DropDown";
+import {
+  socketClose,
+  socketConnect,
+  socketDisconnect,
+  socketReceiveMessage,
+} from "@/utils/socket";
 
 export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [isShowToast, setIsShowToast] = useState<boolean>(false);
+  const [socketConnected, setSocketConnected] = useState<boolean>(false);
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -50,6 +57,32 @@ export default function Home() {
   const onClickRoundBtnEvent = () => {
     // console.log("check");
   };
+
+  // socket 연동 테스트
+  const ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    if (!ws.current) {
+      if (socketConnect(ws)) setSocketConnected(true);
+    }
+
+    socketDisconnect(ws);
+
+    socketReceiveMessage(ws);
+
+    return () => {
+      console.log("clean up");
+      socketClose(ws);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socketConnected) {
+      if (!ws.current) {
+        socketReceiveMessage(ws);
+      }
+    }
+  }, [socketConnected]);
 
   return (
     <div>
