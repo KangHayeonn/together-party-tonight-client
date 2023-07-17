@@ -19,6 +19,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type LoginFormValues = {
@@ -27,6 +28,7 @@ type LoginFormValues = {
 };
 
 export default function Login() {
+  const router = useRouter();
   const [formValues, setFormValues] = useState<LoginFormValues>({
     email: "",
     password: "",
@@ -58,7 +60,7 @@ export default function Login() {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("userId", response.data.userId);
-          window.location.href = "/";
+          router.push("/");
         }
       },
     });
