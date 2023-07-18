@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from "axios";
 import { logout } from "./login";
-import { useRouter } from "next/navigation";
 
 export const instance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -15,7 +14,6 @@ instance.interceptors.request.use((config) => {
 });
 
 instance.interceptors.response.use((response) => {
-  const router = useRouter();
   if (response.data.code === 401) {
     if (response.data.errorMessage === "만료된 토큰입니다.") {
       localStorage.removeItem("accessToken");
@@ -46,7 +44,7 @@ instance.interceptors.response.use((response) => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("userId");
-      router.refresh();
+      window.location.reload();
     }
   }
   return response;

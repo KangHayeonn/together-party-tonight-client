@@ -4,6 +4,7 @@ import { instance } from "@/api";
 import { kakaoURL } from "@/api/login";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
+import useHandleInput, { InputValueType } from "@/hooks/useHandleInput";
 import {
   Hr,
   Line,
@@ -22,28 +23,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
-
 export default function Login() {
   const router = useRouter();
-  const [formValues, setFormValues] = useState<LoginFormValues>({
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [formValues, handleChange] = useHandleInput({
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const loginMutation = useMutation((credentials: LoginFormValues) =>
+  const loginMutation = useMutation((credentials: InputValueType) =>
     instance
       .post("/api/members/login", credentials)
       .then((response) => response.data),
