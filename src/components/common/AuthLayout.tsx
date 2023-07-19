@@ -1,17 +1,15 @@
-"use client";
-
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const isAuthenticated = localStorage.getItem("accessToken");
 
   useEffect(() => {
+    const isAuthenticated = localStorage.getItem("accessToken");
     if (!isAuthenticated) {
       router.replace("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [router]);
 
   return <>{children}</>;
 };
