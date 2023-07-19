@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   ClubWriteTagWrapper,
@@ -10,11 +10,7 @@ import {
   TagInput,
 } from "@/styles/components/write/ClubWriteTag";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
-
-interface TagItemProps {
-  keyword: string;
-  onClickDelete: (keyword: string) => void;
-}
+import { TagItemProps, ClubWriteTagProps } from "@/types/clubWrite";
 
 const TagItem = ({ keyword, onClickDelete }: TagItemProps) => {
   const [hoverCloseBtn, setHoverCloseBtn] = useState<boolean>(false);
@@ -41,7 +37,7 @@ const TagItem = ({ keyword, onClickDelete }: TagItemProps) => {
   );
 };
 
-const ClubWriteTag = () => {
+const ClubWriteTag = ({ changeTags }: ClubWriteTagProps) => {
   const [onToggle, setOnToggle] = useState<boolean>(false);
   const [tagList, setTagList] = useState<Array<string>>([]);
   const [inputKeyword, setInputKeyword] = useState<string>("");
@@ -56,6 +52,10 @@ const ClubWriteTag = () => {
   const deleteTag = (keyword: string) => {
     setTagList(tagList.filter((tag) => tag !== keyword));
   };
+
+  useEffect(() => {
+    changeTags(tagList.toString());
+  }, [tagList]);
 
   return (
     <ClubWriteTagWrapper>

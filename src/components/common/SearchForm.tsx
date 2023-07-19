@@ -84,7 +84,12 @@ const SearchForm = ({
             alt="Search Icon"
           />
         </SearchInputForm>
-        {isFocus ? <SearchFormPreview searchList={searchPreviewList} /> : null}
+        {isFocus ? (
+          <SearchFormPreview
+            searchList={searchPreviewList}
+            isOpen={setIsFocus}
+          />
+        ) : null}
       </SearchField>
     </SearchWrapper>
   );

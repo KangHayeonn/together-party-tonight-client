@@ -14,9 +14,15 @@ export interface DropDownProps {
   defaultText?: string | undefined;
   width?: number | undefined;
   dropDownList?: Array<string>;
+  changeText?: (category: string) => void | undefined;
 }
 
-const DropDown = ({ defaultText, dropDownList, ...props }: DropDownProps) => {
+const DropDown = ({
+  defaultText,
+  dropDownList,
+  changeText,
+  ...props
+}: DropDownProps) => {
   const menuInput = useRef<HTMLInputElement>(null);
   const menuWrap = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,6 +36,12 @@ const DropDown = ({ defaultText, dropDownList, ...props }: DropDownProps) => {
     ) {
       setIsOpen(false);
     }
+  };
+
+  const changeItem = (item: string) => {
+    setTitle(item);
+    if (changeText) changeText(item);
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -53,7 +65,7 @@ const DropDown = ({ defaultText, dropDownList, ...props }: DropDownProps) => {
         <DropDownMenu>
           {list.map((item, index) => {
             return (
-              <DropDownItem key={index} onClick={() => setTitle(item)}>
+              <DropDownItem key={index} onClick={() => changeItem(item)}>
                 {item}
               </DropDownItem>
             );

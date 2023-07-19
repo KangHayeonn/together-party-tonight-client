@@ -10,9 +10,10 @@ import {
   ClubImageUpdateBtn,
   Line,
 } from "@/styles/components/write/ClubWriteImage";
+import { ClubWriteImageProps } from "@/types/clubWrite";
 
-const ClubWriteImage = () => {
-  const [file, setFile] = useState<File | undefined>();
+const ClubWriteImage = ({ changeImage }: ClubWriteImageProps) => {
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [previewURL, setPreviewURL] = useState<string | null>("");
 
   const addImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +28,7 @@ const ClubWriteImage = () => {
 
       reader.onload = (e) => {
         setFile(uploadFile);
+        changeImage(uploadFile);
         setPreviewURL(reader.result as string);
       };
 
@@ -65,6 +67,7 @@ const ClubWriteImage = () => {
 
   const deleteImage = () => {
     setFile(undefined);
+    changeImage(null);
     setPreviewURL("");
   };
 

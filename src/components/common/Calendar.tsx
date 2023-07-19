@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,11 +8,24 @@ import "@/styles/components/common/Calendar.css";
 
 interface CalendarProps {
   calendarType?: string;
+  changeDate?: React.Dispatch<React.SetStateAction<Date | null>> | undefined;
+  changeTime?: React.Dispatch<React.SetStateAction<Date | null>> | undefined;
 }
 
-const Calendar = ({ calendarType }: CalendarProps) => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
+const Calendar = ({ calendarType, changeDate, changeTime }: CalendarProps) => {
+  const [startDate, setStartDate] = useState<Date | null>(null);
   const [time, setTime] = useState<Date | null>(null);
+
+  const today = new Date();
+  const tomorrow = new Date(today.setDate(today.getDate() + 1));
+
+  useEffect(() => {
+    if (changeDate) changeDate(startDate);
+  }, [changeDate, startDate]);
+
+  useEffect(() => {
+    if (changeTime) changeTime(time);
+  }, [changeTime, time]);
 
   if (calendarType === "time") {
     return (
@@ -31,7 +44,7 @@ const Calendar = ({ calendarType }: CalendarProps) => {
           showTimeSelectOnly
           timeIntervals={30}
           timeCaption="Time"
-          minTime={setHours(setMinutes(new Date(), 0), 15)}
+          minTime={setHours(setMinutes(new Date(), 0), 8)}
           maxTime={setHours(setMinutes(new Date(), 0), 23)}
           dateFormat="h:mm aa"
           onChange={(date) => setTime(date)}
@@ -54,7 +67,7 @@ const Calendar = ({ calendarType }: CalendarProps) => {
       <DatePicker
         locale={ko}
         selected={startDate}
-        minDate={new Date()}
+        minDate={tomorrow}
         dateFormat="yyyy.MM.dd"
         onChange={(date) => {
           setStartDate(date);

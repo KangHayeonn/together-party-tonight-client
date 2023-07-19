@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ClubWriteTop,
   ClubWriteTitleInput,
   ClubWriteTitleBar,
 } from "@/styles/components/write/ClubWriteTitle";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
-import { ClubFormType } from "@/components/write/ClubWriteForm";
-
-interface ClubWriteTitleProps {
-  clubInfo: ClubFormType;
-  onChangeTitle: (title: string) => void;
-}
+import { ClubWriteTitleProps } from "@/types/clubWrite";
 
 const ClubWriteTitle = ({ clubInfo, onChangeTitle }: ClubWriteTitleProps) => {
   const onInputHandler = (

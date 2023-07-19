@@ -10,29 +10,14 @@ import ClubWriteTitle from "@/components/write/ClubWriteTitle";
 import ClubWriteFilter from "@/components/write/ClubWriteFilter";
 import ClubWriteContent from "@/components/write/ClubWriteContent";
 import RoundButton from "@/components/common/RoundButton";
-
-export interface ClubFormType {
-  clubName: string;
-  clubCategory: string;
-  clubMaximum: number;
-  clubContent: string;
-  clubTags: string;
-  latitude: number;
-  longitude: number;
-  address: string;
-  meetingDate: string; // DataTime
-}
-export interface ClubAddressType {
-  address: string;
-  latitude: number;
-  longitude: number;
-}
+import { ClubFormType, ClubAddressType } from "@/types/clubWrite";
+import { validationClubWrite } from "@/utils/func/ClubWriteFunc";
 
 const ClubWriteForm = () => {
   const [clubForm, setClubForm] = useState<ClubFormType>({
     clubName: "",
     clubCategory: "",
-    clubMaximum: 1,
+    clubMaximum: 0,
     clubContent: "",
     clubTags: "",
     latitude: 0,
@@ -40,10 +25,13 @@ const ClubWriteForm = () => {
     address: "",
     meetingDate: "",
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const onClickClubAddEvent = () => {
-    // TODO : club add api logic
-    initClubForm();
+    if (validationClubWrite(clubForm)) {
+      // TODO : club add api logic
+      initClubForm();
+    }
   };
 
   const onClubNameChange = (title: string) => {
@@ -105,7 +93,7 @@ const ClubWriteForm = () => {
     setClubForm({
       clubName: "",
       clubCategory: "",
-      clubMaximum: 1,
+      clubMaximum: 0,
       clubContent: "",
       clubTags: "",
       latitude: 0,
@@ -113,13 +101,21 @@ const ClubWriteForm = () => {
       address: "",
       meetingDate: "",
     });
+    setImageFile(null);
   };
 
   return (
     <ClubWriteFormWrapper>
       <ClubWriteFormBox>
         <ClubWriteTitle clubInfo={clubForm} onChangeTitle={onClubNameChange} />
-        <ClubWriteFilter />
+        <ClubWriteFilter
+          onChangeCategory={onClubCategoryChange}
+          onChangeTags={onClubTagsChange}
+          onChangeMaximum={onClubMaximumChange}
+          onChangeDate={onClubDateChange}
+          onChangeAddress={onClubAddressChange}
+          onChangeImage={setImageFile}
+        />
         <ClubWriteContent
           clubInfo={clubForm}
           onChangeContent={onClubContentChange}
