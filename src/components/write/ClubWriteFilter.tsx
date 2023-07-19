@@ -10,6 +10,7 @@ import ClubWriteImage from "@/components/write/ClubWriteImage";
 import ClubWriteTag from "@/components/write/ClubWriteTag";
 import DropDown from "@/components/common/DropDown";
 import NumberForm from "@/components/common/NumberForm";
+import Calendar from "@/components/common/Calendar";
 import SearchForm from "@/components/common/SearchForm";
 
 const ClubWriteFilter = () => {
@@ -34,7 +35,8 @@ const ClubWriteFilter = () => {
         </ClubWriteCategory>
         <ClubWriteCategory>
           <ClubWriteLabel>모집 일시</ClubWriteLabel>
-          Calendar
+          <Calendar calendarType="date" />
+          <Calendar calendarType="time" />
         </ClubWriteCategory>
         <ClubWriteCategory>
           <ClubWriteLabel>모집 장소</ClubWriteLabel>
