@@ -21,12 +21,16 @@ const ClubWriteFilter = () => {
         </ClubWriteCategory>
         <ClubWriteTag />
         <ClubWriteCategory>
-          <ClubWriteLabel>모집 인원</ClubWriteLabel>
+          <ClubWriteLabel>최대 모집 인원</ClubWriteLabel>
           <NumberForm min={0} max={1000} />
         </ClubWriteCategory>
         <ClubWriteCategory>
           <ClubWriteLabel>모집 일시</ClubWriteLabel>
           Calendar
+        </ClubWriteCategory>
+        <ClubWriteCategory>
+          <ClubWriteLabel>모집 장소</ClubWriteLabel>
+          SearchForm
         </ClubWriteCategory>
       </ClubWriteRight>
     </ClubWriteFilterWrapper>
