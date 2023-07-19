@@ -12,7 +12,7 @@ const SearchOption = () => {
   return (
     <SearchOptionWrapper>
       <DropDown dropDownList={optionList} />
-      <RoundButton text="옵션 적용" onClick={onClickRoundBtnEvent} />
+      <RoundButton text="옵션 적용" onClickEvent={onClickRoundBtnEvent} />
     </SearchOptionWrapper>
   );
 };
