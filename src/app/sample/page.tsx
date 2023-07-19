@@ -19,6 +19,7 @@ import {
   socketClose,
   socketConnect,
   socketDisconnect,
+  socketRequestMessage,
   socketReceiveMessage,
 } from "@/utils/socket";
 
@@ -71,7 +72,7 @@ export default function Home() {
     socketReceiveMessage(ws);
 
     return () => {
-      console.log("clean up");
+      // socket clean up
       socketClose(ws);
     };
   }, []);
@@ -79,7 +80,7 @@ export default function Home() {
   useEffect(() => {
     if (socketConnected) {
       if (!ws.current) {
-        socketReceiveMessage(ws);
+        socketRequestMessage(ws);
       }
     }
   }, [socketConnected]);

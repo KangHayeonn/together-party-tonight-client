@@ -8,6 +8,7 @@ export const socketConnect = (
   ws.current = new WebSocket(webSocketUrl);
   ws.current.onopen = () => {
     // connect success
+    socketRequestMessage(ws);
     return true;
   };
   return false;
