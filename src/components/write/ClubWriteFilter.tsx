@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ClubWriteFilterWrapper,
   ClubWriteRight,
@@ -12,13 +13,35 @@ import DropDown from "@/components/common/DropDown";
 import NumberForm from "@/components/common/NumberForm";
 import Calendar from "@/components/common/Calendar";
 import SearchForm from "@/components/common/SearchForm";
+import { SearchPreview } from "@/components/common/SearchForm";
+// api
+import Api from "@/api/search";
+// recoil
+import { useRecoilState, useRecoilValue } from "recoil";
+import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 
 const ClubWriteFilter = () => {
-  const [search, setSearch] = useState<string>("");
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const searchAddress = useRecoilValue(searchState);
+  const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setSearchKeyword(e.target.value);
   };
+
+  const { isLoading, error, data } = useQuery(
+    ["searchAddress", searchKeyword],
+    () => Api.v1SearchAddress({ address: searchKeyword }),
+    {
+      refetchOnWindowFocus: true,
+      retry: 0,
+      enabled: !!searchKeyword, // 특정 조건일 경우에만 useQuery 실행
+    },
+  );
+
+  useEffect(() => {
+    setPreviewList(data?.data.documents);
+  }, [data]);
 
   return (
     <ClubWriteFilterWrapper>
@@ -41,7 +64,11 @@ const ClubWriteFilter = () => {
         <ClubWriteCategory>
           <ClubWriteLabel>모집 장소</ClubWriteLabel>
           <SearchFormBox>
-            <SearchForm search={search} onChangeSearch={onChangeSearch} />
+            <SearchForm
+              search={searchKeyword}
+              onChangeSearch={onChangeSearch}
+              searchPreviewList={previewList}
+            />
           </SearchFormBox>
         </ClubWriteCategory>
       </ClubWriteRight>
