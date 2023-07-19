@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useAuthRequest,
-  useEmailCheck,
-  useLogin,
-  useSignup,
-} from "@/api/login";
+import { useAuthRequest, useEmailCheck, useSignup } from "@/api/login";
 import Loading from "@/components/common/Loading";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
@@ -27,7 +22,6 @@ export default function Signup() {
   const signupMutation = useSignup();
   const authRequestMutation = useAuthRequest();
   const emailCheckMutation = useEmailCheck();
-  const loginMutation = useLogin();
 
   const [confirmEmail, setConfirmEmail] = useState("before"); // before, success, fail
   const [isSendEmail, setIsSendEmail] = useState(false);
@@ -68,9 +62,13 @@ export default function Signup() {
     e.preventDefault();
     emailCheckMutation.mutate(formValues.email, {
       onSuccess: (response) => {
-        response.success === "success"
-          ? setConfirmEmail("success")
-          : setConfirmEmail("fail");
+        if (response.success === "success") {
+          setConfirmEmail("success");
+          setErrorMessage("");
+        } else {
+          setConfirmEmail("fail");
+          setErrorMessage(response.errorMessage);
+        }
       },
     });
   };
@@ -88,25 +86,6 @@ export default function Signup() {
     }
   };
 
-  const loginFunc = () => {
-    loginMutation.mutate(
-      { email: formValues.email, password: formValues.password },
-      {
-        onSuccess: (response) => {
-          if (response.success === "fail") {
-            setErrorMessage(response.errorMessage);
-          } else {
-            setErrorMessage("");
-            localStorage.setItem("accessToken", response.data.accessToken);
-            localStorage.setItem("refreshToken", response.data.refreshToken);
-            localStorage.setItem("userId", response.data.userId);
-            router.push("/");
-          }
-        },
-      },
-    );
-  };
-
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     signupMutation.mutate(
@@ -119,7 +98,7 @@ export default function Signup() {
       {
         onSuccess: (response) => {
           if (response.success === "success") {
-            loginFunc();
+            router.push("/login");
           } else {
             setErrorMessage(response.errorMessage);
           }
