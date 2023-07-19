@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ClubWriteFilterWrapper,
   ClubWriteRight,
   ClubWriteCategory,
+  SearchFormBox,
 } from "@/styles/components/write/ClubWriteFilter";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
 import ClubWriteImage from "@/components/write/ClubWriteImage";
 import ClubWriteTag from "@/components/write/ClubWriteTag";
 import DropDown from "@/components/common/DropDown";
 import NumberForm from "@/components/common/NumberForm";
+import SearchForm from "@/components/common/SearchForm";
 
 const ClubWriteFilter = () => {
+  const [search, setSearch] = useState<string>("");
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <ClubWriteFilterWrapper>
       <ClubWriteImage />
@@ -30,7 +38,9 @@ const ClubWriteFilter = () => {
         </ClubWriteCategory>
         <ClubWriteCategory>
           <ClubWriteLabel>모집 장소</ClubWriteLabel>
-          SearchForm
+          <SearchFormBox>
+            <SearchForm search={search} onChangeSearch={onChangeSearch} />
+          </SearchFormBox>
         </ClubWriteCategory>
       </ClubWriteRight>
     </ClubWriteFilterWrapper>

@@ -14,7 +14,7 @@ const ClubWriteRight = styled.div`
 const ClubWriteCategory = styled.div`
   display: flex;
   align-items: center;
-  width: 45.5rem;
+  width: 42.6rem;
   padding-bottom: 10px;
   border-bottom: 1px solid #dee3ea;
 
@@ -24,4 +24,13 @@ const ClubWriteCategory = styled.div`
   }
 `;
 
-export { ClubWriteFilterWrapper, ClubWriteRight, ClubWriteCategory };
+const SearchFormBox = styled.div`
+  width: 27rem;
+`;
+
+export {
+  ClubWriteFilterWrapper,
+  ClubWriteRight,
+  ClubWriteCategory,
+  SearchFormBox,
+};

@@ -7,12 +7,15 @@ import {
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
 
 const ClubWriteTag = () => {
-  const [onToggle, setOnToggle] = useState<boolean>(true);
+  const [onToggle, setOnToggle] = useState<boolean>(false);
 
   return (
-    <ClubWriteTagWrapper>
+    <ClubWriteTagWrapper
+      onMouseOver={() => setOnToggle(true)}
+      onMouseLeave={() => setOnToggle(false)}
+    >
       <ClubWriteLabel className="screen-out">태그</ClubWriteLabel>
-      태그를 입력하세요
+      태그를 입력하세요 (최대 5개)
       {onToggle && (
         <ClubWriteToggle>
           <ToggleText>

@@ -17,8 +17,9 @@ const ClubImage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 365px;
-  height: 202px;
+  width: 415px;
+  min-width: 415px;
+  height: 255px;
   background-color: #d9d9d9;
 
   .image {

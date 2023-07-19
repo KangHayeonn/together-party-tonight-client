@@ -87,8 +87,8 @@ const ClubWriteImage = () => {
         <Image
           src={previewURL as string}
           alt="previewImage"
-          width={365}
-          height={202}
+          width={415}
+          height={255}
         />
       ) : (
         <ClubImage>
