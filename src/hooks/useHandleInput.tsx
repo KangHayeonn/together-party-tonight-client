@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export type InputValueType = {
-  [key: string]: string | number;
+  [key: string]: string;
 };
 
 const useHandleInput = (

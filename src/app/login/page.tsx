@@ -1,10 +1,9 @@
 "use client";
 
-import { instance } from "@/api";
-import { kakaoURL } from "@/api/login";
+import { kakaoURL, useLogin } from "@/api/login";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
-import useHandleInput, { InputValueType } from "@/hooks/useHandleInput";
+import useHandleInput from "@/hooks/useHandleInput";
 import {
   Hr,
   Line,
@@ -17,7 +16,6 @@ import {
   SocialWrapper,
   ErrorMessage,
 } from "@/styles/page/Login";
-import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,18 +23,12 @@ import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
+  const loginMutation = useLogin();
   const [errorMessage, setErrorMessage] = useState("");
-
   const [formValues, handleChange] = useHandleInput({
     email: "",
     password: "",
   });
-
-  const loginMutation = useMutation((credentials: InputValueType) =>
-    instance
-      .post("/api/members/login", credentials)
-      .then((response) => response.data),
-  );
 
   const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
