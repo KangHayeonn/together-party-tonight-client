@@ -167,7 +167,9 @@ export default function Signup() {
   return (
     <LoginWrapper>
       <LoginTitle>회원가입</LoginTitle>
-      {signupMutation.isLoading ? <Loading /> : null}
+      {signupMutation.isLoading || authRequestMutation.isLoading ? (
+        <Loading />
+      ) : null}
       <LoginInner>
         이메일
         <EmailWrapper>
