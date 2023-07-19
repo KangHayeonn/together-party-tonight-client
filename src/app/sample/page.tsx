@@ -105,7 +105,7 @@ export default function Home() {
       {isShowToast && (
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
-      <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
+      <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
     </div>
   );
