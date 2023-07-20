@@ -41,7 +41,7 @@ const ClubWriteForm = () => {
     const formData = new FormData();
 
     if (image) {
-      formData.append("images", image);
+      formData.append("image", image);
     }
 
     formData.append(
