@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useSetRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
 import {
   ClubWriteFormWrapper,
   ClubWriteFormBox,
@@ -9,11 +12,18 @@ import {
 import ClubWriteTitle from "@/components/write/ClubWriteTitle";
 import ClubWriteFilter from "@/components/write/ClubWriteFilter";
 import ClubWriteContent from "@/components/write/ClubWriteContent";
-import RoundButton from "@/components/common/RoundButton";
 import { ClubFormType, ClubAddressType } from "@/types/clubWrite";
 import { validationClubWrite } from "@/utils/func/ClubWriteFunc";
+import Api from "@/api/club";
+import { searchKeywordState, searchState } from "@/recoil/search/searchState";
+import RoundButton from "@/components/common/RoundButton";
 
 const ClubWriteForm = () => {
+  const router = useRouter();
+
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
+  const setSearchAddress = useSetRecoilState(searchState);
+
   const [clubForm, setClubForm] = useState<ClubFormType>({
     clubName: "",
     clubCategory: "",
@@ -27,9 +37,36 @@ const ClubWriteForm = () => {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const createFormData = (data: ClubFormType, image: File | null) => {
+    const formData = new FormData();
+
+    if (image) {
+      formData.append("images", image);
+    }
+
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], { type: "application/json" }),
+    );
+
+    return formData;
+  };
+
+  const { mutate: addClubMutation } = useMutation({
+    mutationFn: (formData: FormData) => Api.v1AddClub(formData),
+    onSuccess: () => {
+      initClubForm();
+      router.back();
+    },
+    onError: () => {
+      // interceptor에서 공통 error 처리
+    },
+  });
+
   const onClickClubAddEvent = () => {
     if (validationClubWrite(clubForm)) {
-      // TODO : club add api logic
+      const formData = createFormData(clubForm, imageFile);
+      addClubMutation(formData);
       initClubForm();
     }
   };
@@ -102,6 +139,15 @@ const ClubWriteForm = () => {
       meetingDate: "",
     });
     setImageFile(null);
+    setSearchAddress({
+      address: {},
+      address_name: "",
+      address_type: "",
+      road_address: {},
+      x: "",
+      y: "",
+    });
+    setSearchKeyword("");
   };
 
   return (

@@ -22,7 +22,7 @@ import {
 // api
 import Api from "@/api/search";
 // recoil
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 
 const ClubWriteFilter = ({
@@ -33,22 +33,17 @@ const ClubWriteFilter = ({
   onChangeAddress,
   onChangeImage,
 }: ClubWriteFilterProps) => {
-  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const searchKeyword = useRecoilValue(searchKeywordState);
   const searchAddress = useRecoilValue(searchState);
   const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
   const [meetingDate, setMeetingDate] = useState<Date | null>(null);
   const [meetingTime, setMeetingTime] = useState<Date | null>(null);
-
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value);
-  };
 
   const { isLoading, error, data } = useQuery(
     ["searchAddress", searchKeyword],
     () => Api.v1SearchAddress({ address: searchKeyword }),
     {
       refetchOnWindowFocus: true,
-      retry: 0,
       enabled: !!searchKeyword, // 특정 조건일 경우에만 useQuery 실행
     },
   );
@@ -96,7 +91,6 @@ const ClubWriteFilter = ({
           <SearchFormBox>
             <SearchForm
               search={searchKeyword}
-              onChangeSearch={onChangeSearch}
               searchPreviewList={previewList}
             />
           </SearchFormBox>

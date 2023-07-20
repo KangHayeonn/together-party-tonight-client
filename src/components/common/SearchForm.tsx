@@ -10,7 +10,7 @@ import {
   SearchInput,
 } from "@/styles/components/common/SearchForm";
 // recoil
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { searchKeywordState } from "@/recoil/search/searchState";
 
 export interface SearchPreview {
@@ -27,12 +27,10 @@ export interface SearchProps {
   height?: number | undefined;
   search?: string | undefined; // 검색어 저장
   searchPreviewList?: Array<SearchPreview> | undefined;
-  onChangeSearch?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const SearchForm = ({
   placeholder,
-  onChangeSearch,
   search,
   searchPreviewList,
   ...props
@@ -44,12 +42,16 @@ const SearchForm = ({
 
   // recoil
   // get만 가능
-  const searchKeyword = useRecoilValue(searchKeywordState);
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const resetSearchKeyword = useResetRecoilState(searchKeywordState);
 
   const onFocusSearch = () => {
     setIsFocus(true);
     resetSearchKeyword();
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
   };
 
   const clickWrap = (e: MouseEvent) => {

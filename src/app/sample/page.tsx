@@ -99,7 +99,7 @@ export default function Home() {
       <h2>Common Components</h2>
       <TextButton text="모임 만들기" onClick={onClickEvent} />
       <TextField message={message} onChangeText={onChangeMessage} />
-      <SearchForm search={search} onChangeSearch={onChangeSearch} />
+      <SearchForm search={search} />
       <NumberForm min={0} max={10} />
       <CheckBox text="한식" />
       {isShowToast && (
