@@ -10,6 +10,7 @@ import {
 } from "@/styles/components/common/TextField";
 
 export interface TextProps {
+  name?: string | undefined;
   disabled?: boolean | undefined;
   className?: string | undefined;
   placeholder?: string | undefined;
@@ -28,6 +29,7 @@ export interface TextProps {
 }
 
 const TextField = ({
+  name,
   disabled,
   className,
   placeholder,
@@ -50,6 +52,7 @@ const TextField = ({
     <TextWrapper {...props}>
       <TextInputForm>
         <TextInput
+          name={name}
           type={type}
           className={className}
           placeholder={placeholder}

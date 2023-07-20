@@ -1,4 +1,25 @@
 import axios from "axios";
+import { setInterceptors } from "@/api/common/interceptors";
+
+const createInstance = () => {
+  return axios.create({
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  });
+};
+
+const createInstanceWithAuth = () => {
+  const instance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  });
+
+  return setInterceptors(instance);
+};
 
 const createInstanceKakao = () => {
   return axios.create({
@@ -10,4 +31,6 @@ const createInstanceKakao = () => {
   });
 };
 
+export const instance = createInstance();
+export const instanceWithToken = createInstanceWithAuth();
 export const instanceWithKakao = createInstanceKakao();
