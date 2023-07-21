@@ -18,7 +18,7 @@ const SearchListAside = () => {
 
   return (
     <SearchListAsideWrapper>
-      <SearchForm search={search} onChangeSearch={onChangeSearch} />
+      <SearchForm search={search} />
       <SearchFilter />
       <SearchTagList tagList={searchTagList} />
       <SearchOption />

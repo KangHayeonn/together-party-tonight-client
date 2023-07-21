@@ -49,7 +49,7 @@ const SearchItemDetail = () => {
         />
         <RoundButton
           text="lovelyeonee"
-          onClick={onClickClubLeader}
+          onClickEvent={onClickClubLeader}
           color="#778DA9"
           background="#fff"
           weight={500}

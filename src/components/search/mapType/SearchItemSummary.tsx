@@ -47,7 +47,7 @@ const SearchItemSummary = () => {
         </SummaryInnerBox>
         <RoundButton
           text="신청하기"
-          onClick={onClickClubSignup}
+          onClickEvent={onClickClubSignup}
           color="#fff"
           background="#778DA9"
           weight={500}

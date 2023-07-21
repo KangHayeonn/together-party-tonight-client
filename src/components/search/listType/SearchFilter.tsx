@@ -58,7 +58,10 @@ const SearchFilter = () => {
           </SearchTableRow>
           <SearchTableRow>
             <SearchOptionContent>
-              <RoundButton text="옵션 적용" onClick={onClickRoundBtnEvent} />
+              <RoundButton
+                text="옵션 적용"
+                onClickEvent={onClickRoundBtnEvent}
+              />
             </SearchOptionContent>
           </SearchTableRow>
         </SearchTableBody>
