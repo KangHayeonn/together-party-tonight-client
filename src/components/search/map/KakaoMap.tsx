@@ -25,7 +25,9 @@ const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT
 const KakaoMap = () => {
   const EventMarkerContainer = ({ position, content }: EventMarkerProps) => {
     const map = useMap();
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
+    const linkImage =
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png";
 
     return (
       <>
@@ -54,6 +56,11 @@ const KakaoMap = () => {
               href="https://map.kakao.com/link/map/11394059"
               target="_blank"
               rel="noreferrer"
+              className="test"
+              style={{
+                backgroundColor: "#0d3471",
+                backgroundImage: `url(${linkImage});`,
+              }}
             >
               <span className="title">{content.clubName}</span>
             </a>

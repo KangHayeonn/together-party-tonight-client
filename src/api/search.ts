@@ -1,35 +1,84 @@
 import axios from "axios";
-import { instanceWithKakao } from "@/api";
+import { instance, instanceWithKakao } from "@/api";
 
-const prefix = "/v2/local";
+const prefix = "/api";
 
 interface fetchSearchAddressProps {
   address: string;
 }
 
-/*
-async function fetchSearchAddress({
-  address,
-}: fetchSearchAddressProps): Promise<SearchPreview[]> {
-  const response = await fetch(
-    `https://dapi.kakao.com/v2/local/search/address?query=${address}&page=1&size=10`,
-    {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "KakaoAK ab965e9a61bf134a72b458f79290dc17",
-      },
-    },
-  );
-  return response.json();
-}*/
+interface fetchSearchByOptionsProps {
+  options: {
+    category: string;
+    distance: number;
+    lat: number;
+    lng: number;
+    memberNum: number;
+    page: number;
+    size: number;
+    sortFilter: string;
+    status: string;
+    tags: string;
+  };
+}
+
+interface fetchSearchByAddressProps {
+  options: {
+    lat: number;
+    lng: number;
+    page: number;
+  };
+}
 
 const Search = {
+  // 주소 검색 (kakao api)
   async v1SearchAddress({ address }: fetchSearchAddressProps) {
     try {
-      const url = `${prefix}/search/address?query=${address}&page=1&size=10`;
+      const url = `/v2/local/search/address?query=${address}&page=1&size=10`;
       const result = await instanceWithKakao.get(url);
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  // 옵션 기반 검색
+  async v1SearchByOptions({ options }: fetchSearchByOptionsProps) {
+    try {
+      const url = `${prefix}/search`;
+      const result = await instance.get(url, {
+        params: {
+          category: `${options.category}`,
+          distance: `${options.distance}`,
+          lat: `${options.lat}`,
+          lng: `${options.lng}`,
+          memberNum: `${options.memberNum}`,
+          tags: `${options.tags}`,
+          sortFilter: `${options.sortFilter}`,
+          status: `${options.status}`,
+          page: `${options.page}`,
+          size: `${options.size}`,
+        },
+      });
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  // 주소/동네 기반 검색
+  async v1SearchByAddress({ options }: fetchSearchByAddressProps) {
+    try {
+      const url = `${prefix}/search/address?lat=${options.lat}&lng=${options.lng}&page=${options.page}&page=20`;
+      const result = await instance.get(url);
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  // 태그 검색
+  async v1SearchTags(keyword: string) {
+    try {
+      const url = `${prefix}/search/tags?word=${keyword}`;
+      const result = await instance.get(url);
       return result;
     } catch (err) {
       return Promise.reject(err);
@@ -37,5 +86,4 @@ const Search = {
   },
 };
 
-// export { fetchSearchAddress };
 export default Search;
