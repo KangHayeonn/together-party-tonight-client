@@ -1,6 +1,11 @@
 import { atom } from "recoil";
 import { SearchPreview } from "@/components/common/SearchForm";
-import { SearchAddressType, SearchOptionsType, SearchListType, SearchResponseType } from "@/types/search";
+import {
+  SearchAddressType,
+  SearchOptionsType,
+  SearchListType,
+  SearchResponseType,
+} from "@/types/search";
 
 const searchState = atom<SearchPreview>({
   key: "searchState", // 다른 recoil key와 중첩 x
@@ -75,8 +80,8 @@ const searchResponseState = atom<SearchResponseType>({
     clubList: [],
     count: 0,
     totalCount: 0,
-  }
-})
+  },
+});
 
 export {
   searchState,
@@ -84,5 +89,5 @@ export {
   searchAddressState,
   searchOptionsState,
   searchListState,
-  searchResponseState
+  searchResponseState,
 };

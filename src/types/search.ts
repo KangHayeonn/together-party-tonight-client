@@ -3,18 +3,16 @@ export interface fetchSearchAddressProps {
 }
 
 export interface fetchSearchByOptionsProps {
-  options: {
-    category: string;
-    distance: number;
-    lat: number;
-    lng: number;
-    memberNum: number;
-    page: number;
-    size: number;
-    sortFilter: string;
-    status: string;
-    tags: string;
-  };
+  category: string;
+  distance: number;
+  lat: number;
+  lng: number;
+  memberNum: number;
+  page: number;
+  size: number;
+  sortFilter: string;
+  status: string;
+  tags: string;
 }
 
 export interface fetchSearchByAddressProps {

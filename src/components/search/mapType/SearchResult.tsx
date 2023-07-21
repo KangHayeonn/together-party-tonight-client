@@ -15,11 +15,11 @@ import {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
-  SearchResultEmpty
+  SearchResultEmpty,
 } from "@/styles/components/search/mapType/SearchResult";
 // recoil
 import { useRecoilValue } from "recoil";
-import {searchResponseState} from "@/recoil/search/searchState";
+import { searchResponseState } from "@/recoil/search/searchState";
 
 interface searchResultItem {
   clubId: number;
@@ -43,10 +43,14 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
 
   return (
     <SearchResultList>
-      {searchResponse.clubList.length > 0 ?
+      {searchResponse.clubList.length > 0 ? (
         searchResponse.clubList.map((item, index) => {
           return (
-            <SearchResultItem key={index} className="search-item" onClick={() => router.push(`/search/${item.clubId}`)}>
+            <SearchResultItem
+              key={index}
+              className="search-item"
+              onClick={() => router.push(`/search/${item.clubId}`)}
+            >
               <SearchItemTop>
                 <SearchClubBox>
                   <Image
@@ -79,7 +83,10 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
               </SearchItemBottom>
             </SearchResultItem>
           );
-        }) : <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>}
+        })
+      ) : (
+        <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>
+      )}
     </SearchResultList>
   );
 };

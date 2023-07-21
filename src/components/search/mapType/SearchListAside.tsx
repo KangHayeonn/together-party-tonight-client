@@ -19,7 +19,7 @@ import {
   searchKeywordState,
   searchState,
   searchOptionsState,
-  searchResponseState
+  searchResponseState,
 } from "@/recoil/search/searchState";
 
 const SearchListAside = () => {
@@ -52,12 +52,12 @@ const SearchListAside = () => {
     {
       enabled: false,
       onSuccess: (res) => {
-        const {clubList, count, totalCount} = res.data.data;
+        const { clubList, count, totalCount } = res.data.data;
         setSearchResponse({
           clubList: [...clubList],
           count: count,
           totalCount: totalCount,
-        })
+        });
       },
     },
   );
@@ -91,7 +91,7 @@ const SearchListAside = () => {
       y: "",
     });
     setSearchKeyword("");
-  }
+  };
 
   useEffect(() => {
     setPreviewList(data?.data.documents);

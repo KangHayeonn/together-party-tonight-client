@@ -20,7 +20,7 @@ const Search = {
     }
   },
   // 옵션 기반 검색
-  async v1SearchByOptions({ options }: fetchSearchByOptionsProps) {
+  async v1SearchByOptions(options: fetchSearchByOptionsProps) {
     try {
       const url = `${prefix}/search`;
       const result = await instance.get(url, {
