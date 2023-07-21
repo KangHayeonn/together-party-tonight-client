@@ -88,7 +88,12 @@ const SearchFilter = () => {
           <SearchTableRow>
             <SearchDataTitle>최대 모집 인원</SearchDataTitle>
             <SearchDataContent className="number">
-              <NumberForm min={0} max={10} changeMax={onSearchMaxNumChange} />
+              <NumberForm
+                min={0}
+                max={10}
+                defaultNum={10}
+                changeMax={onSearchMaxNumChange}
+              />
             </SearchDataContent>
           </SearchTableRow>
         </SearchTableBody>

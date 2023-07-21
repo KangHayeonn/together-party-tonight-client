@@ -5,14 +5,18 @@ import {
   SearchTagItemInput,
   SearchTagItemLabel,
 } from "@/styles/components/search/mapType/SearchTagList";
+import { useRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
 
 interface SearchTagList {
   tagList: Array<string>;
 }
 
 const SearchTagList = ({ tagList }: SearchTagList) => {
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const [newTagList, setNewTagList] = useState<Array<string>>([]);
   const [openMore, setOpenMore] = useState<boolean>(false);
+  const [checkTagList, setCheckTagList] = useState<Array<string>>([]);
 
   const onCloseItems = useCallback(() => {
     const tempList = tagList?.filter((item, index) => index < 7);
@@ -30,6 +34,24 @@ const SearchTagList = ({ tagList }: SearchTagList) => {
     setOpenMore((open) => !open);
   };
 
+  const handleCheckTag = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    const item = e.target.value;
+
+    if (isChecked) {
+      setCheckTagList((items) => [...items, item]);
+    } else {
+      setCheckTagList((items) => items.filter((el) => el !== item));
+    }
+  };
+
+  useEffect(() => {
+    setSearchOptions({
+      ...searchOptions,
+      tags: checkTagList.toString(),
+    });
+  }, [checkTagList]);
+
   useEffect(() => {
     onCloseItems();
   }, [onCloseItems]);
@@ -40,7 +62,12 @@ const SearchTagList = ({ tagList }: SearchTagList) => {
         newTagList.map((item, index) => {
           return (
             <SearchTagItem key={item}>
-              <SearchTagItemInput type="checkbox" id={item} value={item} />
+              <SearchTagItemInput
+                type="checkbox"
+                id={item}
+                value={item}
+                onChange={(e) => handleCheckTag(e)}
+              />
               <SearchTagItemLabel htmlFor={item} className="label-tag">
                 {item}
               </SearchTagItemLabel>

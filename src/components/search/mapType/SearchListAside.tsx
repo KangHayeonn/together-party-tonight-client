@@ -17,7 +17,6 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import {
   searchKeywordState,
   searchState,
-  searchAddressState,
   searchOptionsState,
 } from "@/recoil/search/searchState";
 
