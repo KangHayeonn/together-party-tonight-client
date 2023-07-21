@@ -3,9 +3,6 @@ import { logout } from "./login";
 
 export const instance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  validateStatus: (status) => {
-    return status >= 200 && status < 400;
-  },
 });
 
 instance.interceptors.request.use((config) => {

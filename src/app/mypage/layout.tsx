@@ -1,5 +1,6 @@
 "use client";
 
+import AuthLayout from "@/components/common/AuthLayout";
 import DetailModal from "@/components/mypage/DetailModal";
 import SideBar from "@/components/mypage/SideBar";
 import { ModalAtom } from "@/recoil/modal/atom";
@@ -15,11 +16,13 @@ function MyPageLayout({ children }: Props) {
   const modal = useRecoilValue(ModalAtom);
 
   return (
-    <MyPageWrapper>
-      <SideBar />
-      {children}
-      {modal.isOpen && <DetailModal title={modal.title} />}
-    </MyPageWrapper>
+    <AuthLayout>
+      <MyPageWrapper>
+        <SideBar />
+        {children}
+        {modal.isOpen && <DetailModal title={modal.title} />}
+      </MyPageWrapper>
+    </AuthLayout>
   );
 }
 

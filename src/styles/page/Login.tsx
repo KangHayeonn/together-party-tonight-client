@@ -86,6 +86,21 @@ const ErrorMessage = styled.p`
   margin-top: 15px;
 `;
 
+const SignupErrorMessage = styled.p`
+  display: flex;
+  justify-content: center;
+  color: #ee0d0d;
+  font-size: 14px;
+`;
+
+const EmailCheckIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 48px;
+`;
+
 export {
   LoginWrapper,
   LoginTitle,
@@ -98,4 +113,6 @@ export {
   SocialButton,
   EmailWrapper,
   ErrorMessage,
+  EmailCheckIcon,
+  SignupErrorMessage,
 };
