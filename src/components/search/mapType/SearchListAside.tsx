@@ -51,7 +51,7 @@ const SearchListAside = () => {
     <SearchListAsideWrapper>
       <SearchForm search={searchKeyword} searchPreviewList={previewList} />
       <SearchFilter />
-      <SearchTagList tagList={searchTagList} />
+      <SearchTagList />
       <SearchOption />
       <SearchResult searchResult={clubList} />
     </SearchListAsideWrapper>

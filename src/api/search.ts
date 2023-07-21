@@ -62,6 +62,16 @@ const Search = {
       return Promise.reject(err);
     }
   },
+  // 태그 랜덤 반환
+  async v1SearchTagsRandom() {
+    try {
+      const url = `${prefix}/search/tags/random`;
+      const result = await instance.get(url);
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default Search;

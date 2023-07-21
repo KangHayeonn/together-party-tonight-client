@@ -53,7 +53,7 @@ const SearchFilter = () => {
           <SearchTableRow>
             <SearchDataTitle>태그</SearchDataTitle>
             <SearchDataContent>
-              <SearchTagList tagList={searchTagList} />
+              <SearchTagList />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
