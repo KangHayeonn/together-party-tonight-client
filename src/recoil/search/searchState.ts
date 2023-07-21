@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { SearchPreview } from "@/components/common/SearchForm";
-import { SearchAddressType, SearchOptionsType } from "@/types/search";
+import { SearchAddressType, SearchOptionsType, SearchListType, SearchResponseType } from "@/types/search";
 
 const searchState = atom<SearchPreview>({
   key: "searchState", // 다른 recoil key와 중첩 x
@@ -44,9 +44,45 @@ const searchOptionsState = atom<SearchOptionsType>({
   },
 });
 
+const searchListState = atom<SearchListType>({
+  key: "searchListState",
+  default: {
+    clubId: -1,
+    clubName: "",
+    clubCategory: "",
+    clubContent: "",
+    memberCount: 0, // 모집 인원
+    clubMaximum: 0, // 전체 인원
+    clubTags: [],
+    isRecruit: false, // true: 모집중
+    address: "",
+    latitude: 0,
+    longitude: 0,
+    image: "",
+    ratingAvg: 0,
+    reviewCnt: 0,
+    memberId: 0,
+    nickName: "",
+    meetingDate: null,
+    createdDate: null,
+    modifiedDate: null,
+  },
+});
+
+const searchResponseState = atom<SearchResponseType>({
+  key: "searchResponseState",
+  default: {
+    clubList: [],
+    count: 0,
+    totalCount: 0,
+  }
+})
+
 export {
   searchState,
   searchKeywordState,
   searchAddressState,
   searchOptionsState,
+  searchListState,
+  searchResponseState
 };

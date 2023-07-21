@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   SearchResultList,
   SearchResultItem,
@@ -14,7 +15,11 @@ import {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
+  SearchResultEmpty
 } from "@/styles/components/search/mapType/SearchResult";
+// recoil
+import { useRecoilValue } from "recoil";
+import {searchResponseState} from "@/recoil/search/searchState";
 
 interface searchResultItem {
   clubId: number;
@@ -33,12 +38,15 @@ interface searchResultProps {
 }
 
 const SearchResult = ({ searchResult }: searchResultProps) => {
+  const router = useRouter();
+  const searchResponse = useRecoilValue(searchResponseState);
+
   return (
     <SearchResultList>
-      {searchResult &&
-        searchResult.map((item, index) => {
+      {searchResponse.clubList.length > 0 ?
+        searchResponse.clubList.map((item, index) => {
           return (
-            <SearchResultItem key={index} className="search-item">
+            <SearchResultItem key={index} className="search-item" onClick={() => router.push(`/search/${item.clubId}`)}>
               <SearchItemTop>
                 <SearchClubBox>
                   <Image
@@ -71,7 +79,7 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
               </SearchItemBottom>
             </SearchResultItem>
           );
-        })}
+        }) : <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>}
     </SearchResultList>
   );
 };

@@ -18,11 +18,9 @@ export interface fetchSearchByOptionsProps {
 }
 
 export interface fetchSearchByAddressProps {
-  options: {
-    lat: number;
-    lng: number;
-    page: number;
-  };
+  lat: number;
+  lng: number;
+  page: number;
 }
 
 export interface SearchAddressType {
@@ -42,4 +40,32 @@ export interface SearchOptionsType {
   sortFilter: string;
   status: string;
   tags: string;
+}
+
+export interface SearchListType {
+  clubId: number;
+  clubName: string;
+  clubCategory: string;
+  clubContent: string;
+  memberCount: number; // 모집 인원
+  clubMaximum: number; // 전체 인원
+  clubTags: Array<string>;
+  isRecruit: boolean; // true: 모집중
+  address: string;
+  latitude: number;
+  longitude: number;
+  image: string;
+  ratingAvg: number;
+  reviewCnt: number;
+  memberId: number;
+  nickName: string;
+  meetingDate: Date | null;
+  createdDate: Date | null;
+  modifiedDate: Date | null;
+}
+
+export interface SearchResponseType {
+  clubList: Array<SearchListType>;
+  count: number;
+  totalCount: number;
 }

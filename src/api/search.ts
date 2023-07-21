@@ -43,9 +43,9 @@ const Search = {
     }
   },
   // 주소/동네 기반 검색
-  async v1SearchByAddress({ options }: fetchSearchByAddressProps) {
+  async v1SearchByAddress(options: fetchSearchByAddressProps) {
     try {
-      const url = `${prefix}/search/address?lat=${options.lat}&lng=${options.lng}&page=${options.page}&page=20`;
+      const url = `${prefix}/search/address?lat=${options.lat}&lng=${options.lng}&page=${options.page}&size=20`;
       const result = await instance.get(url);
       return result;
     } catch (err) {

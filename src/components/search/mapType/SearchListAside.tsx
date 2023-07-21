@@ -8,22 +8,25 @@ import SearchFilter from "@/components/search/mapType/SearchFilter";
 import SearchTagList from "@/components/search/mapType/SearchTagList";
 import SearchOption from "@/components/search/mapType/SearchOption";
 import SearchResult from "@/components/search/mapType/SearchResult";
-import { searchTagList, clubList } from "@/utils/mock/search";
+import { clubList } from "@/utils/mock/search";
+import { validationSearchByAddress } from "@/utils/func/SearchFunc";
 // api
 import Api from "@/api/search";
 import { SearchPreview } from "@/components/common/SearchForm";
 // recoil
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   searchKeywordState,
   searchState,
   searchOptionsState,
+  searchResponseState
 } from "@/recoil/search/searchState";
 
 const SearchListAside = () => {
-  const searchKeyword = useRecoilValue(searchKeywordState);
-  const searchAddress = useRecoilValue(searchState);
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const [searchAddress, setSearchAddress] = useRecoilState(searchState);
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
+  const setSearchResponse = useSetRecoilState(searchResponseState);
   const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
 
   const { isLoading, error, data } = useQuery(
@@ -34,6 +37,61 @@ const SearchListAside = () => {
       enabled: !!searchKeyword, // 특정 조건일 경우에만 useQuery 실행
     },
   );
+
+  const { refetch } = useQuery(
+    ["searchByAddress"],
+    async () => {
+      const options = {
+        lat: searchOptions.lat,
+        lng: searchOptions.lng,
+        page: searchOptions.page,
+      };
+      const response = await Api.v1SearchByAddress(options);
+      return response;
+    },
+    {
+      enabled: false,
+      onSuccess: (res) => {
+        const {clubList, count, totalCount} = res.data.data;
+        setSearchResponse({
+          clubList: [...clubList],
+          count: count,
+          totalCount: totalCount,
+        })
+      },
+    },
+  );
+
+  const onClickSearchBtn = () => {
+    if (validationSearchByAddress(searchOptions)) {
+      refetch();
+      initSearchOptions();
+    }
+  };
+
+  const initSearchOptions = () => {
+    setSearchOptions({
+      category: "전체",
+      distance: 5,
+      lat: 0,
+      lng: 0,
+      memberNum: 10,
+      page: 0,
+      size: 20,
+      sortFilter: "latest",
+      status: "all",
+      tags: "",
+    });
+    setSearchAddress({
+      address: {},
+      address_name: "",
+      address_type: "",
+      road_address: {},
+      x: "",
+      y: "",
+    });
+    setSearchKeyword("");
+  }
 
   useEffect(() => {
     setPreviewList(data?.data.documents);
@@ -49,7 +107,11 @@ const SearchListAside = () => {
 
   return (
     <SearchListAsideWrapper>
-      <SearchForm search={searchKeyword} searchPreviewList={previewList} />
+      <SearchForm
+        search={searchKeyword}
+        searchPreviewList={previewList}
+        searchByAddress={onClickSearchBtn}
+      />
       <SearchFilter />
       <SearchTagList />
       <SearchOption />

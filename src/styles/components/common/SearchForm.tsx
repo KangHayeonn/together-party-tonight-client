@@ -27,6 +27,10 @@ const SearchInputForm = styled.div`
   img {
     position: absolute;
     right: 17px;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 `;
 

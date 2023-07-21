@@ -27,12 +27,14 @@ export interface SearchProps {
   height?: number | undefined;
   search?: string | undefined; // 검색어 저장
   searchPreviewList?: Array<SearchPreview> | undefined;
+  searchByAddress?: () => void;
 }
 
 const SearchForm = ({
   placeholder,
   search,
   searchPreviewList,
+  searchByAddress,
   ...props
 }: SearchProps) => {
   const searchInput = useRef<HTMLInputElement>(null);
@@ -61,6 +63,10 @@ const SearchForm = ({
     }
   };
 
+  const onClickSearchBtn = () => {
+    if (searchByAddress) searchByAddress();
+  };
+
   useEffect(() => {
     document.addEventListener("click", clickWrap);
   }, []);
@@ -82,6 +88,7 @@ const SearchForm = ({
             width={16}
             height={16}
             alt="Search Icon"
+            onClick={() => onClickSearchBtn()}
           />
         </SearchInputForm>
         {isFocus ? (
