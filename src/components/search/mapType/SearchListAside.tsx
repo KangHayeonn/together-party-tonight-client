@@ -13,30 +13,25 @@ import { searchTagList, clubList } from "@/utils/mock/search";
 import Api from "@/api/search";
 import { SearchPreview } from "@/components/common/SearchForm";
 // recoil
-import { useRecoilState } from "recoil";
-import { searchState } from "@/recoil/search/searchState";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  searchKeywordState,
+  searchState,
+  searchAddressState,
+  searchOptionsState,
+} from "@/recoil/search/searchState";
 
 const SearchListAside = () => {
-  //const [search, setSearch] = useState<string>("서울");
-  const [searchKeyword, setSearchKeyword] = useRecoilState(searchState);
+  const searchKeyword = useRecoilValue(searchKeywordState);
+  const searchAddress = useRecoilValue(searchState);
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
-
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value);
-  };
 
   const { isLoading, error, data } = useQuery(
     ["searchAddress", searchKeyword],
     () => Api.v1SearchAddress({ address: searchKeyword }),
     {
       refetchOnWindowFocus: true,
-      retry: 0,
-      /*onSuccess: (res) => {
-        const { status, data } = res;
-        if (status === 200) {
-          setPreviewList(data?.documents); // object object 형태로 저장됨
-        }
-      },*/
       enabled: !!searchKeyword, // 특정 조건일 경우에만 useQuery 실행
     },
   );
@@ -45,13 +40,17 @@ const SearchListAside = () => {
     setPreviewList(data?.data.documents);
   }, [data]);
 
+  useEffect(() => {
+    setSearchOptions({
+      ...searchOptions,
+      lat: parseFloat(searchAddress.y),
+      lng: parseFloat(searchAddress.x),
+    });
+  }, [searchAddress]);
+
   return (
     <SearchListAsideWrapper>
-      <SearchForm
-        search={searchKeyword}
-        onChangeSearch={onChangeSearch}
-        searchPreviewList={previewList}
-      />
+      <SearchForm search={searchKeyword} searchPreviewList={previewList} />
       <SearchFilter />
       <SearchTagList tagList={searchTagList} />
       <SearchOption />

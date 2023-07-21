@@ -10,8 +10,8 @@ import {
   SearchInput,
 } from "@/styles/components/common/SearchForm";
 // recoil
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import { searchState } from "@/recoil/search/searchState";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { searchKeywordState } from "@/recoil/search/searchState";
 
 export interface SearchPreview {
   address: object;
@@ -27,12 +27,10 @@ export interface SearchProps {
   height?: number | undefined;
   search?: string | undefined; // 검색어 저장
   searchPreviewList?: Array<SearchPreview> | undefined;
-  onChangeSearch?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const SearchForm = ({
   placeholder,
-  onChangeSearch,
   search,
   searchPreviewList,
   ...props
@@ -40,16 +38,18 @@ const SearchForm = ({
   const searchInput = useRef<HTMLInputElement>(null);
   const searchWrap = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  // const searchPreviewList = ["강남", "잠실", "판교", "홍대", "여의도", "성수"];
 
   // recoil
-  // get만 가능
-  const searchKeyword = useRecoilValue(searchState);
-  const resetSearchKeyword = useResetRecoilState(searchState);
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const resetSearchKeyword = useResetRecoilState(searchKeywordState);
 
   const onFocusSearch = () => {
     setIsFocus(true);
     resetSearchKeyword();
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
   };
 
   const clickWrap = (e: MouseEvent) => {
@@ -84,7 +84,12 @@ const SearchForm = ({
             alt="Search Icon"
           />
         </SearchInputForm>
-        {isFocus ? <SearchFormPreview searchList={searchPreviewList} /> : null}
+        {isFocus ? (
+          <SearchFormPreview
+            searchList={searchPreviewList}
+            isOpen={setIsFocus}
+          />
+        ) : null}
       </SearchField>
     </SearchWrapper>
   );

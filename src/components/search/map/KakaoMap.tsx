@@ -59,7 +59,7 @@ const KakaoMap = () => {
               className="test"
               style={{
                 backgroundColor: "#0d3471",
-                backgroundImage: `url(${linkImage});`,
+                backgroundImage: `url(${linkImage})`,
               }}
             >
               <span className="title">{content.clubName}</span>

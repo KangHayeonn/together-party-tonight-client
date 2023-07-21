@@ -8,27 +8,26 @@ import {
   DropDownMenu,
   DropDownItem,
 } from "@/styles/components/common/DropDown";
+import { searchCategoryList } from "@/utils/mock/search";
 
 export interface DropDownProps {
   defaultText?: string | undefined;
   width?: number | undefined;
+  dropDownList?: Array<string>;
+  changeText?: (category: string) => void | undefined;
 }
 
-const DropDown = ({ defaultText, ...props }: DropDownProps) => {
+const DropDown = ({
+  defaultText,
+  dropDownList,
+  changeText,
+  ...props
+}: DropDownProps) => {
   const menuInput = useRef<HTMLInputElement>(null);
   const menuWrap = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(defaultText || "선택");
-
-  const dropDownList = [
-    "운동",
-    "스터디",
-    "맛집",
-    "취미",
-    "여행",
-    "봉사",
-    "친목",
-  ];
+  const [list, setList] = useState<Array<string>>([]);
 
   const clickWrap = (e: MouseEvent) => {
     if (
@@ -39,9 +38,16 @@ const DropDown = ({ defaultText, ...props }: DropDownProps) => {
     }
   };
 
+  const changeItem = (item: string) => {
+    setTitle(item);
+    if (changeText) changeText(item);
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener("click", clickWrap);
-  }, []);
+    dropDownList ? setList(dropDownList) : setList(searchCategoryList);
+  }, [dropDownList]);
 
   return (
     <DropDownWrapper ref={menuWrap} {...props}>
@@ -57,9 +63,9 @@ const DropDown = ({ defaultText, ...props }: DropDownProps) => {
       </DropDownBtn>
       {isOpen ? (
         <DropDownMenu>
-          {dropDownList.map((item, index) => {
+          {list.map((item, index) => {
             return (
-              <DropDownItem key={index} onClick={() => setTitle(item)}>
+              <DropDownItem key={index} onClick={() => changeItem(item)}>
                 {item}
               </DropDownItem>
             );

@@ -6,25 +6,23 @@ import {
 } from "@/styles/components/common/SearchFormPreview";
 import { SearchPreview } from "@/components/common/SearchForm";
 // recoil
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { searchState } from "@/recoil/search/searchState";
+import { useSetRecoilState } from "recoil";
+import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 
 interface SearchPreviewProps {
   searchList?: Array<SearchPreview> | undefined;
+  isOpen?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
 
-const SearchFormPreview = ({ searchList }: SearchPreviewProps) => {
-  // recoil
-  // get & set 모두 가능
-  // const [searchKeyword, setSearchKeyword] = useRecoilState(searchState);
-  // set만 가능
-  const setSearchKeyword = useSetRecoilState(searchState);
+const SearchFormPreview = ({ searchList, isOpen }: SearchPreviewProps) => {
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
+  const setSearchAddress = useSetRecoilState(searchState);
 
-  const changeSearchText = (text: string) => {
-    // TODO : recoil logic
-    setSearchKeyword(text);
+  const changeSearchItem = (item: SearchPreview) => {
+    setSearchKeyword(item.address_name);
+    setSearchAddress(item);
+    if (isOpen) isOpen(false);
   };
-
   return (
     <SearchPreviewWrapper>
       <SearchPreviewList>
@@ -33,7 +31,7 @@ const SearchFormPreview = ({ searchList }: SearchPreviewProps) => {
             return (
               <SearchPreviewItem
                 key={index}
-                onClick={() => changeSearchText(item.address_name)}
+                onClick={() => changeSearchItem(item)}
               >
                 {item.address_name}
               </SearchPreviewItem>

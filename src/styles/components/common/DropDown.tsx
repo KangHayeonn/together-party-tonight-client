@@ -28,6 +28,7 @@ const DropDownBtn = styled.button`
   padding: 3px 3px 3px 10px;
   background: transparent;
   height: 1.875rem;
+  line-height: 1.8rem;
   border: none;
   font-size: 14px;
   font-weight: 400;
@@ -52,7 +53,7 @@ const DropDownMenu = styled.div`
   border-radius: 10px;
   border: 1px solid #778da9;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
-  height: 10.5rem;
+  max-height: 10.5rem;
   overflow-y: auto;
 
   &::-webkit-scrollbar {

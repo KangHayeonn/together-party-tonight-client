@@ -1,34 +1,12 @@
 import axios from "axios";
 import { instance, instanceWithKakao } from "@/api";
+import {
+  fetchSearchAddressProps,
+  fetchSearchByOptionsProps,
+  fetchSearchByAddressProps,
+} from "@/types/search";
 
 const prefix = "/api";
-
-interface fetchSearchAddressProps {
-  address: string;
-}
-
-interface fetchSearchByOptionsProps {
-  options: {
-    category: string;
-    distance: number;
-    lat: number;
-    lng: number;
-    memberNum: number;
-    page: number;
-    size: number;
-    sortFilter: string;
-    status: string;
-    tags: string;
-  };
-}
-
-interface fetchSearchByAddressProps {
-  options: {
-    lat: number;
-    lng: number;
-    page: number;
-  };
-}
 
 const Search = {
   // 주소 검색 (kakao api)
