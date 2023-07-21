@@ -17,8 +17,9 @@ const ClubImage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 365px;
-  height: 202px;
+  width: 415px;
+  min-width: 415px;
+  height: 255px;
   background-color: #d9d9d9;
 
   .image {
@@ -28,6 +29,10 @@ const ClubImage = styled.div`
       opacity: 0.8;
     }
   }
+`;
+
+const ClubImageInput = styled.input`
+  display: none;
 `;
 
 const ImageText = styled.span`
@@ -48,6 +53,17 @@ const Button = styled.button`
   }
 `;
 
+const ClubImageUpdateBtn = styled.span`
+  background-color: transparent;
+  font-size: 0.75rem;
+  letter-spacing: 0.25px;
+  color: #b1b1b1;
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
 const Line = styled.div`
   border-left: 1px solid #b1b1b1;
   height: 11px;
@@ -58,7 +74,9 @@ export {
   ClubWriteImageWrapper,
   ClubWriteImageBtn,
   ClubImage,
+  ClubImageInput,
   ImageText,
   Button,
+  ClubImageUpdateBtn,
   Line,
 };

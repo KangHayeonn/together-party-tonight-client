@@ -35,7 +35,7 @@ const searchOptionsState = atom<SearchOptionsType>({
     distance: 5,
     lat: 0,
     lng: 0,
-    memberNum: 20,
+    memberNum: 10,
     page: 0,
     size: 20,
     sortFilter: "latest",

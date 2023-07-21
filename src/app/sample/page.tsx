@@ -100,12 +100,12 @@ export default function Home() {
       <TextButton text="모임 만들기" onClick={onClickEvent} />
       <TextField message={message} onChangeText={onChangeMessage} />
       <SearchForm search={search} />
-      <NumberForm min={0} max={10} />
+      <NumberForm min={0} max={30} />
       <CheckBox text="한식" />
       {isShowToast && (
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
-      <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
+      <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
     </div>
   );

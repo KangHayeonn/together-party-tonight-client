@@ -90,7 +90,7 @@ const SearchFilter = () => {
             <SearchDataContent className="number">
               <NumberForm
                 min={0}
-                max={10}
+                max={30}
                 defaultNum={10}
                 changeMax={onSearchMaxNumChange}
               />

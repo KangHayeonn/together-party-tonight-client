@@ -1,6 +1,5 @@
 "use client";
 
-import { instance } from "@/api";
 import { logout } from "@/api/login";
 import {
   Menu,
@@ -11,9 +10,11 @@ import {
   WrapLogo,
 } from "@/styles/components/layout/Header";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Header() {
+  const path = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -33,7 +34,7 @@ export default function Header() {
     if (token) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [path]);
 
   return (
     <WrapHeader>

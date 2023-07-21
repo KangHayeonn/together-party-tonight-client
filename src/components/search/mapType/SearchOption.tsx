@@ -21,7 +21,7 @@ const SearchOption = () => {
 
   const onClickSearch = () => {
     // TODO : search api logic
-    // console.log(searchOptions);
+    console.log(searchOptions);
   };
 
   return (

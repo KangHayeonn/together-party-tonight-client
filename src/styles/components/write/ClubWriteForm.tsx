@@ -29,6 +29,7 @@ const ClubWriteBottom = styled.div`
 `;
 
 const ClubWriteLabel = styled.div`
+  width: 8rem;
   margin-right: 3rem;
   font-size: 1.15rem;
   font-weight: 600;

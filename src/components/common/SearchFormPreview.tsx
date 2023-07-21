@@ -23,6 +23,7 @@ const SearchFormPreview = ({ searchList, isOpen }: SearchPreviewProps) => {
     setSearchAddress(item);
     if (isOpen) isOpen(false);
   };
+
   return (
     <SearchPreviewWrapper>
       <SearchPreviewList>

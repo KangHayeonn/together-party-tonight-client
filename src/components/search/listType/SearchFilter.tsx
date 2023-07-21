@@ -47,7 +47,7 @@ const SearchFilter = () => {
           <SearchTableRow>
             <SearchDataTitle>모집 인원</SearchDataTitle>
             <SearchDataContent>
-              <NumberForm min={0} max={10} />
+              <NumberForm min={0} max={30} />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
@@ -58,7 +58,10 @@ const SearchFilter = () => {
           </SearchTableRow>
           <SearchTableRow>
             <SearchOptionContent>
-              <RoundButton text="옵션 적용" onClick={onClickRoundBtnEvent} />
+              <RoundButton
+                text="옵션 적용"
+                onClickEvent={onClickRoundBtnEvent}
+              />
             </SearchOptionContent>
           </SearchTableRow>
         </SearchTableBody>
