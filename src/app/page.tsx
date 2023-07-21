@@ -7,18 +7,8 @@ import {
   HomeWrapper,
   MeetingBtn,
 } from "@/styles/page/Home";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
-  const handleWriteBtn = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const token = localStorage.getItem("accessToken");
-    if (token) router.push("/write");
-    else router.push("/login");
-  };
-
   return (
     <HomeWrapper>
       <HomeTitle>모임이 필요할 땐, 투바투</HomeTitle>
@@ -27,9 +17,7 @@ export default function Home() {
         소중한 사람들과 즐겁고 따뜻한 시간을 만들어요.
       </HomeDesc>
       <HomeBtnWrapper>
-        <MeetingBtn href="/write" onClick={handleWriteBtn}>
-          모임 만들기
-        </MeetingBtn>
+        <MeetingBtn href="/write">모임 만들기</MeetingBtn>
         <MeetingBtn href="/search">모임 참여하기</MeetingBtn>
       </HomeBtnWrapper>
     </HomeWrapper>
