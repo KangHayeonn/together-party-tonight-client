@@ -14,6 +14,7 @@ const ChatRoomListWrapper = styled.div`
 const ChatRoomList = styled.ul`
   display: flex;
   flex-direction: column;
+  min-height: 60rem;
   max-height: 60rem;
   overflow-y: scroll;
   gap: 0.1rem;
@@ -75,6 +76,15 @@ const ChatRoomItemDate = styled.div`
   color: #0d3471;
 `;
 
+const ChatRoomListEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60rem;
+  font-size: 16px;
+  color: #a0a0a0;
+`;
+
 export {
   ChatRoomListWrapper,
   ChatRoomList,
@@ -83,4 +93,5 @@ export {
   ChatRoomItemContent,
   ChatRoomItemText,
   ChatRoomItemDate,
+  ChatRoomListEmpty,
 };

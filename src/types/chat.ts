@@ -12,7 +12,7 @@ export interface chatListType {
 export interface ChatRoomType {
   chatRoomId: number;
   chatRoomName: string;
-  dateTime: Date | null;
+  dateTime: Date;
   latestMessage: string;
 }
 

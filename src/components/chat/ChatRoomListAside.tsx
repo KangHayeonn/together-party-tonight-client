@@ -10,6 +10,7 @@ import {
   ChatRoomItemContent,
   ChatRoomItemText,
   ChatRoomItemDate,
+  ChatRoomListEmpty,
 } from "@/styles/components/chat/ChatRoomListAside";
 import { elapsedTime } from "@/utils/dateFormat";
 // api
@@ -37,8 +38,8 @@ const ChatRoomListAside = () => {
   return (
     <ChatRoomListWrapper>
       <ChatRoomList>
-        {chatRooms &&
-          chatRooms.map((item, index) => {
+        {chatRooms.chatRoomList.length > 0 ? (
+          chatRooms.chatRoomList.map((item, index) => {
             return (
               <ChatRoomItem
                 key={index}
@@ -53,7 +54,10 @@ const ChatRoomListAside = () => {
                 </ChatRoomItemContent>
               </ChatRoomItem>
             );
-          })}
+          })
+        ) : (
+          <ChatRoomListEmpty>채팅방 목록이 없습니다.</ChatRoomListEmpty>
+        )}
       </ChatRoomList>
     </ChatRoomListWrapper>
   );
