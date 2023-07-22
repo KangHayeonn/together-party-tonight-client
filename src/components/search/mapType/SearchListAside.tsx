@@ -83,12 +83,8 @@ const SearchListAside = () => {
       tags: "",
     });
     setSearchAddress({
-      address: {},
+      ...searchAddress,
       address_name: "",
-      address_type: "",
-      road_address: {},
-      x: "",
-      y: "",
     });
     setSearchKeyword("");
   };

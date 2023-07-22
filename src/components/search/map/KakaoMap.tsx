@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Script from "next/script";
 import { Map, MapMarker, useMap, CustomOverlayMap } from "react-kakao-maps-sdk";
 import {
   MapWrapper,
   CustomOverlay,
 } from "@/styles/components/search/map/KakaoMap";
-import { kakaoMapData } from "@/utils/mock/search";
+// recoil
+import { useRecoilValue } from "recoil";
+import { searchState, searchResponseState } from "@/recoil/search/searchState";
+import { categoryMap } from "@/utils/categoryFormat";
 
 interface EventMarkerProps {
   position: {
@@ -17,15 +20,20 @@ interface EventMarkerProps {
   content: {
     clubId: number;
     clubName: string;
+    clubCategory: string;
   };
 }
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_APP_JS_KEY}&autoload=false`;
 
 const KakaoMap = () => {
+  const searchAddress = useRecoilValue(searchState);
+  const searchResponse = useRecoilValue(searchResponseState);
+
   const EventMarkerContainer = ({ position, content }: EventMarkerProps) => {
     const map = useMap();
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [pinType, setPinType] = useState<string>("");
     const linkImage =
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png";
 
@@ -37,7 +45,9 @@ const KakaoMap = () => {
           onMouseOver={() => setIsVisible(true)}
           onMouseOut={() => setIsVisible(false)}
           image={{
-            src: "/images/category/playPin.png", // 마커이미지의 주소입니다
+            src: `/images/category/${categoryMap.get(
+              content.clubCategory,
+            )}Pin.png`, // 마커이미지의 주소입니다
             size: {
               width: 55,
               height: 69,
@@ -75,17 +85,25 @@ const KakaoMap = () => {
       <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
       <MapWrapper>
         <Map
-          center={{ lat: 33.450705, lng: 126.570677 }} // 지도의 중심좌표
+          center={{
+            lat: parseFloat(searchAddress.y) || 37.5068914,
+            lng: parseFloat(searchAddress.x) || 127.02493,
+          }} // 지도의 중심좌표
           style={{ width: "100%", height: "100%" }} // 지도의 크기
           level={3} // 지도의 확대 레벨
         >
-          {kakaoMapData.map((value) => (
-            <EventMarkerContainer
-              key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
-              position={value.latlng}
-              content={value.content}
-            />
-          ))}
+          {searchResponse.clubList &&
+            searchResponse.clubList.map((value) => (
+              <EventMarkerContainer
+                key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
+                position={{ lat: value.longitude, lng: value.latitude }}
+                content={{
+                  clubId: value.clubId,
+                  clubName: value.clubName,
+                  clubCategory: value.clubCategory,
+                }}
+              />
+            ))}
         </Map>
       </MapWrapper>
     </>
