@@ -18,6 +18,22 @@ const InfoWrapper = styled.div`
 const TopWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  & img {
+    opacity: 1;
+    border-radius: 100%;
+  }
+
+  & img:hover {
+    opacity: 0.7;
+  }
+`;
+
+const ProfileBtn = styled.button`
+  position: relative;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 const UserInfoWrapper = styled.div`
@@ -33,6 +49,10 @@ const UserInfoWrapper = styled.div`
 
 const UserInfo = styled.div`
   display: flex;
+
+  & img {
+    border-radius: 100%;
+  }
 `;
 
 const UserName = styled.p`
@@ -133,6 +153,12 @@ const WithdrawalBtn = styled.button`
   color: #ba1a1a;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export {
   MyPageWrapper,
   InfoWrapper,
@@ -157,4 +183,6 @@ export {
   Withdrawal,
   WithdrawalBtn,
   TopWrapper,
+  LoadingWrapper,
+  ProfileBtn,
 };

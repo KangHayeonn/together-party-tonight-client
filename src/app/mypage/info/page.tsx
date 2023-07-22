@@ -1,5 +1,7 @@
 "use client";
 
+import MyPage from "@/api/mypage";
+import Loading from "@/components/common/Loading";
 import TextButton from "@/components/common/TextButton";
 import EditInfo from "@/components/mypage/info/EditInfo";
 import EditPwInfo from "@/components/mypage/info/EditPwInfo";
@@ -11,37 +13,63 @@ import {
   EditInfoWrapper,
   EditWrapper,
   InfoWrapper,
+  LoadingWrapper,
+  ProfileBtn,
   TopWrapper,
   UpdateTitle,
   UpdateWrapper,
   Withdrawal,
   WithdrawalBtn,
 } from "@/styles/page/MyPage/MyInfo";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Info() {
   const [isUpdateInfo, setIsUpdateInfo] = useState<boolean>(false);
   const [isEditPw, setIsEditPw] = useState<boolean>(false);
+  const userId =
+    typeof window !== "undefined"
+      ? (localStorage.getItem("userId") as string) || ""
+      : "";
+  const { data, isLoading } = useQuery(["user", userId], () =>
+    MyPage.v1GetUser(userId),
+  );
+
+  console.log(data);
+
+  if (isLoading) {
+    return (
+      <LoadingWrapper>
+        <Loading />
+      </LoadingWrapper>
+    );
+  }
 
   return (
     <InfoWrapper>
       {!isUpdateInfo ? (
         <>
-          <MyInfo setIsUpdateInfo={setIsUpdateInfo} />
-          <MyRating />
+          <MyInfo
+            nickname={data.nickname}
+            profileImage={data.profileImage}
+            setIsUpdateInfo={setIsUpdateInfo}
+          />
+          <MyRating rateAvg={data.rateAvg} reviewCount={data.reviewCount} />
           <MyReviewList />
         </>
       ) : (
         <>
           <UpdateWrapper>
             <TopWrapper>
-              <Image
-                src="/images/Profile.svg"
-                width={45}
-                height={45}
-                alt="프로필 이미지"
-              />
+              <ProfileBtn>
+                <Image
+                  src={data.profileImage}
+                  width={50}
+                  height={50}
+                  alt="프로필 이미지"
+                />
+              </ProfileBtn>
               <UpdateTitle>프로필 수정</UpdateTitle>
             </TopWrapper>
             <TextButton
