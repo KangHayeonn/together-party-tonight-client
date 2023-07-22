@@ -68,7 +68,6 @@ export default function Home() {
     }
 
     socketDisconnect(ws);
-
     socketReceiveMessage(ws);
 
     return () => {

@@ -14,8 +14,8 @@ const ChatRoomListWrapper = styled.div`
 const ChatRoomList = styled.ul`
   display: flex;
   flex-direction: column;
-  min-height: 60rem;
-  max-height: 60rem;
+  min-height: 50rem;
+  max-height: 50rem;
   overflow-y: scroll;
   gap: 0.1rem;
 
@@ -80,7 +80,7 @@ const ChatRoomListEmpty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60rem;
+  height: 50rem;
   font-size: 16px;
   color: #a0a0a0;
 `;

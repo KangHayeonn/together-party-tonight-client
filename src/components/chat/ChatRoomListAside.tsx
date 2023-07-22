@@ -27,10 +27,12 @@ const ChatRoomListAside = () => {
     {
       refetchOnWindowFocus: true,
       onSuccess: (res) => {
-        const { chatRoomList } = res.data.data;
-        setChatRooms({
-          chatRoomList: [...chatRoomList],
-        });
+        if (res.data.data) {
+          const { chatRoomList } = res.data.data;
+          setChatRooms({
+            chatRoomList: [...chatRoomList],
+          });
+        }
       },
     },
   );

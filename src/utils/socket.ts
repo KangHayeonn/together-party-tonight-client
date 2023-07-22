@@ -1,6 +1,6 @@
 import { MutableRefObject } from "react";
 
-const webSocketUrl = "ws://192.168.0.16:443/chatting";
+const webSocketUrl = "ws://220.65.243.133:8080/chatting";
 
 export const socketConnect = (
   ws: MutableRefObject<WebSocket | null>,
@@ -41,6 +41,7 @@ export const socketReceiveMessage = (
   if (!ws.current) return;
   ws.current.onmessage = (event: MessageEvent) => {
     const data = JSON.parse(event.data);
+    console.log("socket receive : " + JSON.stringify(data));
   };
 };
 

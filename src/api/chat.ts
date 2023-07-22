@@ -46,7 +46,7 @@ const Chat = {
   // 채팅방 목록 조회
   async v1FetchChatRoomList() {
     try {
-      const url = `${prefix}/chat/chatRoom`;
+      const url = `${prefix}/chat/chatRoom/list`;
       const result = await instanceWithToken.get(url);
       return result;
     } catch (err) {
