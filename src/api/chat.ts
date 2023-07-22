@@ -1,17 +1,6 @@
 import { instanceWithToken } from "@/api";
-import { AxiosRequestConfig } from "axios";
+import { chatType, chatListType } from "@/types/chat";
 const prefix = "/api";
-
-export interface chatType {
-  chatMsg: string;
-  chatRoomId: number;
-}
-
-export interface chatListType {
-  chatRoomId: number;
-  lastChatSeq: number;
-  listCount: number;
-}
 
 const Chat = {
   // 채팅 발송

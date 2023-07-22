@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   ChatDefaultFormWrapper,
@@ -11,8 +12,9 @@ import {
 import TextButton from "@/components/common/TextButton";
 
 const ChatDefaultForm = () => {
+  const router = useRouter();
   const onClickShowMyClubs = () => {
-    // TODO : show my club list logic
+    router.push("/mypage/list/apply");
   };
 
   return (

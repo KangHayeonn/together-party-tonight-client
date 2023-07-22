@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ChatRoomListWrapper,
   ChatRoomList,
@@ -10,14 +11,34 @@ import {
   ChatRoomItemText,
   ChatRoomItemDate,
 } from "@/styles/components/chat/ChatRoomListAside";
-import { chatRoomList } from "@/utils/mock/chat";
+import { elapsedTime } from "@/utils/dateFormat";
+// api
+import Api from "@/api/chat";
+// recoil
+import { useRecoilState } from "recoil";
+import { chatRoomListState } from "@/recoil/chat/chatState";
 
 const ChatRoomListAside = () => {
+  const [chatRooms, setChatRooms] = useRecoilState(chatRoomListState);
+  const { isLoading, error, data } = useQuery(
+    ["chatRoomList"],
+    () => Api.v1FetchChatRoomList(),
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: (res) => {
+        const { chatRoomList } = res.data.data;
+        setChatRooms({
+          chatRoomList: [...chatRoomList],
+        });
+      },
+    },
+  );
+
   return (
     <ChatRoomListWrapper>
       <ChatRoomList>
-        {chatRoomList &&
-          chatRoomList.map((item, index) => {
+        {chatRooms &&
+          chatRooms.map((item, index) => {
             return (
               <ChatRoomItem
                 key={index}
@@ -26,7 +47,9 @@ const ChatRoomListAside = () => {
                 <ChatRoomItemTitle>{item.chatRoomName}</ChatRoomItemTitle>
                 <ChatRoomItemContent>
                   <ChatRoomItemText>{item.latestMessage}</ChatRoomItemText>
-                  <ChatRoomItemDate>32분</ChatRoomItemDate>
+                  <ChatRoomItemDate>
+                    {elapsedTime(item.dateTime)}
+                  </ChatRoomItemDate>
                 </ChatRoomItemContent>
               </ChatRoomItem>
             );
