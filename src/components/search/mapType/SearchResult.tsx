@@ -21,23 +21,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { searchResponseState } from "@/recoil/search/searchState";
 
-interface searchResultItem {
-  clubId: number;
-  clubName: string;
-  clubCategory: string;
-  clubTags: string[];
-  latitude: number;
-  longitude: number;
-  address: string;
-  ratingAvg: number;
-  reviewCnt: number;
-}
-
-interface searchResultProps {
-  searchResult?: Array<searchResultItem>;
-}
-
-const SearchResult = ({ searchResult }: searchResultProps) => {
+const SearchResult = () => {
   const router = useRouter();
   const searchResponse = useRecoilValue(searchResponseState);
 

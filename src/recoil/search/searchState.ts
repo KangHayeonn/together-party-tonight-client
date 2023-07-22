@@ -36,7 +36,7 @@ const searchAddressState = atom<SearchAddressType>({
 const searchOptionsState = atom<SearchOptionsType>({
   key: "searchOptionsState",
   default: {
-    category: "전체",
+    category: "",
     distance: 5,
     lat: 0,
     lng: 0,

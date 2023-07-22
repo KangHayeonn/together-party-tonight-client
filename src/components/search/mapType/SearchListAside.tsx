@@ -71,7 +71,7 @@ const SearchListAside = () => {
 
   const initSearchOptions = () => {
     setSearchOptions({
-      category: "전체",
+      category: "",
       distance: 5,
       lat: 0,
       lng: 0,
@@ -111,7 +111,7 @@ const SearchListAside = () => {
       <SearchFilter />
       <SearchTagList />
       <SearchOption />
-      <SearchResult searchResult={clubList} />
+      <SearchResult />
     </SearchListAsideWrapper>
   );
 };

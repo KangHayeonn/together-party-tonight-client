@@ -1,13 +1,25 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import DropDown from "@/components/common/DropDown";
 import TextButton from "@/components/common/TextButton";
 import { SearchOptionWrapper } from "@/styles/components/search/mapType/SearchOption";
+import { validationSearchByOptions } from "@/utils/func/SearchFunc";
+// api
+import Api from "@/api/search";
 // recoil
-import { useRecoilState } from "recoil";
-import { searchOptionsState } from "@/recoil/search/searchState";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  searchState,
+  searchKeywordState,
+  searchOptionsState,
+  searchResponseState,
+} from "@/recoil/search/searchState";
 
 const SearchOption = () => {
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
+  const [searchAddress, setSearchAddress] = useRecoilState(searchState);
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
+  const setSearchResponse = useSetRecoilState(searchResponseState);
 
   const optionList = ["최신순", "인기순"];
 
@@ -19,9 +31,47 @@ const SearchOption = () => {
     });
   };
 
+  const { refetch } = useQuery(
+    ["searchByAddress", searchOptions],
+    () => Api.v1SearchByOptions(searchOptions),
+    {
+      onSuccess: (res) => {
+        const { clubList, count, totalCount } = res.data.data;
+        setSearchResponse({
+          clubList: [...clubList],
+          count: count,
+          totalCount: totalCount,
+        });
+      },
+      enabled: false,
+    },
+  );
+
   const onClickSearch = () => {
-    // TODO : search api logic
-    console.log(searchOptions);
+    if (validationSearchByOptions(searchOptions)) {
+      refetch();
+      initSearchOptions();
+    }
+  };
+
+  const initSearchOptions = () => {
+    setSearchOptions({
+      category: "",
+      distance: 5,
+      lat: 0,
+      lng: 0,
+      memberNum: 10,
+      page: 0,
+      size: 20,
+      sortFilter: "latest",
+      status: "all",
+      tags: "",
+    });
+    setSearchAddress({
+      ...searchAddress,
+      address_name: "",
+    });
+    setSearchKeyword("");
   };
 
   return (

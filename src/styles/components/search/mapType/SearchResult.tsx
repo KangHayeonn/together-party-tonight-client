@@ -123,8 +123,8 @@ const SearchResultEmpty = styled.div`
   justify-content: center;
   height: 20rem;
   font-size: 16px;
-  color: #A0A0A0;
-`
+  color: #a0a0a0;
+`;
 
 export {
   SearchResultList,
@@ -140,5 +140,5 @@ export {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
-  SearchResultEmpty
+  SearchResultEmpty,
 };

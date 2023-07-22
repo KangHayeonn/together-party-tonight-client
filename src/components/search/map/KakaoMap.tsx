@@ -63,8 +63,8 @@ const KakaoMap = () => {
         <CustomOverlayMap position={position} yAnchor={1}>
           <CustomOverlay>
             <a
-              href="https://map.kakao.com/link/map/11394059"
-              target="_blank"
+              href={`/search/${content.clubId}`}
+              target="_self"
               rel="noreferrer"
               className="test"
               style={{
@@ -90,7 +90,7 @@ const KakaoMap = () => {
             lng: parseFloat(searchAddress.x) || 127.02493,
           }} // 지도의 중심좌표
           style={{ width: "100%", height: "100%" }} // 지도의 크기
-          level={3} // 지도의 확대 레벨
+          level={4} // 지도의 확대 레벨
         >
           {searchResponse.clubList &&
             searchResponse.clubList.map((value) => (
