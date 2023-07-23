@@ -14,6 +14,7 @@ interface SliderFormProps {
   minText?: string;
   maxText?: string;
   defaultValue?: number;
+  changeNum?: (distance: number) => void;
 }
 
 const SliderForm = ({
@@ -21,6 +22,7 @@ const SliderForm = ({
   minText,
   maxText,
   defaultValue = 0,
+  changeNum,
 }: SliderFormProps) => {
   const [sliderValue, setSliderValue] = useState<number>(defaultValue);
   const [previewText, setPreviewText] = useState<string>("");
@@ -31,6 +33,7 @@ const SliderForm = ({
     setSliderValue(Number(e.target.value));
     getLeftColor(sliderValue);
     getPreviewPosition(sliderValue);
+    if (changeNum) changeNum(Number(e.target.value));
   };
 
   const getLeftColor = useCallback((value: number) => {

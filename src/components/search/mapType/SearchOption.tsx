@@ -1,18 +1,94 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import DropDown from "@/components/common/DropDown";
-import RoundButton from "@/components/common/RoundButton";
+import TextButton from "@/components/common/TextButton";
 import { SearchOptionWrapper } from "@/styles/components/search/mapType/SearchOption";
-import { optionList } from "@/utils/mock/search";
+import { validationSearchByOptions } from "@/utils/func/SearchFunc";
+// api
+import Api from "@/api/search";
+// recoil
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  searchState,
+  searchKeywordState,
+  searchOptionsState,
+  searchResponseState,
+} from "@/recoil/search/searchState";
 
 const SearchOption = () => {
-  const onClickRoundBtnEvent = () => {
-    // TODO : search api logic
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
+  const [searchAddress, setSearchAddress] = useRecoilState(searchState);
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
+  const setSearchResponse = useSetRecoilState(searchResponseState);
+
+  const optionList = ["최신순", "인기순"];
+
+  const onSearchCategoryChange = (category: string) => {
+    const categoryId = category === "최신순" ? "latest" : "popular";
+    setSearchOptions({
+      ...searchOptions,
+      category: categoryId,
+    });
+  };
+
+  const { refetch } = useQuery(
+    ["searchByAddress", searchOptions],
+    () => Api.v1SearchByOptions(searchOptions),
+    {
+      onSuccess: (res) => {
+        const { clubList, count, totalCount } = res.data.data;
+        setSearchResponse({
+          clubList: [...clubList],
+          count: count,
+          totalCount: totalCount,
+        });
+      },
+      enabled: false,
+    },
+  );
+
+  const onClickSearch = () => {
+    if (validationSearchByOptions(searchOptions)) {
+      refetch();
+      initSearchOptions();
+    }
+  };
+
+  const initSearchOptions = () => {
+    setSearchOptions({
+      category: "",
+      distance: 5,
+      lat: 0,
+      lng: 0,
+      memberNum: 10,
+      page: 0,
+      size: 20,
+      sortFilter: "latest",
+      status: "all",
+      tags: "",
+    });
+    setSearchAddress({
+      ...searchAddress,
+      address_name: "",
+    });
+    setSearchKeyword("");
   };
 
   return (
     <SearchOptionWrapper>
-      <DropDown dropDownList={optionList} />
-      <RoundButton text="옵션 적용" onClickEvent={onClickRoundBtnEvent} />
+      <DropDown
+        defaultText="최신순"
+        dropDownList={optionList}
+        changeText={onSearchCategoryChange}
+      />
+      <TextButton
+        text="옵션 적용"
+        onClick={onClickSearch}
+        fontSize={14}
+        weight={500}
+        width={100}
+        height={35}
+      />
     </SearchOptionWrapper>
   );
 };
