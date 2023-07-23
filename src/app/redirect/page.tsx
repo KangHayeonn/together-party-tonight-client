@@ -11,17 +11,21 @@ export default function Redirect() {
 
   const kakaoLoginPost = useCallback(
     async (code: string) => {
-      const response = await instance.post("/api/members/oauth/kakao/token", {
-        authorizationCode: code,
-        redirectUri: "http://localhost:3000/redirect",
-      });
-      if (response.data.data.success === "fail") {
-        router.push("/login");
-      } else {
-        localStorage.setItem("accessToken", response.data.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        localStorage.setItem("userId", response.data.data.userId);
-        router.push("/");
+      try {
+        const response = await instance.post("/api/members/oauth/kakao/token", {
+          authorizationCode: code,
+          redirectUri: "http://localhost:3000/redirect",
+        });
+        if (response.data.data.success === "fail") {
+          router.push("/login");
+        } else {
+          localStorage.setItem("accessToken", response.data.data.accessToken);
+          localStorage.setItem("refreshToken", response.data.data.refreshToken);
+          localStorage.setItem("userId", response.data.data.userId);
+          router.push("/");
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
     [router],

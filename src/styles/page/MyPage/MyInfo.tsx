@@ -29,11 +29,24 @@ const TopWrapper = styled.div`
   }
 `;
 
-const ProfileBtn = styled.button`
+const ProfileBtn = styled.label`
   position: relative;
+  display: flex;
+  flex-direction: column;
   border: 0;
   background-color: transparent;
   cursor: pointer;
+`;
+
+const ProfileEditBtn = styled.button`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -20px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
 `;
 
 const UserInfoWrapper = styled.div`
@@ -185,4 +198,5 @@ export {
   TopWrapper,
   LoadingWrapper,
   ProfileBtn,
+  ProfileEditBtn,
 };

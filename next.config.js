@@ -4,7 +4,7 @@ const nextConfig = {
         styledComponents: true,
     },
     images: {
-      domains: ['k.kakaocdn.net'],
+      domains: ['k.kakaocdn.net', 'topato-github-actions-s3-bucket.s3.ap-northeast-2.amazonaws.com'],
     },
 };
 

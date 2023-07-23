@@ -18,11 +18,12 @@ type MyPageListItem = {
 export default function SideBar() {
   const router = useRouter();
   const path = usePathname();
-  const curMenu = path?.split("/").at(-1);
+  const curId = path?.split("/").at(-1);
+  const curMenu = path?.split("/").at(-2);
 
   const handleClickMenu = (item: string) => {
     const newPath = item === "info" ? item : `list/${item}`;
-    router.push(`/mypage/${newPath}`);
+    router.push(`/mypage/${newPath}/${curId}`);
   };
 
   return (

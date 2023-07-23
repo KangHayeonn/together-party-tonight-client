@@ -13,32 +13,43 @@ import React from "react";
 type Props = {
   setIsUpdateInfo: React.Dispatch<React.SetStateAction<boolean>>;
   nickname: string;
-  profileImage: string;
+  description: string;
+  profileImage: string | null;
+  isMyAccount: boolean;
 };
 
 export default function MyInfo({
   nickname,
   profileImage,
+  description,
   setIsUpdateInfo,
+  isMyAccount,
 }: Props) {
   return (
     <UserInfoWrapper>
       <UserInfo>
-        <Image src={profileImage} width={50} height={50} alt="프로필 이미지" />
+        <Image
+          src={profileImage || "/images/Profile.svg"}
+          width={50}
+          height={50}
+          alt="프로필 이미지"
+        />
         <div>
           <UserName>{nickname}</UserName>
-          <UserDesc>축구, 런닝 좋아합니다.</UserDesc>
+          <UserDesc>{description}</UserDesc>
         </div>
       </UserInfo>
-      <TextButton
-        text="수정하기"
-        onClick={() => {
-          setIsUpdateInfo((val) => !val);
-        }}
-        width={80}
-        height={35}
-        fontSize={14}
-      />
+      {isMyAccount && (
+        <TextButton
+          text="수정하기"
+          onClick={() => {
+            setIsUpdateInfo((val) => !val);
+          }}
+          width={80}
+          height={35}
+          fontSize={14}
+        />
+      )}
     </UserInfoWrapper>
   );
 }

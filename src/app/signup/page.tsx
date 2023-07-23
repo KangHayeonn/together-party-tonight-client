@@ -62,7 +62,7 @@ export default function Signup() {
     e.preventDefault();
     emailCheckMutation.mutate(formValues.email, {
       onSuccess: (response) => {
-        if (response.success === "success") {
+        if (response.success === "true") {
           setConfirmEmail("success");
           setErrorMessage("");
         } else {
@@ -78,7 +78,7 @@ export default function Signup() {
     if (checkFormValues()) {
       authRequestMutation.mutate(formValues.email, {
         onSuccess: (response) => {
-          if (response.success === "success") {
+          if (response.success === "true") {
             setIsSendEmail(true);
           }
         },
@@ -97,7 +97,7 @@ export default function Signup() {
       },
       {
         onSuccess: (response) => {
-          if (response.success === "success") {
+          if (response.success === "true") {
             router.push("/login");
           } else {
             setErrorMessage(response.errorMessage);

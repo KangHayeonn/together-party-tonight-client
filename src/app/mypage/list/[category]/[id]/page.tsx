@@ -5,10 +5,10 @@ import ReviewItem from "@/components/mypage/list/ReviewItem";
 import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 
 type Props = {
-  params: { category: string };
+  params: { category: string; id: string };
 };
 
-export default function Category({ params: { category } }: Props) {
+export default function Category({ params: { category, id } }: Props) {
   return (
     <MypageListWrapper>
       {/* TODO: list map */}

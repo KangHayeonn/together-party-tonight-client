@@ -14,12 +14,12 @@ import { useRecoilState } from "recoil";
 
 type Props = {
   children: React.ReactNode;
-  params: { category: string };
+  params: { category: string; id: string };
 };
 
 export default function CategoryLayout({
   children,
-  params: { category },
+  params: { category, id },
 }: Props) {
   const [selected, setSelected] = useRecoilState(CalculateSelect);
   const handleSelect = (value: string) => {
