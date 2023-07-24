@@ -1,6 +1,7 @@
 "use client";
 
 import AuthLayout from "@/components/common/AuthLayout";
+import ApplyModal from "@/components/mypage/ApplyModal";
 import ReviewModal from "@/components/mypage/ReviewModal";
 import SideBar from "@/components/mypage/SideBar";
 import { ModalAtom } from "@/recoil/modal/atom";
@@ -21,6 +22,7 @@ function MyPageLayout({ children }: Props) {
         <SideBar />
         {children}
         {modal.isOpen && <ReviewModal />}
+        {/* <ApplyModal /> */}
       </MyPageWrapper>
     </AuthLayout>
   );
