@@ -16,20 +16,21 @@ import {
 } from "@/styles/components/mypage/DetailModal";
 import { ReviewRating } from "@/styles/components/mypage/ListItem";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { ModalAtom } from "@/recoil/modal/atom";
+import { toStringByFormatting } from "@/utils/dateFormat";
 
-type Props = {
-  title: string;
-};
+export default function DetailModal() {
+  const { isMyReview, item } = useRecoilValue(ModalAtom);
 
-export default function DetailModal({ title }: Props) {
   const [isEdit, setIsEdit] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(item.reviewContent);
 
   const handleSetValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
   return (
-    <Modal title={title}>
+    <Modal title={item.clubName}>
       <ModalInner>
         <ReviewerInfo>
           <Reviewer>
@@ -39,9 +40,13 @@ export default function DetailModal({ title }: Props) {
               height={30}
               alt="프로필 이미지"
             />
-            &nbsp; 밍키님이 작성함
+            &nbsp; {item.nickName}님이 작성함
           </Reviewer>
-          <CreatedReview>2022년 8월 23일</CreatedReview>
+          <CreatedReview>
+            {toStringByFormatting(
+              new Date(item.modifiedDate || item.createdDate),
+            )}
+          </CreatedReview>
         </ReviewerInfo>
         <MeetingInfo>
           <Image
@@ -67,7 +72,7 @@ export default function DetailModal({ title }: Props) {
                 height={16}
                 alt="시간 아이콘"
               />
-              2023/06/06
+              {toStringByFormatting(new Date(item.createdDate), "/")}
             </p>
           </InfoWrapper>
         </MeetingInfo>
@@ -124,26 +129,28 @@ export default function DetailModal({ title }: Props) {
                   height={16}
                   alt="별"
                 />
-                <ReviewRating>4.1</ReviewRating>
+                <ReviewRating>{item.rating}</ReviewRating>
               </RatingWrapper>
-              <div>
-                <EditBtn onClick={() => setIsEdit(true)}>
-                  <Image
-                    src="/images/Edit.svg"
-                    width={18}
-                    height={18}
-                    alt="수정하기"
-                  />
-                </EditBtn>
-                <EditBtn>
-                  <Image
-                    src="/images/trash.svg"
-                    width={18}
-                    height={18}
-                    alt="삭제하기"
-                  />
-                </EditBtn>
-              </div>
+              {isMyReview && (
+                <div>
+                  <EditBtn onClick={() => setIsEdit(true)}>
+                    <Image
+                      src="/images/Edit.svg"
+                      width={18}
+                      height={18}
+                      alt="수정하기"
+                    />
+                  </EditBtn>
+                  <EditBtn>
+                    <Image
+                      src="/images/trash.svg"
+                      width={18}
+                      height={18}
+                      alt="삭제하기"
+                    />
+                  </EditBtn>
+                </div>
+              )}
             </>
           )}
         </EditWrapper>
@@ -159,14 +166,7 @@ export default function DetailModal({ title }: Props) {
               <TextLen>{text.length}/300</TextLen>
             </>
           ) : (
-            <p>
-              정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말
-              좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말
-              좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말정말
-              좋아요!정말 좋아요!정말 좋아요! 좋아요!정말 좋아요!정말
-              좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말
-              좋아요!정말 좋아요!정말 좋아요!정말 좋아요!정말 좋아요!
-            </p>
+            <p>{text}</p>
           )}
         </TextWrapper>
       </ModalInner>

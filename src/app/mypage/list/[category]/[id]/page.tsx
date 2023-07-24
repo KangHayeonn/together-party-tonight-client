@@ -15,8 +15,8 @@ export default function Category({ params: { category, id } }: Props) {
       <ul>
         {category === "review" ? (
           <>
-            <ReviewItem />
-            <ReviewItem />
+            {/* <ReviewItem />
+            <ReviewItem /> */}
           </>
         ) : (
           <MeetingItem category={category} />

@@ -23,7 +23,7 @@ export default function MyRating({ rateAvg, reviewCount }: ReviewRate) {
         &nbsp; <Em>{rateAvg}</Em>
       </Rating>
       <div>
-        리뷰 개수 : <Em>{reviewCount}개</Em>
+        리뷰 개수 : <Em>{reviewCount} 개</Em>
       </div>
     </RatingWrapper>
   );

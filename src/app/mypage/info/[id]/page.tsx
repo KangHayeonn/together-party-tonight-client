@@ -65,11 +65,6 @@ export default function Info({ params: { id } }: Props) {
     },
   );
 
-  const { data: reviews, isLoading: isLoadingReview } = useQuery(
-    ["review", id],
-    () => MyPage.v1GetReceivedReivew(id),
-  );
-
   const { mutate: updateNickname } = useMutation({
     mutationFn: () => MyPage.v1UpdateNickname(id, formValues.nickname),
   });
@@ -153,7 +148,7 @@ export default function Info({ params: { id } }: Props) {
     setIsMyAccount(id === getId);
   }, [id]);
 
-  if (isLoading || isLoadingReview) {
+  if (isLoading || !data) {
     return (
       <LoadingWrapper>
         <Loading />
@@ -173,7 +168,7 @@ export default function Info({ params: { id } }: Props) {
             isMyAccount={isMyAccount}
           />
           <MyRating rateAvg={data.rateAvg} reviewCount={data.reviewCount} />
-          <MyReviewList />
+          <MyReviewList userId={id} />
         </>
       ) : (
         <>

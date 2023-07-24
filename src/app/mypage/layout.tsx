@@ -20,7 +20,7 @@ function MyPageLayout({ children }: Props) {
       <MyPageWrapper>
         <SideBar />
         {children}
-        {modal.isOpen && <DetailModal title={modal.title} />}
+        {modal.isOpen && <DetailModal />}
       </MyPageWrapper>
     </AuthLayout>
   );

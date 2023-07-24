@@ -1,6 +1,6 @@
 "use client";
 
-import { ModalAtom } from "@/recoil/modal/atom";
+import { IReviewItem, ModalAtom } from "@/recoil/modal/atom";
 import {
   MeetingName,
   ReviewListItem,
@@ -14,15 +14,21 @@ import {
 import { MypageBtn } from "@/styles/page/MyPage/ListLayout";
 import Image from "next/image";
 import { useSetRecoilState } from "recoil";
+import { toStringByFormatting } from "@/utils/dateFormat";
 
-export default function ReviewItem() {
+type Props = {
+  item: IReviewItem;
+  isMyReview: boolean;
+};
+
+export default function ReviewItem({ item, isMyReview }: Props) {
   const setIsOpen = useSetRecoilState(ModalAtom);
 
   return (
     <li>
       <MypageBtn
         onClick={() =>
-          setIsOpen((val) => ({ isOpen: true, title: "모임 이름123" }))
+          setIsOpen((val) => ({ ...val, isMyReview, isOpen: true, item }))
         }
       >
         <ReviewListItem>
@@ -33,19 +39,23 @@ export default function ReviewItem() {
               height={30}
               alt="사용자 프로필"
             />
-            <UserName>밍키</UserName>
+            <UserName>{item.nickName}</UserName>
             <Image
               src="/images/SmallStar.svg"
               width={14}
               height={14}
               alt="별"
             />
-            <ReviewRating>4.1</ReviewRating>
+            <ReviewRating>{item.rating}</ReviewRating>
           </UserWrapper>
-          <ItemDesc>모임설명모임설명모임설명모임설명</ItemDesc>
+          <ItemDesc>{item.reviewContent}</ItemDesc>
           <ItemDateWrapper>
-            <MeetingName>모임명: 테니스 모임회</MeetingName>
-            <ItemDate>2023년 6월 4일</ItemDate>
+            <MeetingName>모임명: {item.clubName}</MeetingName>
+            <ItemDate>
+              {toStringByFormatting(
+                new Date(item.modifiedDate || item.createdDate),
+              )}
+            </ItemDate>
           </ItemDateWrapper>
         </ReviewListItem>
       </MypageBtn>

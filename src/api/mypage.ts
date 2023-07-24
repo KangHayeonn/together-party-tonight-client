@@ -72,10 +72,22 @@ const MyPage = {
     }
   },
 
-  async v1GetReceivedReivew(userId: string) {
+  async v1GetReceivedReivew(
+    userId: string,
+    page: number,
+    size: number,
+    sort: string,
+  ) {
     try {
       const res = await instanceWithToken.get(
         `${prefix}/members/reviews/${userId}`,
+        {
+          params: {
+            page,
+            size,
+            sort,
+          },
+        },
       );
       return res.data.data;
     } catch (err) {
