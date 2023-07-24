@@ -10,10 +10,16 @@ import {
   MeetingMoreBtn,
   TagList,
 } from "@/styles/components/mypage/ListItem";
+import { IClubItem } from "@/types/mypage";
+import {
+  toStringByFormatting,
+  toStringByFormattingTime,
+} from "@/utils/dateFormat";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 
 type Props = {
+  item: IClubItem;
   category: string;
 };
 
@@ -24,7 +30,7 @@ type ItemBtnObjType = {
   };
 };
 
-export default function MeetingItem({ category }: Props) {
+export default function MeetingItem({ item, category }: Props) {
   const curCalculate = useRecoilValue(CalculateSelect);
 
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
@@ -44,19 +50,32 @@ export default function MeetingItem({ category }: Props) {
     };
   }, [curCalculate]);
 
+  const convertDate = (date: string) => {
+    const getDate = date.split("T");
+    return `${toStringByFormatting(
+      new Date(getDate[0]),
+      ".",
+    )} ${toStringByFormattingTime(new Date(date))}`;
+  };
+
   return (
     <ListItem>
       <ItemInfo>
-        <ItemTitle>모임 제목</ItemTitle>
-        <p>모집중&nbsp;&nbsp;1/5</p>
+        <ItemTitle>{item.clubName}</ItemTitle>
+        <p>모집중&nbsp;&nbsp;n/{item.clubMaximum}</p>
       </ItemInfo>
-      <ItemDesc>모임설명모임설명모임설명모임설명</ItemDesc>
+      <ItemDesc>{item.clubContent}</ItemDesc>
       <TagList>
-        <li>#테니스</li>
-        <li>#축구</li>
+        {item?.clubTags &&
+          item.clubTags.length > 0 &&
+          item.clubTags.map((tagName: string, idx: number) => (
+            <li key={idx}>#{tagName}</li>
+          ))}
       </TagList>
       <ItemDateWrapper>
-        <ItemDate>2023.06.04 (월) 13:25</ItemDate>
+        <ItemDate>
+          {convertDate(item.modifiedDate || item.createdDate)}
+        </ItemDate>
         <MeetingMoreBtn>{itemBtnObj[category].btnName}</MeetingMoreBtn>
       </ItemDateWrapper>
     </ListItem>

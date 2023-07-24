@@ -6,46 +6,45 @@ import {
 import Image from "next/image";
 import ReviewItem from "../list/ReviewItem";
 import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
-import { IReviewItem } from "@/recoil/modal/atom";
 import MyPage from "@/api/mypage";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { IReviewItem } from "@/types/mypage";
 
 type Props = {
   userId: string;
 };
 
 export default function MyReviewList({ userId }: Props) {
-  const targetRef = useRef(null);
-  const isIntersecting = useIntersectionObserver(targetRef, {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.7,
-  });
+  const ulRef = useRef<HTMLUListElement>(null);
 
   const [isFold, setIsFold] = useState(true);
-  const [sortBy, setSortBy] = useState("createdDate,ASC");
   const [reviewList, setReviewList] = useState<IReviewItem[]>([]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ["reviews", sortBy],
-      ({ pageParam = 0 }) =>
-        MyPage.v1GetReceivedReivew(userId, pageParam, 1, sortBy),
-      {
-        getNextPageParam: (lastPage) => {
-          // 현재 페이지 번호가 총 페이지 수를 넘어가면 더 이상 로드할 페이지가 없음
-          if (lastPage.page >= lastPage.totalPages) {
-            return null;
-          }
-          return lastPage.page + 1;
-        },
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ["reviews"],
+    ({ pageParam = 0 }) =>
+      MyPage.v1GetReceivedReivew(userId, pageParam, 5, "createdDate,DESC"),
+    {
+      getNextPageParam: (lastPage) => {
+        // 현재 페이지 번호가 총 페이지 수를 넘어가면 더 이상 로드할 페이지가 없음
+        if (lastPage.page >= lastPage.totalPages - 1) {
+          return undefined;
+        }
+        return lastPage.page + 1;
       },
-    );
+    },
+  );
 
-  const handleSortChange = (newSortBy: string) => {
-    setSortBy(newSortBy);
+  const handleScroll = () => {
+    if (!isLoading && ulRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = ulRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight;
+
+      if (isScrolledToBottom && hasNextPage) {
+        fetchNextPage();
+      }
+    }
   };
 
   useEffect(() => {
@@ -56,11 +55,14 @@ export default function MyReviewList({ userId }: Props) {
   }, [data]);
 
   useEffect(() => {
-    if (isIntersecting && hasNextPage) {
-      fetchNextPage();
+    if (ulRef.current) {
+      ulRef.current.addEventListener("scroll", handleScroll);
+
+      return () => {
+        ulRef.current?.removeEventListener("scroll", handleScroll);
+      };
     }
-    console.log(isIntersecting);
-  }, [isIntersecting, hasNextPage, fetchNextPage]);
+  }, [ulRef, hasNextPage]);
 
   return (
     <ReviewWrapper>
@@ -76,7 +78,7 @@ export default function MyReviewList({ userId }: Props) {
         </ArrowBtn>
       </ReviewTitle>
       {isFold && (
-        <MypageListWrapper ref={targetRef}>
+        <MypageListWrapper ref={ulRef}>
           {reviewList.length > 0 &&
             reviewList.map((item, idx) => (
               <ReviewItem key={idx} isMyReview={false} item={item} />

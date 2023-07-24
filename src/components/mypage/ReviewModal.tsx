@@ -15,22 +15,92 @@ import {
   TextWrapper,
 } from "@/styles/components/mypage/DetailModal";
 import { ReviewRating } from "@/styles/components/mypage/ListItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { toStringByFormatting } from "@/utils/dateFormat";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import MyPage from "@/api/mypage";
+import { LoadingWrapper, ProfileBtn } from "@/styles/page/MyPage/MyInfo";
+import Loading from "../common/Loading";
 
 export default function DetailModal() {
-  const { isMyReview, item } = useRecoilValue(ModalAtom);
+  const { isMyReview, reviewId } = useRecoilValue(ModalAtom);
+
+  const { data, isLoading } = useQuery(["review", reviewId], () =>
+    MyPage.v1GetReviewDetail(reviewId),
+  );
 
   const [isEdit, setIsEdit] = useState(false);
-  const [text, setText] = useState(item.reviewContent);
+  const [text, setText] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewImg, setReviewImg] = useState("");
+  const [reviewFile, setReviewFile] = useState<File | undefined>();
 
   const handleSetValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+
+  const handleRatingClick = (index: number) => {
+    setReviewRating(index + 1);
+  };
+
+  const handleEditReview = () => {
+    const formData = new FormData();
+    const jsonString = JSON.stringify({
+      reviewId: reviewId,
+      rating: reviewRating,
+      reviewContent: text,
+    });
+    formData.append(
+      "data",
+      new Blob([jsonString], { type: "application/json" }),
+    );
+    if (reviewFile) {
+      formData.append("image", reviewFile);
+    }
+    editReview(formData);
+    setIsEdit(false);
+  };
+
+  const { mutate: editReview } = useMutation({
+    mutationFn: (formData: FormData) => MyPage.v1UpdateReview(formData),
+  });
+
+  const handleUploadReviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setReviewImg(reader.result?.toString() || "");
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+      setReviewFile(file);
+      // const formData = new FormData();
+      // formData.append("image", file);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setText(data.reviewContent);
+      setReviewRating(data.rating);
+      setReviewImg(data.image);
+    }
+  }, [data, isLoading]);
+
+  if (isLoading || !data) {
+    return (
+      <LoadingWrapper>
+        <Loading />
+      </LoadingWrapper>
+    );
+  }
+
   return (
-    <Modal title={item.clubName}>
+    <Modal title={data.clubName}>
       <ModalInner>
         <ReviewerInfo>
           <Reviewer>
@@ -40,21 +110,25 @@ export default function DetailModal() {
               height={30}
               alt="프로필 이미지"
             />
-            &nbsp; {item.nickName}님이 작성함
+            &nbsp; {data.nickname}님이 작성함
           </Reviewer>
           <CreatedReview>
             {toStringByFormatting(
-              new Date(item.modifiedDate || item.createdDate),
+              new Date(data.modifiedDate || data.createdDate),
             )}
           </CreatedReview>
         </ReviewerInfo>
         <MeetingInfo>
-          <Image
-            src="/images/review.svg"
-            width={130}
-            height={130}
-            alt="프로필 이미지"
-          />
+          <ProfileBtn htmlFor="fileInput">
+            <Image src={reviewImg} width={130} height={130} alt="리뷰 이미지" />
+            <input
+              id="fileInput"
+              type="file"
+              onChange={handleUploadReviewImg}
+              style={{ display: "none" }}
+              disabled={!isEdit}
+            />
+          </ProfileBtn>
           <InfoWrapper>
             <p>
               <Image
@@ -72,7 +146,7 @@ export default function DetailModal() {
                 height={16}
                 alt="시간 아이콘"
               />
-              {toStringByFormatting(new Date(item.createdDate), "/")}
+              {toStringByFormatting(new Date(data.meetingDate), "/")}
             </p>
           </InfoWrapper>
         </MeetingInfo>
@@ -80,38 +154,22 @@ export default function DetailModal() {
           {isEdit ? (
             <>
               <RatingWrapper>
-                <Image
-                  src="/images/checkStar.svg"
-                  width={20}
-                  height={20}
-                  alt="별"
-                />
-                <Image
-                  src="/images/checkStar.svg"
-                  width={20}
-                  height={20}
-                  alt="별"
-                />
-                <Image
-                  src="/images/checkStar.svg"
-                  width={20}
-                  height={20}
-                  alt="별"
-                />
-                <Image
-                  src="/images/checkEmptyStar.svg"
-                  width={20}
-                  height={20}
-                  alt="별"
-                />
-                <Image
-                  src="/images/checkEmptyStar.svg"
-                  width={20}
-                  height={20}
-                  alt="별"
-                />
+                {[...Array(5)].map((_, index) => (
+                  <Image
+                    key={index}
+                    src={
+                      index < reviewRating
+                        ? "/images/checkStar.svg"
+                        : "/images/checkEmptyStar.svg"
+                    }
+                    width={20}
+                    height={20}
+                    alt="별"
+                    onClick={() => handleRatingClick(index)}
+                  />
+                ))}
               </RatingWrapper>
-              <EditBtn onClick={() => setIsEdit(false)}>
+              <EditBtn onClick={handleEditReview}>
                 <Image
                   src="/images/Check.svg"
                   width={20}
@@ -129,7 +187,7 @@ export default function DetailModal() {
                   height={16}
                   alt="별"
                 />
-                <ReviewRating>{item.rating}</ReviewRating>
+                <ReviewRating>{data.rating}</ReviewRating>
               </RatingWrapper>
               {isMyReview && (
                 <div>
@@ -160,9 +218,8 @@ export default function DetailModal() {
               <TextArea
                 onChange={(e) => handleSetValue(e)}
                 placeholder="리뷰 내용을 입력하세요."
-              >
-                {text}
-              </TextArea>
+                value={text}
+              />
               <TextLen>{text.length}/300</TextLen>
             </>
           ) : (

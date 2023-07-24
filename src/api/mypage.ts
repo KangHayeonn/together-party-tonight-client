@@ -94,6 +94,73 @@ const MyPage = {
       return Promise.reject(err);
     }
   },
+
+  async v1GetMyReview(page: number, size: number, sort: string) {
+    try {
+      const res = await instanceWithToken.get(`${prefix}/members/myReviews`, {
+        params: {
+          page,
+          size,
+          sort,
+        },
+      });
+      return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1GetMyMeeting(filter: string, page: number, size: number) {
+    try {
+      const res = await instanceWithToken.get(`${prefix}/clubs/myOwned`, {
+        params: {
+          filter,
+          page,
+          size,
+          sort: "createdDate,DESC",
+        },
+      });
+      return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1GetApplyMeeting(filter: string, page: number, size: number) {
+    try {
+      const res = await instanceWithToken.get(`${prefix}/clubs/myApplied`, {
+        params: {
+          filter,
+          page,
+          size,
+          sort: "createdDate,DESC",
+        },
+      });
+      return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1UpdateReview(formData: FormData) {
+    try {
+      const res = await instanceWithToken.put(`${prefix}/reviews`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1GetReviewDetail(reviewId: number) {
+    try {
+      const res = await instanceWithToken.get(`${prefix}/reviews/${reviewId}`);
+      return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default MyPage;

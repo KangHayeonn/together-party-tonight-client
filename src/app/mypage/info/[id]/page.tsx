@@ -104,8 +104,6 @@ export default function Info({ params: { id } }: Props) {
   const { mutate: uploadProfile } = useMutation({
     mutationFn: (formData: FormData) => MyPage.v1UpdateProfile(id, formData),
     onSuccess: (data) => {
-      console.log("여기", data);
-
       if (data.success === "true") {
         resetForm({
           ...formValues,

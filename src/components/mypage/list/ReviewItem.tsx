@@ -1,6 +1,6 @@
 "use client";
 
-import { IReviewItem, ModalAtom } from "@/recoil/modal/atom";
+import { ModalAtom } from "@/recoil/modal/atom";
 import {
   MeetingName,
   ReviewListItem,
@@ -15,6 +15,7 @@ import { MypageBtn } from "@/styles/page/MyPage/ListLayout";
 import Image from "next/image";
 import { useSetRecoilState } from "recoil";
 import { toStringByFormatting } from "@/utils/dateFormat";
+import { IReviewItem } from "@/types/mypage";
 
 type Props = {
   item: IReviewItem;
@@ -28,16 +29,23 @@ export default function ReviewItem({ item, isMyReview }: Props) {
     <li>
       <MypageBtn
         onClick={() =>
-          setIsOpen((val) => ({ ...val, isMyReview, isOpen: true, item }))
+          setIsOpen((val) => ({
+            ...val,
+            isMyReview,
+            isOpen: true,
+            reviewItem: item,
+            reviewId: item.reviewId,
+          }))
         }
       >
         <ReviewListItem>
           <UserWrapper>
             <Image
-              src="/images/Profile.svg"
+              src={item.profileImage}
               width={30}
               height={30}
               alt="사용자 프로필"
+              style={{ borderRadius: "50px" }}
             />
             <UserName>{item.nickName}</UserName>
             <Image
