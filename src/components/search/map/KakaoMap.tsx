@@ -10,7 +10,6 @@ import {
 // recoil
 import { useRecoilValue } from "recoil";
 import { searchState, searchResponseState } from "@/recoil/search/searchState";
-import { categoryMap } from "@/utils/categoryFormat";
 
 interface EventMarkerProps {
   position: {
@@ -33,7 +32,6 @@ const KakaoMap = () => {
   const EventMarkerContainer = ({ position, content }: EventMarkerProps) => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [pinType, setPinType] = useState<string>("");
     const linkImage =
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png";
 
@@ -45,9 +43,7 @@ const KakaoMap = () => {
           onMouseOver={() => setIsVisible(true)}
           onMouseOut={() => setIsVisible(false)}
           image={{
-            src: `/images/category/${categoryMap.get(
-              content.clubCategory,
-            )}Pin.png`, // 마커이미지의 주소입니다
+            src: `/images/category/${content.clubCategory}Pin.png`, // 마커이미지의 주소입니다
             size: {
               width: 55,
               height: 69,
@@ -80,17 +76,31 @@ const KakaoMap = () => {
     );
   };
 
+  const [addressX, setAddressX] = useState<number>(127.02493);
+  const [addressY, setAddressY] = useState<number>(37.5068914);
+
+  useEffect(() => {
+    const clubList = searchResponse.clubList;
+    if (searchResponse.clubList.length > 0) {
+      setAddressX(clubList[0].latitude);
+      setAddressY(clubList[0].longitude);
+    } else {
+      setAddressX(parseFloat(searchAddress.x) || 127.02493);
+      setAddressY(parseFloat(searchAddress.y) || 37.5068914);
+    }
+  }, [searchResponse]);
+
   return (
     <>
       <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
       <MapWrapper>
         <Map
           center={{
-            lat: parseFloat(searchAddress.y) || 37.5068914,
-            lng: parseFloat(searchAddress.x) || 127.02493,
+            lat: addressY,
+            lng: addressX,
           }} // 지도의 중심좌표
           style={{ width: "100%", height: "100%" }} // 지도의 크기
-          level={4} // 지도의 확대 레벨
+          level={6} // 지도의 확대 레벨
         >
           {searchResponse.clubList &&
             searchResponse.clubList.map((value) => (

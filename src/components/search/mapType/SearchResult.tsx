@@ -53,7 +53,7 @@ const SearchResult = () => {
                     height={17}
                     alt="평점"
                   />
-                  <SearchScore>{item.ratingAvg}</SearchScore>
+                  <SearchScore>{item.ratingAvg.toFixed(1)}</SearchScore>
                 </SearchScoreBox>
               </SearchItemTop>
               <SearchItemContent>
