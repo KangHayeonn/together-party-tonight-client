@@ -47,13 +47,13 @@ const SearchFilter = () => {
           <SearchTableRow>
             <SearchDataTitle>모집 인원</SearchDataTitle>
             <SearchDataContent>
-              <NumberForm min={0} max={10} />
+              <NumberForm min={0} max={30} />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
             <SearchDataTitle>태그</SearchDataTitle>
             <SearchDataContent>
-              <SearchTagList tagList={searchTagList} />
+              <SearchTagList />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>

@@ -117,6 +117,15 @@ const SearchItemTag = styled.div`
   letter-spacing: 0.25px;
 `;
 
+const SearchResultEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+  font-size: 16px;
+  color: #a0a0a0;
+`;
+
 export {
   SearchResultList,
   SearchResultItem,
@@ -131,4 +140,5 @@ export {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
+  SearchResultEmpty,
 };

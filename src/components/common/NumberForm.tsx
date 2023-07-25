@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   NumberWrapper,
@@ -10,11 +10,17 @@ import {
 interface NumberProps {
   min?: number;
   max?: number;
-  changeMax?: (maximum: number) => void | undefined;
+  defaultNum?: number;
+  changeMax?: (maxNum: number) => void;
 }
 
-const NumberForm = ({ min = 0, max = 20, changeMax }: NumberProps) => {
-  const [number, setNumber] = useState<number>(min);
+const NumberForm = ({
+  min = 0,
+  max = 20,
+  defaultNum,
+  changeMax,
+}: NumberProps) => {
+  const [number, setNumber] = useState<number>(defaultNum || min);
   const minNum = min;
   const maxNum = max;
 

@@ -1,38 +1,66 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   SearchTagListWrapper,
   SearchTagItem,
   SearchTagItemInput,
   SearchTagItemLabel,
 } from "@/styles/components/search/mapType/SearchTagList";
+import { useRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
+// api
+import Api from "@/api/search";
 
-interface SearchTagList {
-  tagList: Array<string>;
-}
-
-const SearchTagList = ({ tagList }: SearchTagList) => {
+const SearchTagList = () => {
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const [newTagList, setNewTagList] = useState<Array<string>>([]);
-  const [openMore, setOpenMore] = useState<boolean>(false);
+  const [checkTagList, setCheckTagList] = useState<Array<string>>([]);
 
-  const onCloseItems = useCallback(() => {
-    const tempList = tagList?.filter((item, index) => index < 7);
+  let tagList: Array<string> = [];
+  const { isLoading, error, data } = useQuery(
+    ["searchTagsRandom"],
+    () => Api.v1SearchTagsRandom(),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (res) => {
+        tagList = res?.data.dataList;
+        onCloseItems();
+      },
+      enabled: !!tagList,
+    },
+  );
+
+  const onCloseItems = () => {
+    const tempList = tagList?.filter((item, index) => index < 8);
     setNewTagList(tempList);
-  }, [tagList]);
-
-  const onOpenItems = () => {
-    setNewTagList(tagList ? tagList : []);
   };
 
-  const onClickMore = () => {
-    if (!openMore) {
-      onOpenItems();
+  const handleCheckTag = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    const item = e.target.value;
+
+    if (isChecked) {
+      setCheckTagList((items) => [...items, item]);
+    } else {
+      setCheckTagList((items) => items.filter((el) => el !== item));
     }
-    setOpenMore((open) => !open);
   };
 
   useEffect(() => {
+    const tempList = checkTagList.filter(
+      (c, index) => checkTagList.indexOf(c) === index,
+    );
+    setSearchOptions({
+      ...searchOptions,
+      tags: tempList.toString(),
+    });
+  }, [checkTagList]);
+
+  useEffect(() => {
+    setNewTagList([]);
+    setCheckTagList([]);
     onCloseItems();
-  }, [onCloseItems]);
+  }, []);
 
   return (
     <SearchTagListWrapper>
@@ -40,19 +68,18 @@ const SearchTagList = ({ tagList }: SearchTagList) => {
         newTagList.map((item, index) => {
           return (
             <SearchTagItem key={item}>
-              <SearchTagItemInput type="checkbox" id={item} value={item} />
+              <SearchTagItemInput
+                type="checkbox"
+                id={item}
+                value={item}
+                onChange={(e) => handleCheckTag(e)}
+              />
               <SearchTagItemLabel htmlFor={item} className="label-tag">
                 {item}
               </SearchTagItemLabel>
             </SearchTagItem>
           );
         })}
-      {tagList?.length > 7 ? (
-        <SearchTagItem onClick={onClickMore}>
-          <SearchTagItemInput type="checkbox" id="more" value="more" />
-          <SearchTagItemLabel htmlFor="more">···</SearchTagItemLabel>
-        </SearchTagItem>
-      ) : null}
     </SearchTagListWrapper>
   );
 };

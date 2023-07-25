@@ -79,7 +79,7 @@ const ClubWriteFilter = ({
         <ClubWriteTag changeTags={onChangeTags} />
         <ClubWriteCategory>
           <ClubWriteLabel>최대 모집 인원</ClubWriteLabel>
-          <NumberForm min={0} max={1000} changeMax={onChangeMaximum} />
+          <NumberForm min={0} max={100} changeMax={onChangeMaximum} />
         </ClubWriteCategory>
         <ClubWriteCategory>
           <ClubWriteLabel>모집 일시</ClubWriteLabel>

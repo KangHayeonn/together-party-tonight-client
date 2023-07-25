@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SearchStatusWrapper,
   SearchStatusRadio,
@@ -9,13 +9,21 @@ import {
 
 interface SearchStatusProps {
   defaultValue?: string;
+  changeStatusType?: (status: string) => void;
 }
 
-const SearchStatus = ({ defaultValue = "전체" }: SearchStatusProps) => {
+const SearchStatus = ({
+  defaultValue = "전체",
+  changeStatusType,
+}: SearchStatusProps) => {
   const [isChecked, setIsChecked] = useState<string>(defaultValue);
   const changeStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.value);
   };
+
+  useEffect(() => {
+    if (changeStatusType) changeStatusType(isChecked);
+  }, [isChecked]);
 
   return (
     <SearchStatusWrapper>

@@ -9,7 +9,6 @@ import {
   ChatTime,
   ChatContent,
 } from "@/styles/components/chat/ChatRoomForm";
-import { chatList } from "@/utils/mock/chat";
 import { chatListType, ChatListType } from "@/types/chat";
 import { getUserId } from "@/utils/tokenControl";
 // api
@@ -34,10 +33,7 @@ const ChatMessageList = () => {
     mutationFn: (data: chatListType) => Api.v1FetchChatList(data),
     onSuccess: (res) => {
       const { chatList } = res.data.data;
-      console.log(chatList);
       setChatList(chatList);
-      // setChats(chatList);
-      console.log("teset L " + typeof chatList[0].dateTime);
     },
     onError: () => {
       // interceptor에서 공통 error 처리
@@ -51,10 +47,6 @@ const ChatMessageList = () => {
       listCount: 20,
     });
   }, []);
-  /*
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);*/
 
   return (
     <ChatList>

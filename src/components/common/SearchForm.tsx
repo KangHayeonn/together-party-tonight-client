@@ -27,21 +27,21 @@ export interface SearchProps {
   height?: number | undefined;
   search?: string | undefined; // 검색어 저장
   searchPreviewList?: Array<SearchPreview> | undefined;
+  searchByAddress?: () => void;
 }
 
 const SearchForm = ({
   placeholder,
   search,
   searchPreviewList,
+  searchByAddress,
   ...props
 }: SearchProps) => {
   const searchInput = useRef<HTMLInputElement>(null);
   const searchWrap = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  // const searchPreviewList = ["강남", "잠실", "판교", "홍대", "여의도", "성수"];
 
   // recoil
-  // get만 가능
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const resetSearchKeyword = useResetRecoilState(searchKeywordState);
 
@@ -61,6 +61,10 @@ const SearchForm = ({
     ) {
       setIsFocus(false);
     }
+  };
+
+  const onClickSearchBtn = () => {
+    if (searchByAddress) searchByAddress();
   };
 
   useEffect(() => {
@@ -84,6 +88,7 @@ const SearchForm = ({
             width={16}
             height={16}
             alt="Search Icon"
+            onClick={() => onClickSearchBtn()}
           />
         </SearchInputForm>
         {isFocus ? (
