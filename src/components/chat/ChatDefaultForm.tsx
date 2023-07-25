@@ -10,16 +10,17 @@ import {
   ChatDefaultText,
 } from "@/styles/components/chat/ChatDefaultForm";
 import TextButton from "@/components/common/TextButton";
-// api (socket test)
 import Api from "@/api/chat";
 
 const ChatDefaultForm = () => {
   const router = useRouter();
   const onClickShowMyClubs = async () => {
-    const data = await Api.v1AddChatRoom(45);
-    console.log("채팅방 만들기 : " + data);
-    console.log("@@채팅방 만들기 : " + JSON.stringify(data));
-    // router.push("/mypage/list/apply");
+    // const data = await Api.v1AddChatRoom(8);
+    router.push("/mypage/list/apply");
+    // const data = await Api.v1AddChat({
+    //   chatMsg: "안녕하세요!!",
+    //   chatRoomId: 2,
+    // });
   };
 
   return (

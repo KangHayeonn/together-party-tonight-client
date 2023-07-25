@@ -21,7 +21,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import {
-  socketClose,
   socketConnect,
   socketDisconnect,
   socketRequestMessage,
@@ -49,6 +48,7 @@ export default function Login() {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("userId", response.data.userId);
+          socketLogin();
           router.push("/");
         }
       },
@@ -63,20 +63,14 @@ export default function Login() {
   // socket 연동
   const ws = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
+  const socketLogin = () => {
     if (!ws.current) {
       if (socketConnect(ws)) setSocketConnected(true);
     }
 
     socketDisconnect(ws);
     socketReceiveMessage(ws);
-
-    /*
-    return () => {
-      // socket clean up
-      socketClose(ws);
-    };*/
-  }, []);
+  };
 
   useEffect(() => {
     if (socketConnected) {

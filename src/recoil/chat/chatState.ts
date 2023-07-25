@@ -20,7 +20,7 @@ const checkChatRoomState = atom<ChatRoomType>({
   default: {
     chatRoomId: 0,
     chatRoomName: "",
-    dateTime: null,
+    dateTime: new Date(),
     latestMessage: "",
   },
 });

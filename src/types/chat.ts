@@ -22,7 +22,7 @@ export interface ChatRoomListType {
 
 export interface ChatResponseType {
   chatId: number;
-  dateTime: Date | null;
+  dateTime: Date;
   message: string;
 }
 

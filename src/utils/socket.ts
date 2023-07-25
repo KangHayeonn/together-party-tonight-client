@@ -1,6 +1,7 @@
 import { MutableRefObject } from "react";
+import { getUserId } from "@/utils/tokenControl";
 
-const webSocketUrl = "ws://220.65.243.133:8080/chatting";
+const webSocketUrl = `${process.env.NEXT_PUBLIC_SOCKET_BASE_URL}/api/chatting`;
 
 export const socketConnect = (
   ws: MutableRefObject<WebSocket | null>,
@@ -9,6 +10,7 @@ export const socketConnect = (
   ws.current.onopen = () => {
     // connect success
     socketRequestMessage(ws);
+    console.log("socket login");
     return true;
   };
   return false;
@@ -29,7 +31,7 @@ export const socketRequestMessage = (
     JSON.stringify({
       command: "login",
       data: {
-        userId: 1,
+        userId: getUserId(),
       },
     }),
   );

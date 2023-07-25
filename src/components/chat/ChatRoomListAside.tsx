@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
   ChatRoomListWrapper,
@@ -13,14 +14,17 @@ import {
   ChatRoomListEmpty,
 } from "@/styles/components/chat/ChatRoomListAside";
 import { elapsedTime } from "@/utils/dateFormat";
+import { ChatRoomType } from "@/types/chat";
 // api
 import Api from "@/api/chat";
 // recoil
 import { useRecoilState } from "recoil";
-import { chatRoomListState } from "@/recoil/chat/chatState";
+import { chatRoomListState, checkChatRoomState } from "@/recoil/chat/chatState";
 
 const ChatRoomListAside = () => {
+  const router = useRouter();
   const [chatRooms, setChatRooms] = useRecoilState(chatRoomListState);
+  const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
   const { isLoading, error, data } = useQuery(
     ["chatRoomList"],
     () => Api.v1FetchChatRoomList(),
@@ -37,6 +41,16 @@ const ChatRoomListAside = () => {
     },
   );
 
+  const clickChatRoom = (item: ChatRoomType) => {
+    setCheckChatRoom({
+      chatRoomId: item.chatRoomId,
+      chatRoomName: item.chatRoomName,
+      dateTime: item.dateTime,
+      latestMessage: item.latestMessage,
+    });
+    router.push(`/chat/${item.chatRoomId}`);
+  };
+
   return (
     <ChatRoomListWrapper>
       <ChatRoomList>
@@ -45,7 +59,10 @@ const ChatRoomListAside = () => {
             return (
               <ChatRoomItem
                 key={index}
-                className={`${item.chatRoomId === 3 && "checked"}`}
+                className={`${
+                  item.chatRoomId === checkChatRoom.chatRoomId && "checked"
+                }`}
+                onClick={() => clickChatRoom(item)}
               >
                 <ChatRoomItemTitle>{item.chatRoomName}</ChatRoomItemTitle>
                 <ChatRoomItemContent>
