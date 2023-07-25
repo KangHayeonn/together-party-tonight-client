@@ -5,7 +5,7 @@ import {
   ClubWriteTitleBar,
 } from "@/styles/components/write/ClubWriteTitle";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
-import { ClubWriteTitleProps } from "@/types/clubWrite";
+import { ClubWriteTitleProps } from "@/types/club";
 
 const ClubWriteTitle = ({ clubInfo, onChangeTitle }: ClubWriteTitleProps) => {
   const onInputHandler = (
