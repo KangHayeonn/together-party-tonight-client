@@ -5,17 +5,25 @@ import {
   SearchOpenReviewBtnBox,
   SearchOpenReviewContent,
 } from "@/styles/components/search/mapType/SearchOpenReviewBtn";
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
 
 const SearchOpenReviewBtn = () => {
+  const clubDetail = useRecoilValue(clubDetailState);
+
   return (
     <SearchOpenReviewBtnWrapper>
       <SearchOpenReviewBtnBox>
         <SearchOpenReviewContent className="title">
           리뷰
         </SearchOpenReviewContent>
-        <SearchOpenReviewContent className="count">2개</SearchOpenReviewContent>
+        <SearchOpenReviewContent className="count">
+          {clubDetail.reviewCnt}개
+        </SearchOpenReviewContent>
         <Image src="/images/star.svg" width={17} height={17} alt="평점" />
-        <SearchOpenReviewContent className="score">3.5</SearchOpenReviewContent>
+        <SearchOpenReviewContent className="score">
+          {clubDetail.ratingAvg.toFixed(1)}
+        </SearchOpenReviewContent>
         <Image
           src="/images/doubleArrowRight.svg"
           width={14}

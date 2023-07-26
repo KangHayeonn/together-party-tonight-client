@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import RoundButton from "@/components/common/RoundButton";
 import {
   SearchDetailWrapper,
@@ -7,10 +8,15 @@ import {
   SearchDetailContentBox,
   SearchDetailContent,
 } from "@/styles/components/search/mapType/SearchItemDetail";
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
 
 const SearchItemDetail = () => {
+  const router = useRouter();
+  const clubDetail = useRecoilValue(clubDetailState);
   const onClickClubLeader = () => {
     // TODO : club leader link
+    router.push(`/mypage/info/${clubDetail.memberId}`);
   };
 
   return (
@@ -23,7 +29,7 @@ const SearchItemDetail = () => {
           height={23}
           alt="Location Icon"
         />
-        <SearchDetailContent>서울 송파구 잠실동</SearchDetailContent>
+        <SearchDetailContent>{clubDetail.address}</SearchDetailContent>
       </SearchDetailContentBox>
       <SearchDetailContentBox>
         <Image
@@ -33,11 +39,14 @@ const SearchItemDetail = () => {
           alt="Clock Icon"
           className="detail-icon"
         />
-        <SearchDetailContent>2023/06/06 오전 10:00</SearchDetailContent>
+        <SearchDetailContent>{clubDetail.meetingDate}</SearchDetailContent>
       </SearchDetailContentBox>
       <SearchDetailContentBox>
         <Image src="/images/user.svg" width={25} height={23} alt="User Icon" />
-        <SearchDetailContent>모집중 1/4</SearchDetailContent>
+        <SearchDetailContent>
+          {clubDetail.isRecruit ? "모집중" : "모집완료"}{" "}
+          {clubDetail.memberCount}/{clubDetail.clubMaximum}
+        </SearchDetailContent>
       </SearchDetailContentBox>
       <SearchDetailContentBox>
         <Image
@@ -48,7 +57,7 @@ const SearchItemDetail = () => {
           className="detail-icon"
         />
         <RoundButton
-          text="lovelyeonee"
+          text={clubDetail.nickName}
           onClickEvent={onClickClubLeader}
           color="#778DA9"
           background="#fff"

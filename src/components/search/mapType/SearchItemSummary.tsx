@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useMutation } from "@tanstack/react-query";
 import RoundButton from "@/components/common/RoundButton";
 import {
   SearchSummaryWrapper,
@@ -12,14 +13,42 @@ import {
   SummaryClubCategory,
   SummaryClubAddress,
 } from "@/styles/components/search/mapType/SearchItemSummary";
+// recoil
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
+// api
+import Api from "@/api/club";
 
-const SearchItemSummary = () => {
+interface SearchItemSummaryProps {
+  clubId: number;
+}
+
+const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
+  const clubDetail = useRecoilValue(clubDetailState);
+
+  const { mutate: signupClub } = useMutation({
+    mutationFn: () => Api.v1SignupClub(clubId),
+    onSuccess: (res) => {
+      // TODO : signup club success
+      const { code } = res.data;
+      if (code === 200) console.log("신청하기 완료");
+    },
+    onError: () => {
+      // interceptor에서 공통 error 처리
+    },
+  });
+
   const onClickClubSignup = () => {
     // TODO : club sign up api logic
+    signupClub();
   };
 
   return (
-    <SearchSummaryWrapper>
+    <SearchSummaryWrapper
+      style={{
+        backgroundImage: `url(${clubDetail.image})`,
+      }}
+    >
       <Image
         src="/images/arrowLeft.svg"
         width={40}
@@ -37,12 +66,14 @@ const SearchItemSummary = () => {
                 height={24}
                 alt="Club Title Icon"
               />
-              <SummaryClubName>독서모임 구합니다</SummaryClubName>
-              <SummaryClubCategory>스터디</SummaryClubCategory>
+              <SummaryClubName>{clubDetail.clubName}</SummaryClubName>
+              <SummaryClubCategory>
+                {clubDetail.clubCategory}
+              </SummaryClubCategory>
             </SummaryClubTitle>
           </SummaryInnerBoxTop>
           <SummaryInnerBoxBottom>
-            <SummaryClubAddress>서울시 송파구 잠실동</SummaryClubAddress>
+            <SummaryClubAddress>{clubDetail.address}</SummaryClubAddress>
           </SummaryInnerBoxBottom>
         </SummaryInnerBox>
         <RoundButton
