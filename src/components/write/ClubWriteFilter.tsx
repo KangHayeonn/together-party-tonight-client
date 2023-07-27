@@ -14,7 +14,7 @@ import NumberForm from "@/components/common/NumberForm";
 import Calendar from "@/components/common/Calendar";
 import SearchForm from "@/components/common/SearchForm";
 import { SearchPreview } from "@/components/common/SearchForm";
-import { ClubWriteFilterProps, ClubAddressType } from "@/types/clubWrite";
+import { ClubWriteFilterProps, ClubAddressType } from "@/types/club";
 import {
   toStringByFormatting,
   toStringByFormattingTime,

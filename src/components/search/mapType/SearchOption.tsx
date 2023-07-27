@@ -56,16 +56,9 @@ const SearchOption = () => {
 
   const initSearchOptions = () => {
     setSearchOptions({
-      category: "",
-      distance: 5,
-      lat: 0,
-      lng: 0,
-      memberNum: 10,
+      ...searchOptions,
       page: 0,
       size: 20,
-      sortFilter: "latest",
-      status: "all",
-      tags: "",
     });
     setSearchAddress({
       ...searchAddress,

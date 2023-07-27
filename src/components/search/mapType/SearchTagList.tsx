@@ -23,7 +23,7 @@ const SearchTagList = () => {
     {
       refetchOnWindowFocus: false,
       onSuccess: (res) => {
-        tagList = res?.data.dataList;
+        tagList = res?.data.data;
         onCloseItems();
       },
       enabled: !!tagList,

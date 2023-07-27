@@ -1,5 +1,5 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
 import {
   ChatList,
   ChatItem,
@@ -9,15 +9,44 @@ import {
   ChatTime,
   ChatContent,
 } from "@/styles/components/chat/ChatRoomForm";
-import { chatList } from "@/utils/mock/chat";
-import { fetchLogin } from "@/api/test";
+import { chatListType, ChatListType } from "@/types/chat";
+import { getUserId } from "@/utils/tokenControl";
+// api
+import Api from "@/api/chat";
+// recoil
+import { useRecoilValue, useRecoilState } from "recoil";
+import { checkChatRoomState, chatListState } from "@/recoil/chat/chatState";
+
+interface ChatListProps {
+  chatId: number;
+  dateTime: Date;
+  message: string;
+}
 
 const ChatMessageList = () => {
-  const userId = 1;
-  const { isLoading, error, data } = useQuery(["login"], fetchLogin, {
-    refetchOnWindowFocus: false,
-    retry: 0,
+  const checkChatRoom = useRecoilValue(checkChatRoomState);
+  // const [chats, setChats] = useRecoilState(chatListState);
+  const [chatList, setChatList] = useState<Array<ChatListProps>>([]);
+  const userId = Number(getUserId());
+
+  const { mutate: getChatList } = useMutation({
+    mutationFn: (data: chatListType) => Api.v1FetchChatList(data),
+    onSuccess: (res) => {
+      const { chatList } = res.data.data;
+      setChatList(chatList);
+    },
+    onError: () => {
+      // interceptor에서 공통 error 처리
+    },
   });
+
+  useEffect(() => {
+    getChatList({
+      chatRoomId: checkChatRoom.chatRoomId,
+      lastChatSeq: -1,
+      listCount: 20,
+    });
+  }, []);
 
   return (
     <ChatList>
@@ -27,13 +56,17 @@ const ChatMessageList = () => {
             <ChatItem key={index}>
               {(index === 0 || index % 4 === 0) && (
                 <ChatDateBox>
-                  <ChatDate>{item.updatedDate}</ChatDate>
+                  안녕하세요
+                  <ChatDate>{item.dateTime.toString()}</ChatDate>
                 </ChatDateBox>
               )}
-              <ChatContentBox
+              {/*<ChatContentBox
                 className={`${item.memberId !== userId && "opposite"}`}
+              >*/}
+              <ChatContentBox
+                className={`${item.chatId !== userId && "opposite"}`}
               >
-                <ChatTime>{item.updatedTime}</ChatTime>
+                <ChatTime>{item.dateTime.toString()}</ChatTime>
                 <ChatContent>{item.message}</ChatContent>
               </ChatContentBox>
             </ChatItem>

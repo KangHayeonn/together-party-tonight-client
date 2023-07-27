@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   ChatDefaultFormWrapper,
@@ -9,10 +10,17 @@ import {
   ChatDefaultText,
 } from "@/styles/components/chat/ChatDefaultForm";
 import TextButton from "@/components/common/TextButton";
+import Api from "@/api/chat";
 
 const ChatDefaultForm = () => {
-  const onClickShowMyClubs = () => {
-    // TODO : show my club list logic
+  const router = useRouter();
+  const onClickShowMyClubs = async () => {
+    // const data = await Api.v1AddChatRoom(8);
+    router.push("/mypage/list/apply");
+    // const data = await Api.v1AddChat({
+    //   chatMsg: "안녕하세요!!",
+    //   chatRoomId: 2,
+    // });
   };
 
   return (

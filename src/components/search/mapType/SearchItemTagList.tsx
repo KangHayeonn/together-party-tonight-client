@@ -5,35 +5,25 @@ import {
   SearchTagItemInput,
   SearchTagItemLabel,
 } from "@/styles/components/search/mapType/SearchTagList";
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
 
 interface SearchItemTagList {
-  tagList: Array<string>;
   classType?: string | undefined;
 }
 
-const SearchItemTagList = ({ tagList, classType }: SearchItemTagList) => {
+const SearchItemTagList = ({ classType }: SearchItemTagList) => {
   const [newTagList, setNewTagList] = useState<Array<string>>([]);
-  const [openMore, setOpenMore] = useState<boolean>(false);
+  const clubDetail = useRecoilValue(clubDetailState);
 
-  const onCloseItems = useCallback(() => {
-    const tempList = tagList?.filter((item, index) => index < 7);
+  const onCloseItems = () => {
+    const tempList = clubDetail.clubTags?.filter((item, index) => index < 8);
     setNewTagList(tempList);
-  }, [tagList]);
-
-  const onOpenItems = () => {
-    setNewTagList(tagList ? tagList : []);
-  };
-
-  const onClickMore = () => {
-    if (!openMore) {
-      onOpenItems();
-    }
-    setOpenMore((open) => !open);
   };
 
   useEffect(() => {
     onCloseItems();
-  }, [onCloseItems]);
+  }, [clubDetail]);
 
   return (
     <SearchTagListWrapper>
@@ -51,14 +41,6 @@ const SearchItemTagList = ({ tagList, classType }: SearchItemTagList) => {
             </SearchTagItem>
           );
         })}
-      {tagList?.length > 7 ? (
-        <SearchTagItem onClick={onClickMore}>
-          <SearchTagItemInput type="checkbox" id="more" value="more" />
-          <SearchTagItemLabel htmlFor="more" className={` ${classType}`}>
-            ···
-          </SearchTagItemLabel>
-        </SearchTagItem>
-      ) : null}
     </SearchTagListWrapper>
   );
 };

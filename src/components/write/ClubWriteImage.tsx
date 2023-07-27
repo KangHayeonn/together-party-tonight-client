@@ -10,7 +10,7 @@ import {
   ClubImageUpdateBtn,
   Line,
 } from "@/styles/components/write/ClubWriteImage";
-import { ClubWriteImageProps } from "@/types/clubWrite";
+import { ClubWriteImageProps } from "@/types/club";
 
 const ClubWriteImage = ({ changeImage }: ClubWriteImageProps) => {
   const [file, setFile] = useState<File | undefined>(undefined);

@@ -42,3 +42,24 @@ export interface ClubWriteTagProps {
 export interface ClubWriteImageProps {
   changeImage: React.Dispatch<React.SetStateAction<File | null>>;
 }
+
+export interface ClubDetailResponseType {
+  address: string;
+  clubCategory: string;
+  clubContent: string;
+  clubMaximum: number;
+  clubName: string;
+  clubTags: Array<string>;
+  createdDate: Date;
+  image: string;
+  isRecruit: boolean;
+  latitude: number;
+  longitude: number;
+  meetingDate: string;
+  memberCount: number;
+  memberId: number;
+  modifiedDate: string;
+  nickName: string;
+  ratingAvg: number;
+  reviewCnt: number;
+}

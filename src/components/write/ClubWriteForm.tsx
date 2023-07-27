@@ -12,7 +12,7 @@ import {
 import ClubWriteTitle from "@/components/write/ClubWriteTitle";
 import ClubWriteFilter from "@/components/write/ClubWriteFilter";
 import ClubWriteContent from "@/components/write/ClubWriteContent";
-import { ClubFormType, ClubAddressType } from "@/types/clubWrite";
+import { ClubFormType, ClubAddressType } from "@/types/club";
 import { validationClubWrite } from "@/utils/func/ClubWriteFunc";
 import Api from "@/api/club";
 import { searchKeywordState, searchState } from "@/recoil/search/searchState";

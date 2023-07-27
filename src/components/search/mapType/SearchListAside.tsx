@@ -101,6 +101,10 @@ const SearchListAside = () => {
     });
   }, [searchAddress]);
 
+  useEffect(() => {
+    initSearchOptions();
+  }, []);
+
   return (
     <SearchListAsideWrapper>
       <SearchForm

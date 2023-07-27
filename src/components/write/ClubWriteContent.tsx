@@ -5,7 +5,7 @@ import {
   ClubWriteTextAreaLength,
 } from "@/styles/components/write/ClubWriteContent";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
-import { ClubFormType } from "@/types/clubWrite";
+import { ClubFormType } from "@/types/club";
 
 interface ClubWriteContentProps {
   clubInfo: ClubFormType;

@@ -10,7 +10,7 @@ import {
   TagInput,
 } from "@/styles/components/write/ClubWriteTag";
 import { ClubWriteLabel } from "@/styles/components/write/ClubWriteForm";
-import { TagItemProps, ClubWriteTagProps } from "@/types/clubWrite";
+import { TagItemProps, ClubWriteTagProps } from "@/types/club";
 
 const TagItem = ({ keyword, onClickDelete }: TagItemProps) => {
   const [hoverCloseBtn, setHoverCloseBtn] = useState<boolean>(false);

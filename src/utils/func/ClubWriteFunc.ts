@@ -1,4 +1,4 @@
-import { ClubFormType } from "@/types/clubWrite";
+import { ClubFormType } from "@/types/club";
 
 export const validationClubWrite = (clubInfo: ClubFormType) => {
   if (clubInfo.clubName === "") window.alert("모임 제목을 입력하세요");
