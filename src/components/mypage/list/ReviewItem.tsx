@@ -32,7 +32,7 @@ export default function ReviewItem({ item, isMyReview }: Props) {
           setIsOpen((val) => ({
             ...val,
             isMyReview,
-            isOpen: true,
+            isOpenReviewModal: true,
             reviewItem: item,
             reviewId: item.reviewId,
           }))

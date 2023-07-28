@@ -5,11 +5,6 @@ const ModalInner = styled.div`
   padding: 30px 50px;
 `;
 
-const ModalInnerMini = styled.div`
-  width: 530px;
-  padding: 30px 50px;
-`;
-
 const ReviewerInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -90,7 +85,6 @@ const TextLen = styled.p`
 
 export {
   ModalInner,
-  ModalInnerMini,
   ReviewerInfo,
   Reviewer,
   CreatedReview,

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { ModalAtom } from "@/recoil/modal/atom";
 import { CalculateSelect } from "@/recoil/mypage/atom";
 import {
   ItemDate,
@@ -16,7 +17,7 @@ import {
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
 import { useMemo } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type Props = {
   item: IClubItem;
@@ -26,18 +27,26 @@ type Props = {
 type ItemBtnObjType = {
   [key: string]: {
     btnName: string;
-    handleFunc: () => void;
+    handleFunc: (item: IClubItem) => void;
   };
 };
 
 export default function MeetingItem({ item, category }: Props) {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const curCalculate = useRecoilValue(CalculateSelect);
 
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
     return {
       meeting: {
         btnName: "신청내역",
-        handleFunc: () => {},
+        handleFunc: (item) => {
+          setIsOpen((val) => ({
+            ...val,
+            isOpenApplyModal: true,
+            clubItem: item,
+            clubId: item.clubId,
+          }));
+        },
       },
       apply: {
         btnName: "채팅하기",
@@ -57,12 +66,30 @@ export default function MeetingItem({ item, category }: Props) {
       ".",
     )} ${toStringByFormattingTime(new Date(date))}`;
   };
+  // APPROVE(수락), PENDING(대기중), REFUSE(거절됨), KICKOUT(강퇴)
+  const meetingState = (state: boolean | string) => {
+    if (category === "apply") {
+      const approvalObj: { [key: string]: string } = {
+        APPROVE: "수락완료",
+        PENDING: "대기중",
+        REFUSE: "거절됨",
+        KICKOUT: "강퇴",
+      };
+      return approvalObj[state as string];
+    }
+    if (category === "meeting") {
+      return state ? "모집중" : "모집완료";
+    }
+  };
 
   return (
     <ListItem>
       <ItemInfo>
         <ItemTitle>{item.clubName}</ItemTitle>
-        <p>모집중&nbsp;&nbsp;n/{item.clubMaximum}</p>
+        <p>
+          {meetingState(item?.approvalStatus || item.clubState)}&nbsp;&nbsp;
+          {item.appliedCount}/{item.clubMaximum}
+        </p>
       </ItemInfo>
       <ItemDesc>{item.clubContent}</ItemDesc>
       <TagList>
@@ -76,7 +103,9 @@ export default function MeetingItem({ item, category }: Props) {
         <ItemDate>
           {convertDate(item.modifiedDate || item.createdDate)}
         </ItemDate>
-        <MeetingMoreBtn>{itemBtnObj[category].btnName}</MeetingMoreBtn>
+        <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
+          {itemBtnObj[category].btnName}
+        </MeetingMoreBtn>
       </ItemDateWrapper>
     </ListItem>
   );

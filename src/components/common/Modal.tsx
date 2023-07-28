@@ -23,7 +23,20 @@ export default function Modal({ children, title }: Props) {
   const [isComponentDidMount, setIsComponentDidMount] = useState(false);
   const setIsOpen = useSetRecoilState(ModalAtom);
 
-  useEffect(() => setIsComponentDidMount(true), []);
+  useEffect(() =>{
+     setIsComponentDidMount(true);
+     document.body.style.cssText = `
+    position: fixed; 
+    top: -${window.scrollY}px;
+    overflow-y: scroll;
+    width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    };
+    }, 
+  []);
 
   return isComponentDidMount
     ? createPortal(
@@ -32,7 +45,7 @@ export default function Modal({ children, title }: Props) {
             <ModalTop>
               <ModalTitle>{title}</ModalTitle>
               <CloseBtn
-                onClick={() => setIsOpen((val) => ({ ...val, isOpen: false }))}
+                onClick={() => setIsOpen((val) => ({ ...val, isOpenReviewModal: false, isOpenApplyModal: false }))}
               >
                 <Image
                   src="/images/closeWhite.svg"

@@ -10,11 +10,7 @@ import {
   SideBarWrapper,
 } from "@/styles/components/mypage/SideBar";
 import { getUserId } from "@/utils/tokenControl";
-
-type MyPageListItem = {
-  id: string;
-  text: string;
-};
+import { MyPageListItem } from "@/types/mypage";
 
 export default function SideBar() {
   const router = useRouter();

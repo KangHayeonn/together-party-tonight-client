@@ -13,7 +13,7 @@ import {
   TextArea,
   TextLen,
   TextWrapper,
-} from "@/styles/components/mypage/DetailModal";
+} from "@/styles/components/mypage/ReviewDetailModal";
 import { ReviewRating } from "@/styles/components/mypage/ListItem";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -26,16 +26,15 @@ import Loading from "../common/Loading";
 
 export default function DetailModal() {
   const { isMyReview, reviewId } = useRecoilValue(ModalAtom);
-
-  const { data, isLoading } = useQuery(["review", reviewId], () =>
-    MyPage.v1GetReviewDetail(reviewId),
-  );
-
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewImg, setReviewImg] = useState("");
   const [reviewFile, setReviewFile] = useState<File | undefined>();
+
+  const { data, isLoading, refetch } = useQuery(["review", reviewId], () =>
+    MyPage.v1GetReviewDetail(reviewId),
+  );
 
   const handleSetValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -63,9 +62,14 @@ export default function DetailModal() {
     setIsEdit(false);
   };
 
-  const { mutate: editReview } = useMutation({
-    mutationFn: (formData: FormData) => MyPage.v1UpdateReview(formData),
-  });
+  const { mutate: editReview } = useMutation(
+    (formData: FormData) => MyPage.v1UpdateReview(formData),
+    {
+      onSuccess: (res) => {
+        if (res.success === "true") refetch();
+      },
+    },
+  );
 
   const handleUploadReviewImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;

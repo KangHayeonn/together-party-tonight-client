@@ -12,7 +12,7 @@ import {
   mypageCategory,
 } from "@/constant";
 import { CalculateSelect } from "@/recoil/mypage/atom";
-import { MeetingInfo } from "@/styles/components/mypage/DetailModal";
+import { MeetingInfo } from "@/styles/components/mypage/ReviewDetailModal";
 import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
 import {
   MeetingTitle,
@@ -30,13 +30,8 @@ type Props = {
 };
 
 export default function Category({ params: { category, id } }: Props) {
-  const [selected, setSelected] = useRecoilState(CalculateSelect);
-  const handleSelect = (value: string) => {
-    setSelected(value);
-  };
-
   const ulRef = useRef<HTMLUListElement>(null);
-
+  const [selected, setSelected] = useRecoilState(CalculateSelect);
   const [total, setTotal] = useState(0);
   const [sortBy, setSortBy] = useState("createdDate,DESC");
   const [filterBy, setFilterBy] = useState("ALL");
@@ -46,7 +41,7 @@ export default function Category({ params: { category, id } }: Props) {
     if (category === "review") {
       return MyPage.v1GetMyReview(pageParam, 5, sortBy);
     } else if (category === "meeting") {
-      return MyPage.v1GetMyMeeting(filterBy, pageParam, 5);
+      return MyPage.v1GetMyMeeting(filterBy, id, pageParam, 5);
     } else if (category === "apply") {
       return MyPage.v1GetApplyMeeting(filterBy, pageParam, 5);
     }
@@ -57,14 +52,17 @@ export default function Category({ params: { category, id } }: Props) {
     ({ pageParam = 0 }) => fetchListData(pageParam, sortBy, filterBy),
     {
       getNextPageParam: (lastPage) => {
-        // 현재 페이지 번호가 총 페이지 수를 넘어가면 더 이상 로드할 페이지가 없음
-        if (lastPage.page >= lastPage.totalPages - 1) {
+        if (!lastPage || lastPage.page >= lastPage.totalPages - 1) {
           return undefined;
         }
         return lastPage.page + 1;
       },
     },
   );
+
+  const handleSelect = (value: string) => {
+    setSelected(value);
+  };
 
   const handleScroll = () => {
     if (!isLoading && ulRef.current) {
@@ -97,8 +95,8 @@ export default function Category({ params: { category, id } }: Props) {
   };
 
   useEffect(() => {
-    if (data) {
-      setTotal(data.pages[0].totalElements);
+    if (!!data && data.pages[0] !== undefined) {
+      setTotal(data.pages[0]?.totalElements || 0);
       if (category === "review") {
         const list = data.pages.map((obj) => obj.reviewList).flat();
         setCurList(list);

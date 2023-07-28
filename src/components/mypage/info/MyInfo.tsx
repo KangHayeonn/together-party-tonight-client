@@ -39,11 +39,21 @@ export default function MyInfo({
           <UserDesc>{description}</UserDesc>
         </div>
       </UserInfo>
-      {isMyAccount && (
+      {isMyAccount ? (
         <TextButton
           text="수정하기"
           onClick={() => {
             setIsUpdateInfo((val) => !val);
+          }}
+          width={80}
+          height={35}
+          fontSize={14}
+        />
+      ) : (
+        <TextButton
+          text="채팅하기"
+          onClick={() => {
+            console.log(1);
           }}
           width={80}
           height={35}

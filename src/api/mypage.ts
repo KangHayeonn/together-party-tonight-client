@@ -110,16 +110,24 @@ const MyPage = {
     }
   },
 
-  async v1GetMyMeeting(filter: string, page: number, size: number) {
+  async v1GetMyMeeting(
+    filter: string,
+    memberId: string,
+    page: number,
+    size: number,
+  ) {
     try {
-      const res = await instanceWithToken.get(`${prefix}/clubs/myOwned`, {
-        params: {
-          filter,
-          page,
-          size,
-          sort: "createdDate,DESC",
+      const res = await instanceWithToken.get(
+        `${prefix}/clubs/myOwned/${memberId}`,
+        {
+          params: {
+            filter,
+            page,
+            size,
+            sort: "createdDate,DESC",
+          },
         },
-      });
+      );
       return res.data.data;
     } catch (err) {
       return Promise.reject(err);
@@ -157,6 +165,41 @@ const MyPage = {
     try {
       const res = await instanceWithToken.get(`${prefix}/reviews/${reviewId}`);
       return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1GetApplicationList(clubId: number) {
+    try {
+      const res = await instanceWithToken.get(
+        `${prefix}/clubs/applicationList`,
+        { params: { clubId } },
+      );
+      return res.data.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1ApproveMember(clubSignupId: number, approve: boolean) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/clubs/approve`, {
+        approve,
+        clubSignupId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1KickoutMember(clubSignupId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/clubs/kickout`, {
+        clubSignupId,
+      });
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }

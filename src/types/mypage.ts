@@ -30,4 +30,26 @@ export interface IClubItem {
   longitude: number;
   meetingDate: string;
   modifiedDate: string;
+  appliedCount: number;
+  approvalStatus: string;
+  clubState: boolean;
+  clubId: number;
 }
+
+export interface ApplicationItem {
+  approvalStatus: string;
+  clubId: number;
+  clubName: string;
+  clubSignupId: number;
+  createdDate: string;
+  memberId: number;
+  modifiedDate: string;
+  nickName: string;
+  signupDate: string;
+  profileImage: string;
+}
+
+export type MyPageListItem = {
+  id: string;
+  text: string;
+};
