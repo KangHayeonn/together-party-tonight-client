@@ -11,7 +11,7 @@ import {
   MeetingMoreBtn,
   TagList,
 } from "@/styles/components/mypage/ListItem";
-import { IClubItem } from "@/types/mypage";
+import { IClubItem, ItemBtnObjType } from "@/types/mypage";
 import {
   toStringByFormatting,
   toStringByFormattingTime,
@@ -22,13 +22,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 type Props = {
   item: IClubItem;
   category: string;
-};
-
-type ItemBtnObjType = {
-  [key: string]: {
-    btnName: string;
-    handleFunc: (item: IClubItem) => void;
-  };
 };
 
 export default function MeetingItem({ item, category }: Props) {
@@ -49,8 +42,15 @@ export default function MeetingItem({ item, category }: Props) {
         },
       },
       apply: {
-        btnName: "채팅하기",
-        handleFunc: () => {},
+        btnName: "모임원보기",
+        handleFunc: (item) => {
+          setIsOpen((val) => ({
+            ...val,
+            isOpenMemberModal: true,
+            clubItem: item,
+            clubId: item.clubId,
+          }));
+        },
       },
       calculate: {
         btnName: curCalculate === "myMeeting" ? "정산 만들기" : "정산하기",

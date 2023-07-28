@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 
 type Props = {
   children: React.ReactNode;
@@ -20,8 +20,8 @@ type Props = {
 };
 
 export default function Modal({ children, title }: Props) {
+  const resetModal = useResetRecoilState(ModalAtom);
   const [isComponentDidMount, setIsComponentDidMount] = useState(false);
-  const setIsOpen = useSetRecoilState(ModalAtom);
 
   useEffect(() =>{
      setIsComponentDidMount(true);
@@ -45,7 +45,7 @@ export default function Modal({ children, title }: Props) {
             <ModalTop>
               <ModalTitle>{title}</ModalTitle>
               <CloseBtn
-                onClick={() => setIsOpen((val) => ({ ...val, isOpenReviewModal: false, isOpenApplyModal: false }))}
+                onClick={resetModal}
               >
                 <Image
                   src="/images/closeWhite.svg"
