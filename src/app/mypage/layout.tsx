@@ -2,6 +2,7 @@
 
 import AuthLayout from "@/components/common/AuthLayout";
 import ApplyDetailModal from "@/components/mypage/ApplyDetailModal";
+import CalcAccountModal from "@/components/mypage/CalcAccountModal";
 import MemberModal from "@/components/mypage/MemberModal";
 import RequestCalcModal from "@/components/mypage/RequestCalcModal";
 import ReviewDetailModal from "@/components/mypage/ReviewDetailModal";
@@ -27,6 +28,7 @@ function MyPageLayout({ children }: Props) {
         {modal.isOpenApplyModal && <ApplyDetailModal />}
         {modal.isOpenMemberModal && <MemberModal />}
         {modal.isOpenRequestCalcModal && <RequestCalcModal />}
+        {modal.isOpenCalcAccountModal && <CalcAccountModal />}
       </MyPageWrapper>
     </AuthLayout>
   );
