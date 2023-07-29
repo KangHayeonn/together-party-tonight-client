@@ -1,10 +1,10 @@
-import { getAccessToken } from "@/utils/tokenControl";
 import axios, {
   AxiosInstance,
   InternalAxiosRequestConfig,
   AxiosError,
   AxiosResponse,
 } from "axios";
+import { getAccessToken } from "@/utils/tokenControl";
 import { logout } from "@/api/login";
 
 export const setInterceptors = (instance: AxiosInstance) => {

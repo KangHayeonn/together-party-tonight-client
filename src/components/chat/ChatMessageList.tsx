@@ -27,7 +27,7 @@ const ChatMessageList = () => {
   const checkChatRoom = useRecoilValue(checkChatRoomState);
   // const [chats, setChats] = useRecoilState(chatListState);
   const [chatList, setChatList] = useState<Array<ChatListProps>>([]);
-  const userId = Number(getUserId());
+  const userId = typeof window !== "undefined" && Number(getUserId());
 
   const { mutate: getChatList } = useMutation({
     mutationFn: (data: chatListType) => Api.v1FetchChatList(data),

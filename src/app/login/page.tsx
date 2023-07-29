@@ -50,7 +50,6 @@ export default function Login() {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("userId", response.data.userId);
-          socketLogin();
           router.push("/");
         }
       },
@@ -61,26 +60,6 @@ export default function Login() {
     e.preventDefault();
     window.location.href = kakaoURL;
   };
-
-  // socket 연동
-  const ws = useRef<WebSocket | null>(null);
-
-  const socketLogin = () => {
-    if (!ws.current) {
-      if (socketConnect(ws)) setSocketConnected(true);
-    }
-
-    socketDisconnect(ws);
-    socketReceiveMessage(ws);
-  };
-
-  useEffect(() => {
-    if (socketConnected) {
-      if (!ws.current) {
-        socketRequestMessage(ws);
-      }
-    }
-  }, [socketConnected]);
 
   return (
     <LoginWrapper>

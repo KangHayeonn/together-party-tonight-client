@@ -39,7 +39,9 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
   const [message, setMessage] = useState<string>("");
   const [commentList, setCommentList] = useState<Array<CommentType>>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const memberId = Number(getUserId() || -1);
+  const memberId = Number(
+    (typeof window !== "undefined" && Number(getUserId())) || -1,
+  );
 
   const onChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
