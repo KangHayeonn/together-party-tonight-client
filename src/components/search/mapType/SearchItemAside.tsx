@@ -62,6 +62,10 @@ const SearchItemAside = () => {
     },
   );
 
+  const changeOpenReview = (item: boolean) => {
+    setOpenReview(item);
+  };
+
   return (
     <SearchItemAsideWrapper>
       <SearchItemClubWrapper>
@@ -69,7 +73,7 @@ const SearchItemAside = () => {
         <SearchItemDetailWrapper>
           <SearchItemTagList classType="secondary" />
           <SearchItemDetail />
-          <SearchOpenReviewBtn />
+          <SearchOpenReviewBtn openReview={changeOpenReview} />
         </SearchItemDetailWrapper>
         <SearchItemComment />
       </SearchItemClubWrapper>
