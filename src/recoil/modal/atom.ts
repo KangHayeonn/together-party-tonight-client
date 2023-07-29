@@ -8,6 +8,7 @@ export const ModalAtom = atom({
     isOpenReviewModal: false,
     isOpenApplyModal: false,
     isOpenMemberModal: false,
+    isOpenRequestCalcModal: true,
     reviewItem: {} as IReviewItem,
     reviewId: 0,
     clubItem: {} as IClubItem,
