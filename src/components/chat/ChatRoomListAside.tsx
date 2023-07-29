@@ -25,6 +25,7 @@ const ChatRoomListAside = () => {
   const router = useRouter();
   const [chatRooms, setChatRooms] = useRecoilState(chatRoomListState);
   const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
+
   const { isLoading, error, data } = useQuery(
     ["chatRoomList"],
     () => Api.v1FetchChatRoomList(),

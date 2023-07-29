@@ -63,7 +63,7 @@ const ChatRoomItemText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 20rem;
+  width: 19.5rem;
   font-size: 0.9rem;
   letter-spacing: 0.25px;
   color: #0d3471;

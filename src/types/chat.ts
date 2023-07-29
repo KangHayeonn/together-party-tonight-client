@@ -24,6 +24,8 @@ export interface ChatResponseType {
   chatId: number;
   dateTime: Date;
   message: string;
+  senderMemberId: number;
+  senderNickname: string;
 }
 
 export interface ChatListType {
@@ -33,4 +35,9 @@ export interface ChatListType {
 export interface ChatRequestType {
   chatMsg: string;
   chatRoomId: number;
+}
+
+export interface chatRoomNameType {
+  chatRoomId: number;
+  chatRoomName: string;
 }

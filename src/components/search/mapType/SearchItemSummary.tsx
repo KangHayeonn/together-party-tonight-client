@@ -33,9 +33,6 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
       const { code } = res.data;
       if (code === 200) console.log("신청하기 완료");
     },
-    onError: () => {
-      // interceptor에서 공통 error 처리
-    },
   });
 
   const onClickClubSignup = () => {
