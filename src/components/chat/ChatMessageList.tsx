@@ -11,6 +11,7 @@ import {
 } from "@/styles/components/chat/ChatRoomForm";
 import { chatListType } from "@/types/chat";
 import { getUserId } from "@/utils/tokenControl";
+import { getDateFormat, getTimeFormat } from "@/utils/dateFormat";
 // api
 import Api from "@/api/chat";
 // recoil
@@ -63,13 +64,13 @@ const ChatMessageList = () => {
             <ChatItem key={index}>
               {(index === 0 || index % 4 === 0) && (
                 <ChatDateBox>
-                  <ChatDate>{item.dateTime.toString()}</ChatDate>
+                  <ChatDate>{getDateFormat(item.dateTime)}</ChatDate>
                 </ChatDateBox>
               )}
               <ChatContentBox
                 className={`${item.senderMemberId !== userId && "opposite"}`}
               >
-                <ChatTime>{item.dateTime.toString()}</ChatTime>
+                <ChatTime>{getTimeFormat(item.dateTime)}</ChatTime>
                 <ChatContent>{item.message}</ChatContent>
               </ChatContentBox>
             </ChatItem>
