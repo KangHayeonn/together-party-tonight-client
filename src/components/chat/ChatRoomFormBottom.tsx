@@ -14,8 +14,8 @@ import { checkChatRoomState, chatRoomListState } from "@/recoil/chat/chatState";
 
 const ChatRoomFormBottom = () => {
   const checkChatRoom = useRecoilValue(checkChatRoomState);
-  const [message, setMessage] = useState<string>("");
   const setChatRooms = useSetRecoilState(chatRoomListState);
+  const [message, setMessage] = useState<string>("");
 
   const { isLoading, error, data, refetch } = useQuery(
     ["chatRoomList"],

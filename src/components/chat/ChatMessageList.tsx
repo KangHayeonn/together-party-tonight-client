@@ -20,11 +20,13 @@ import {
   chatListState,
   chatRoomListState,
 } from "@/recoil/chat/chatState";
+import { socketChatAddState } from "@/recoil/socket/socketState";
 
 const ChatMessageList = () => {
   const checkChatRoom = useRecoilValue(checkChatRoomState);
   const chatRooms = useRecoilValue(chatRoomListState);
   const [chatList, setChatList] = useRecoilState(chatListState);
+  const socketChat = useRecoilValue(socketChatAddState);
   const userId = typeof window !== "undefined" && Number(getUserId());
 
   const { mutate: getChatList } = useMutation({
@@ -51,7 +53,7 @@ const ChatMessageList = () => {
       lastChatSeq: -1,
       listCount: 20,
     });
-  }, [chatRooms]);
+  }, [chatRooms, socketChat]);
 
   return (
     <ChatList>

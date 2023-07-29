@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -18,15 +18,17 @@ import { ChatRoomType } from "@/types/chat";
 // api
 import Api from "@/api/chat";
 // recoil
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { chatRoomListState, checkChatRoomState } from "@/recoil/chat/chatState";
+import { socketChatAddState } from "@/recoil/socket/socketState";
 
 const ChatRoomListAside = () => {
   const router = useRouter();
   const [chatRooms, setChatRooms] = useRecoilState(chatRoomListState);
   const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
+  const socketChat = useRecoilValue(socketChatAddState);
 
-  const { isLoading, error, data } = useQuery(
+  const { isLoading, error, data, refetch } = useQuery(
     ["chatRoomList"],
     () => Api.v1FetchChatRoomList(),
     {
@@ -51,6 +53,10 @@ const ChatRoomListAside = () => {
     });
     router.push(`/chat/${item.chatRoomId}`);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [socketChat]);
 
   return (
     <ChatRoomListWrapper>

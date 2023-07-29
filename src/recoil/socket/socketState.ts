@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import {
+  socketChatAddType,
   socketCommentAddMsgType,
   socketCommentDeleteMsgType,
 } from "@/types/socket";
@@ -25,4 +26,15 @@ const socketCommentDeleteState = atom<socketCommentDeleteMsgType>({
   },
 });
 
-export { socketCommentAddState, socketCommentDeleteState };
+const socketChatAddState = atom<socketChatAddType>({
+  key: "socketChatAddState",
+  default: {
+    chatRoomId: -1,
+    chatId: -1,
+    chat: "",
+    senderMemberId: -1,
+    senderNickname: "",
+  },
+});
+
+export { socketCommentAddState, socketCommentDeleteState, socketChatAddState };
