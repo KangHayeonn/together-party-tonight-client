@@ -18,7 +18,6 @@ const ModalLayer = styled.div`
 const InnerLayer = styled.div`
   flex: none;
   position: relative;
-  max-height: 900px;
   margin: auto;
   border-radius: 10px;
   box-sizing: border-box;

@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState, useRef } from "react";
 import { logout } from "@/api/login";
 import {
   Menu,
@@ -9,14 +11,14 @@ import {
   WrapHeader,
   WrapLogo,
 } from "@/styles/components/layout/Header";
+import { getUserId } from "@/utils/tokenControl";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState, useRef } from "react";
 // socket
 import useSocket from "@/hooks/useSocket";
 
 export default function Header() {
   const path = usePathname();
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [
@@ -26,17 +28,17 @@ export default function Header() {
     socketReceiveMessage,
   ] = useSocket();
   const ws = useRef<WebSocket | null>(null);
+  const userId = typeof window !== "undefined" && getUserId();
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-
-    const userId = localStorage.getItem("userId");
     if (userId) logout(userId);
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userId");
     setIsLoggedIn(false);
+    router.replace("/");
   };
 
   const socketLogin = () => {
@@ -86,7 +88,7 @@ export default function Header() {
                 alt="채팅하기"
               />
             </MenuIconItem>
-            <MenuIconItem href="/mypage/info">
+            <MenuIconItem href={`/mypage/info/${userId}`}>
               <Image
                 src="/images/profileBold.svg"
                 width={27}
