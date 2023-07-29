@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Script from "next/script";
 import { Map, MapMarker, useMap, CustomOverlayMap } from "react-kakao-maps-sdk";
 import {
   MapWrapper,
@@ -90,9 +89,31 @@ const KakaoMap = () => {
     }
   }, [searchResponse]);
 
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Kakao Maps SDK 로드 시작
+    const script = document.createElement("script");
+    script.src = KAKAO_SDK_URL;
+    script.async = true;
+    script.onload = () => {
+      // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
+      setMapLoaded(true);
+    };
+    document.head.appendChild(script);
+
+    // 컴포넌트 언마운트 시 스크립트를 제거
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  if (!mapLoaded) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
       <MapWrapper>
         <Map
           center={{
