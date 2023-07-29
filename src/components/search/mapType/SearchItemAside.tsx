@@ -71,7 +71,7 @@ const SearchItemAside = () => {
           <SearchItemDetail />
           <SearchOpenReviewBtn />
         </SearchItemDetailWrapper>
-        <SearchItemComment />
+        <SearchItemComment clubId={Number(id)} />
       </SearchItemClubWrapper>
       {openReview && <SearchReviewList />}
     </SearchItemAsideWrapper>

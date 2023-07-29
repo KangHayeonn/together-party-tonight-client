@@ -8,7 +8,6 @@ import SearchFilter from "@/components/search/mapType/SearchFilter";
 import SearchTagList from "@/components/search/mapType/SearchTagList";
 import SearchOption from "@/components/search/mapType/SearchOption";
 import SearchResult from "@/components/search/mapType/SearchResult";
-import { clubList } from "@/utils/mock/search";
 import { validationSearchByAddress } from "@/utils/func/SearchFunc";
 // api
 import Api from "@/api/search";
