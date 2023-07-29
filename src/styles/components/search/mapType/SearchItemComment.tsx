@@ -85,6 +85,23 @@ const SearchCommentBtn = styled.div`
   gap: 0.5rem;
 `;
 
+const SearchResultEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 15.5rem;
+  font-size: 16px;
+  color: #a0a0a0;
+`;
+
+const SearchLoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 15.5rem;
+`;
+
 export {
   SearchCommentWrapper,
   SearchCommentTitle,
@@ -96,4 +113,6 @@ export {
   SearchCommentText,
   SearchComment,
   SearchCommentBtn,
+  SearchResultEmpty,
+  SearchLoadingWrapper,
 };

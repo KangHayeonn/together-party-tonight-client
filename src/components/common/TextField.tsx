@@ -34,6 +34,7 @@ const TextField = ({
   className,
   placeholder,
   isError,
+  message,
   errorMessage,
   textType,
   inputType,
@@ -54,6 +55,7 @@ const TextField = ({
         <TextInput
           name={name}
           type={type}
+          value={message}
           className={className}
           placeholder={placeholder}
           onChange={onChangeText}

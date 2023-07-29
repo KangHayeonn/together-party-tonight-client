@@ -15,13 +15,8 @@ import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
 import RoundButton from "@/components/common/RoundButton";
 import DropDown from "@/components/common/DropDown";
-import {
-  socketClose,
-  socketConnect,
-  socketDisconnect,
-  socketRequestMessage,
-  socketReceiveMessage,
-} from "@/utils/socket";
+// socket
+import useSocket from "@/hooks/useSocket";
 
 export default function Home() {
   const router = useRouter();
@@ -29,6 +24,13 @@ export default function Home() {
   const [search, setSearch] = useState<string>("");
   const [isShowToast, setIsShowToast] = useState<boolean>(false);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
+  const [
+    socketConnect,
+    socketDisconnect,
+    socketRequestMessage,
+    socketReceiveMessage,
+    socketClose,
+  ] = useSocket();
 
   // react-query
   const { isLoading, error, data } = useQuery({

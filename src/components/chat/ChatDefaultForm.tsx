@@ -17,10 +17,10 @@ const ChatDefaultForm = () => {
   const onClickShowMyClubs = async () => {
     // const data = await Api.v1AddChatRoom(8);
     router.push("/mypage/list/apply");
-    // const data = await Api.v1AddChat({
-    //   chatMsg: "안녕하세요!!",
-    //   chatRoomId: 2,
-    // });
+    /*const data = await Api.v1AddChat({
+      chatMsg: "답장부탁드려요!!",
+      chatRoomId: 2,
+    });*/
   };
 
   return (

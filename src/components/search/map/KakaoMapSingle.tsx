@@ -32,6 +32,8 @@ const KakaoMap = () => {
     const map = useMap();
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
+    const pinType = categoryMap.get(content.clubCategory) || "exercise";
+
     return (
       <>
         <MapMarker
@@ -40,9 +42,7 @@ const KakaoMap = () => {
           onMouseOver={() => setIsVisible(true)}
           onMouseOut={() => setIsVisible(false)}
           image={{
-            src: `/images/category/${categoryMap.get(
-              content.clubCategory,
-            )}Pin.png`, // 마커이미지의 주소입니다
+            src: `/images/category/${pinType}Pin.png`, // 마커이미지의 주소입니다
             size: {
               width: 55,
               height: 69,
