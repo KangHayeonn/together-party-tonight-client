@@ -55,7 +55,7 @@ export const elapsedTime = (date: Date) => {
   return "방금 전";
 };
 
-export const getDateFormat = (date: string) => {
+export const getDateFormat = (date: Date) => {
   const weekNames = ["일", "월", "화", "수", "목", "금", "토"];
   const newDate = new Date(date);
   const year = newDate.getFullYear();
@@ -69,7 +69,7 @@ export const getDateFormat = (date: string) => {
   return `${year}년 ${newMonth}월 ${newDay}일 ${week}요일`;
 };
 
-export const getTimeFormat = (date: string) => {
+export const getTimeFormat = (date: Date) => {
   const newDate = new Date(date);
   const hour = newDate.getHours();
   const minute = newDate.getMinutes();
