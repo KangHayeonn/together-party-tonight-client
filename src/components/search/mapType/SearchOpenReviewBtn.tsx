@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   SearchOpenReviewBtnWrapper,
@@ -8,7 +8,11 @@ import {
 import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
 
-const SearchOpenReviewBtn = () => {
+interface SearchOpenReviewBtnProps {
+  openReview: (item: boolean) => void;
+}
+
+const SearchOpenReviewBtn = ({ openReview }: SearchOpenReviewBtnProps) => {
   const clubDetail = useRecoilValue(clubDetailState);
 
   return (
@@ -29,6 +33,7 @@ const SearchOpenReviewBtn = () => {
           width={14}
           height={14}
           alt="Review Open Button Icon"
+          onClick={() => openReview(true)}
         />
       </SearchOpenReviewBtnBox>
     </SearchOpenReviewBtnWrapper>
