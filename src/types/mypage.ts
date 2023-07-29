@@ -53,3 +53,10 @@ export type MyPageListItem = {
   id: string;
   text: string;
 };
+
+export type ItemBtnObjType = {
+  [key: string]: {
+    btnName: string;
+    handleFunc: (item: IClubItem) => void;
+  };
+};
