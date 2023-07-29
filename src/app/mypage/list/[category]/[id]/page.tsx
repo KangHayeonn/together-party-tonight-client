@@ -23,8 +23,8 @@ import {
 } from "@/styles/page/MyPage/Meeting";
 import { IClubItem, IReviewItem } from "@/types/mypage";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Props = {
   params: { category: string; id: string };
@@ -38,19 +38,25 @@ export default function Category({ params: { category, id } }: Props) {
   const [sortBy, setSortBy] = useState("createdDate,DESC");
   const [filterBy, setFilterBy] = useState("ALL");
   const [curList, setCurList] = useState<IClubItem[] | IReviewItem[]>([]);
+  const checkCalcObj = useMemo(() => {
+    return {
+      isCalMeeting: category === "calculate" && selected === "meeting",
+      isCalApply: category === "calculate" && selected === "apply",
+    };
+  }, [category, selected]);
 
   const fetchListData = (pageParam = 0, sortBy: string, filterBy: string) => {
     if (category === "review") {
       return MyPage.v1GetMyReview(pageParam, 5, sortBy);
-    } else if (category === "meeting") {
+    } else if (category === "meeting" || checkCalcObj.isCalMeeting) {
       return MyPage.v1GetMyMeeting(filterBy, id, pageParam, 5);
-    } else if (category === "apply") {
+    } else if (category === "apply" || checkCalcObj.isCalApply) {
       return MyPage.v1GetApplyMeeting(filterBy, pageParam, 5);
     }
   };
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ["list", category, sortBy, filterBy, isOpenReviewModal],
+    ["list", category, sortBy, filterBy, selected],
     ({ pageParam = 0 }) => fetchListData(pageParam, sortBy, filterBy),
     {
       getNextPageParam: (lastPage) => {
@@ -61,10 +67,6 @@ export default function Category({ params: { category, id } }: Props) {
       },
     },
   );
-
-  const handleSelect = (value: string) => {
-    setSelected(value);
-  };
 
   const handleScroll = () => {
     if (!isLoading && ulRef.current) {
@@ -83,11 +85,11 @@ export default function Category({ params: { category, id } }: Props) {
   };
 
   const handleClickSelect = (item: string) => {
-    if (category === "meeting") {
+    if (category === "meeting" || checkCalcObj.isCalMeeting) {
       handleSortAndFilterChange({
         newFilterBy: ConvertMyMeetingFilterName[item],
       });
-    } else if (category === "apply") {
+    } else if (category === "apply" || checkCalcObj.isCalApply) {
       handleSortAndFilterChange({
         newFilterBy: ConvertApplyMeetingFilterName[item],
       });
@@ -102,15 +104,15 @@ export default function Category({ params: { category, id } }: Props) {
       if (category === "review") {
         const list = data.pages.map((obj) => obj.reviewList).flat();
         setCurList(list);
-      } else if (category === "meeting") {
+      } else if (category === "meeting" || checkCalcObj.isCalMeeting) {
         const list = data.pages.map((obj) => obj.myOwnedList).flat();
         setCurList(list);
-      } else if (category === "apply") {
+      } else if (category === "apply" || checkCalcObj.isCalApply) {
         const list = data.pages.map((obj) => obj.myAppliedList).flat();
         setCurList(list);
       }
     }
-  }, [category, data]);
+  }, [category, checkCalcObj, data]);
 
   useEffect(() => {
     if (ulRef.current) {
@@ -125,32 +127,35 @@ export default function Category({ params: { category, id } }: Props) {
   return (
     <MeetingWrapper>
       <MeetingTitle>{mypageCategory[category]}</MeetingTitle>
+      {category === "calculate" && (
+        <SelectWrapper>
+          <button
+            className={selected === "meeting" ? "selected" : ""}
+            onClick={() => {
+              setSelected("meeting");
+            }}
+          >
+            내 모임
+          </button>
+          <button
+            className={selected === "apply" ? "selected" : ""}
+            onClick={() => {
+              setSelected("apply");
+            }}
+          >
+            신청 모임
+          </button>
+        </SelectWrapper>
+      )}
       <MeetingInfo>
-        {category === "calculate" ? (
-          <SelectWrapper>
-            <button
-              className={selected === "myMeeting" ? "selected" : ""}
-              onClick={() => {
-                handleSelect("myMeeting");
-              }}
-            >
-              내 모임 3
-            </button>
-            <button
-              className={selected === "applyMeeting" ? "selected" : ""}
-              onClick={() => {
-                handleSelect("applyMeeting");
-              }}
-            >
-              신청 모임 2
-            </button>
-          </SelectWrapper>
-        ) : (
-          <TotalMeeting>총 {total}개</TotalMeeting>
-        )}
+        <TotalMeeting>총 {total}개</TotalMeeting>
         <DropDown
           defaultText={category === "review" ? "최신 순" : "전체"}
-          dropDownList={MypageListFilterList[category]}
+          dropDownList={
+            category === "calculate"
+              ? MypageListFilterList[selected]
+              : MypageListFilterList[category]
+          }
           changeText={handleClickSelect}
           width={110}
         />

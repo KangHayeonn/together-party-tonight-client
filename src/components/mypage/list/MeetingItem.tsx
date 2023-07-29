@@ -27,13 +27,14 @@ type Props = {
 
 export default function MeetingItem({ item, category }: Props) {
   const setIsOpen = useSetRecoilState(ModalAtom);
-  const curCalculate = useRecoilValue(CalculateSelect);
+  const calculateType = useRecoilValue(CalculateSelect);
 
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
     return {
       meeting: {
         btnName: "신청내역",
         handleFunc: (item) => {
+          console.log(item);
           setIsOpen((val) => ({
             ...val,
             isOpenApplyModal: true,
@@ -54,11 +55,13 @@ export default function MeetingItem({ item, category }: Props) {
         },
       },
       calculate: {
-        btnName: curCalculate === "myMeeting" ? "정산 만들기" : "정산하기",
-        handleFunc: () => {},
+        btnName: calculateType === "meeting" ? "정산요청" : "정산하기",
+        handleFunc: () => {
+          console.log(calculateType);
+        },
       },
     };
-  }, [curCalculate]);
+  }, [calculateType]);
 
   const convertDate = (date: string) => {
     const getDate = date.split("T");
