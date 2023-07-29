@@ -11,11 +11,21 @@ import {
 } from "@/styles/components/layout/Header";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+// socket
+import useSocket from "@/hooks/useSocket";
 
 export default function Header() {
   const path = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [socketConnected, setSocketConnected] = useState<boolean>(false);
+  const [
+    socketConnect,
+    socketDisconnect,
+    socketRequestMessage,
+    socketReceiveMessage,
+  ] = useSocket();
+  const ws = useRef<WebSocket | null>(null);
 
   const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -29,12 +39,30 @@ export default function Header() {
     setIsLoggedIn(false);
   };
 
+  const socketLogin = () => {
+    if (!ws.current) {
+      if (socketConnect(ws)) setSocketConnected(true);
+    }
+
+    socketDisconnect(ws);
+    socketReceiveMessage(ws);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       setIsLoggedIn(true);
+      socketLogin();
     }
   }, [path]);
+
+  useEffect(() => {
+    if (socketConnected) {
+      if (!ws.current) {
+        socketRequestMessage(ws);
+      }
+    }
+  }, [socketConnected]);
 
   return (
     <WrapHeader>
