@@ -20,6 +20,9 @@ import Image from "next/image";
 import useSocket from "@/hooks/useSocket";
 // api
 import Api from "@/api/alert";
+// recoil
+import { useRecoilValue } from "recoil";
+import { socketAlertMsgState } from "@/recoil/socket/socketState";
 
 export default function Header() {
   const path = usePathname();
@@ -28,6 +31,7 @@ export default function Header() {
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [unReadAlertCnt, setUnReadAlertCnt] = useState<number>(0);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
+  const socketAlertMsg = useRecoilValue(socketAlertMsgState);
   const [
     socketConnect,
     socketDisconnect,
@@ -76,6 +80,10 @@ export default function Header() {
       socketLogin();
     }
   }, [path]);
+
+  useEffect(() => {
+    refetch();
+  }, [socketAlertMsg]);
 
   useEffect(() => {
     if (socketConnected) {

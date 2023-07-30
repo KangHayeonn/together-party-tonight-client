@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import {
+  socketAlertMsgType,
   socketChatAddType,
   socketCommentAddMsgType,
   socketCommentDeleteMsgType,
@@ -37,4 +38,17 @@ const socketChatAddState = atom<socketChatAddType>({
   },
 });
 
-export { socketCommentAddState, socketCommentDeleteState, socketChatAddState };
+const socketAlertMsgState = atom<socketAlertMsgType>({
+  key: "socketAlertMsgState",
+  default: {
+    alertType: "",
+    alertId: -1,
+  },
+});
+
+export {
+  socketCommentAddState,
+  socketCommentDeleteState,
+  socketChatAddState,
+  socketAlertMsgState,
+};

@@ -3,6 +3,7 @@ import { MutableRefObject } from "react";
 import { getUserId } from "@/utils/tokenControl";
 import { useSetRecoilState } from "recoil";
 import {
+  socketAlertMsgState,
   socketChatAddState,
   socketCommentAddState,
   socketCommentDeleteState,
@@ -14,6 +15,7 @@ const useSocket = () => {
   const setSocketAddComment = useSetRecoilState(socketCommentAddState);
   const setSocketDeleteComment = useSetRecoilState(socketCommentDeleteState);
   const setSocketAddChat = useSetRecoilState(socketChatAddState);
+  const setSocketAlertMsg = useSetRecoilState(socketAlertMsgState);
 
   const socketConnect = (
     ws: MutableRefObject<WebSocket | null>,
@@ -83,6 +85,10 @@ const useSocket = () => {
           senderNickname: data.senderNickname,
         });
       } else {
+        setSocketAlertMsg({
+          alertType: data.alertType,
+          alertId: data.alertId,
+        });
       }
     };
   };
