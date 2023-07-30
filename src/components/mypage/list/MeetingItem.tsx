@@ -29,12 +29,25 @@ export default function MeetingItem({ item, category }: Props) {
   const setIsOpen = useSetRecoilState(ModalAtom);
   const calculateType = useRecoilValue(CalculateSelect);
 
+  const translateBtnName = (calculateType: string) => {
+    if (calculateType === "meeting") {
+      return item.billingRequest ? "정산내역" : "정산요청";
+    }
+    switch (item.billingState) {
+      case "Complete":
+        return "정산내역";
+      case "Wait":
+        return "정산하기";
+      default:
+        return "미정산";
+    }
+  };
+
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
     return {
       meeting: {
         btnName: "신청내역",
         handleFunc: (item) => {
-          console.log(item);
           setIsOpen((val) => ({
             ...val,
             isOpenApplyModal: true,
@@ -55,13 +68,32 @@ export default function MeetingItem({ item, category }: Props) {
         },
       },
       calculate: {
-        btnName: calculateType === "meeting" ? "정산요청" : "정산하기",
-        handleFunc: () => {
-          console.log(calculateType);
+        btnName: translateBtnName(calculateType),
+        handleFunc: (item) => {
+          if (Object.prototype.hasOwnProperty.call(item, "billingRequest")) {
+            setIsOpen((val) => ({
+              ...val,
+              ...(item.billingRequest
+                ? { isOpenCalcAccountModal: true }
+                : { isOpenRequestCalcModal: true }),
+              clubId: item.clubId,
+            }));
+          } else {
+            if (item.billingState === "Complete") {
+              setIsOpen((val) => ({
+                ...val,
+                isOpenCalcAccountModal: true,
+                clubItem: item,
+                clubId: item.clubId,
+              }));
+            } else if (item.billingState === "Wait") {
+              // 정산하기 api 호출
+            }
+          }
         },
       },
     };
-  }, [calculateType]);
+  }, [calculateType, item]);
 
   const convertDate = (date: string) => {
     const getDate = date.split("T");

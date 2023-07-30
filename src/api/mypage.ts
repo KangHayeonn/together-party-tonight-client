@@ -238,6 +238,18 @@ const MyPage = {
 
     return fileObject;
   },
+
+  async v1RequestBilling(clubId: number, price: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing`, {
+        clubId,
+        price,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default MyPage;

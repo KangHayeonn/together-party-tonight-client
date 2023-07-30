@@ -18,24 +18,46 @@ import {
   RequestBtnWrapper,
 } from "@/styles/components/mypage/RequestCalcModal";
 import TextButton from "../common/TextButton";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import MyPage from "@/api/mypage";
+import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
+import Loading from "../common/Loading";
 
 export default function RequestCalcModal() {
-  const { clubItem, clubId } = useRecoilValue(ModalAtom);
+  const { clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
-  const [inpPay, setInpPay] = useState(0);
+  const [price, setPrice] = useState(0);
 
-  const dummyList = [
+  const { isLoading } = useQuery(
+    ["application", clubId],
+    () => MyPage.v1GetApplicationList(clubId),
     {
-      memberId: 1,
-      nickName: "정기수",
-      profileImage: "/images/Naver.svg",
+      onSuccess: (data) => {
+        const approvedItems = data.applicationList.filter(
+          (item: ApplicationItem) => item.approvalStatus === "APPROVE",
+        );
+        setCurrentMember(approvedItems);
+      },
     },
+  );
+
+  const { mutate: requestBilling } = useMutation(
+    ({ clubId, price }: { clubId: number; price: number }) =>
+      MyPage.v1RequestBilling(clubId, price),
     {
-      memberId: 2,
-      nickName: "정기수2",
-      profileImage: "/images/Naver.svg",
+      onSuccess: (res) => {
+        console.log(res);
+      },
     },
-  ];
+  );
+
+  if (isLoading) {
+    return (
+      <LoadingWrapper>
+        <Loading />
+      </LoadingWrapper>
+    );
+  }
 
   return (
     <Modal title="정산요청">
@@ -44,10 +66,10 @@ export default function RequestCalcModal() {
           <InpPay
             type="number"
             placeholder="금액 입력(원)"
-            value={inpPay || ""}
-            onChange={(e) => setInpPay(Number(e.target.value))}
+            value={price || ""}
+            onChange={(e) => setPrice(Number(e.target.value))}
           />
-          <ClearBtn onClick={() => setInpPay(0)}>
+          <ClearBtn onClick={() => setPrice(0)}>
             <Image
               src="/images/off_close.svg"
               width={20}
@@ -57,9 +79,9 @@ export default function RequestCalcModal() {
           </ClearBtn>
         </InpContainer>
         <MemberListWrapper>
-          <MemberCnt>정산 멤버 {dummyList.length}</MemberCnt>
-          {dummyList.length > 0 &&
-            dummyList.map((item) => (
+          <MemberCnt>정산 멤버 {currentMember.length}</MemberCnt>
+          {currentMember.length > 0 &&
+            currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
                 <Member>
                   <Image
@@ -70,14 +92,14 @@ export default function RequestCalcModal() {
                   />
                   {item.nickName}
                 </Member>
-                <p>{Math.ceil(inpPay / dummyList.length)}</p>
+                <p>{Math.ceil(price / currentMember.length + 1)}</p>
               </MemberWrapper>
             ))}
         </MemberListWrapper>
         <RequestBtnWrapper>
           <TextButton
             text="정산요청"
-            onClick={() => console.log(1)}
+            onClick={() => requestBilling({ clubId, price })}
             fontSize={16}
             width={150}
             height={45}
