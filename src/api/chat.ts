@@ -1,5 +1,5 @@
 import { instanceWithToken } from "@/api";
-import { chatType, chatListType } from "@/types/chat";
+import { chatType, chatListType, chatRoomNameType } from "@/types/chat";
 const prefix = "/api";
 
 const Chat = {
@@ -43,11 +43,35 @@ const Chat = {
       return Promise.reject(err);
     }
   },
+  // 채팅방 나가기 요청
+  async v1LeaveChatRoom(id: number) {
+    try {
+      const url = `${prefix}/chat/chatRoom`;
+      const result = await instanceWithToken.delete(url, {
+        data: {
+          chatRoomId: id,
+        },
+      });
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
   // 채팅방 목록 조회
   async v1FetchChatRoomList() {
     try {
       const url = `${prefix}/chat/chatRoom/list`;
       const result = await instanceWithToken.get(url);
+      return result;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+  // 채팅방 이름 변경 요청
+  async v1UpdateChatRoomName(data: chatRoomNameType) {
+    try {
+      const url = `${prefix}/chat/chatRoom/name`;
+      const result = await instanceWithToken.post(url, data);
       return result;
     } catch (err) {
       return Promise.reject(err);

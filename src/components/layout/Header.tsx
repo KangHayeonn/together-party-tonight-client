@@ -11,7 +11,7 @@ import {
   WrapHeader,
   WrapLogo,
 } from "@/styles/components/layout/Header";
-import { getUserId } from "@/utils/tokenControl";
+import { getUserId, clearToken } from "@/utils/tokenControl";
 import Image from "next/image";
 // socket
 import useSocket from "@/hooks/useSocket";
@@ -30,22 +30,20 @@ export default function Header() {
   const ws = useRef<WebSocket | null>(null);
   const userId = typeof window !== "undefined" && getUserId();
 
-  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (userId) logout(userId);
-
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userId");
-    setIsLoggedIn(false);
-    router.replace("/");
+    if (userId) {
+      await logout(userId);
+      clearToken();
+      setIsLoggedIn(false);
+      router.replace("/");
+    }
   };
 
   const socketLogin = () => {
     if (!ws.current) {
       if (socketConnect(ws)) setSocketConnected(true);
     }
-
     socketDisconnect(ws);
     socketReceiveMessage(ws);
   };

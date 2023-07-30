@@ -44,7 +44,7 @@ const SearchItemDetail = () => {
       <SearchDetailContentBox>
         <Image src="/images/user.svg" width={25} height={23} alt="User Icon" />
         <SearchDetailContent>
-          {clubDetail.isRecruit ? "모집중" : "모집완료"}{" "}
+          {clubDetail.isRecruit ? "모집중" : "모집완료"}
           {clubDetail.memberCount}/{clubDetail.clubMaximum}
         </SearchDetailContent>
       </SearchDetailContentBox>

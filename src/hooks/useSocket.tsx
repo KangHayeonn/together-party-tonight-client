@@ -3,6 +3,7 @@ import { MutableRefObject } from "react";
 import { getUserId } from "@/utils/tokenControl";
 import { useSetRecoilState } from "recoil";
 import {
+  socketChatAddState,
   socketCommentAddState,
   socketCommentDeleteState,
 } from "@/recoil/socket/socketState";
@@ -12,6 +13,7 @@ const webSocketUrl = `${process.env.NEXT_PUBLIC_SOCKET_BASE_URL}/api/chatting`;
 const useSocket = () => {
   const setSocketAddComment = useSetRecoilState(socketCommentAddState);
   const setSocketDeleteComment = useSetRecoilState(socketCommentDeleteState);
+  const setSocketAddChat = useSetRecoilState(socketChatAddState);
 
   const socketConnect = (
     ws: MutableRefObject<WebSocket | null>,
@@ -73,6 +75,13 @@ const useSocket = () => {
           });
         }
       } else if (response.type === "chat") {
+        setSocketAddChat({
+          chatRoomId: data.chatRoomId,
+          chatId: data.chatId,
+          chat: data.chat,
+          senderMemberId: data.senderMemberId,
+          senderNickname: data.senderNickname,
+        });
       } else {
       }
     };

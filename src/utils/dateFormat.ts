@@ -54,3 +54,28 @@ export const elapsedTime = (date: Date) => {
   }
   return "방금 전";
 };
+
+export const getDateFormat = (date: Date) => {
+  const weekNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const newDate = new Date(date);
+  const year = newDate.getFullYear();
+  const month = newDate.getMonth();
+  const day = newDate.getDate();
+  const week = weekNames[newDate.getDay()];
+
+  const newMonth = month + 1 < 10 ? `0${month + 1}` : `${month + 1}`;
+  const newDay = day < 10 ? `0${day}` : `${day}`;
+
+  return `${year}년 ${newMonth}월 ${newDay}일 ${week}요일`;
+};
+
+export const getTimeFormat = (date: Date) => {
+  const newDate = new Date(date);
+  const hour = newDate.getHours();
+  const minute = newDate.getMinutes();
+  const timezone = hour < 12 ? "오전" : "오후";
+  const newHour = hour > 12 ? hour - 12 : hour;
+  const newMinute = minute < 10 ? `0${minute}` : `${minute}`;
+
+  return `${timezone} ${newHour}시 ${newMinute}분`;
+};

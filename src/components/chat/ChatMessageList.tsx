@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   ChatList,
@@ -9,34 +9,34 @@ import {
   ChatTime,
   ChatContent,
 } from "@/styles/components/chat/ChatRoomForm";
-import { chatListType, ChatListType } from "@/types/chat";
+import { chatListType } from "@/types/chat";
 import { getUserId } from "@/utils/tokenControl";
+import { getDateFormat, getTimeFormat } from "@/utils/dateFormat";
 // api
 import Api from "@/api/chat";
 // recoil
 import { useRecoilValue, useRecoilState } from "recoil";
-import { checkChatRoomState, chatListState } from "@/recoil/chat/chatState";
-
-interface ChatListProps {
-  chatId: number;
-  dateTime: Date;
-  message: string;
-}
+import {
+  checkChatRoomState,
+  chatListState,
+  chatRoomListState,
+} from "@/recoil/chat/chatState";
+import { socketChatAddState } from "@/recoil/socket/socketState";
 
 const ChatMessageList = () => {
   const checkChatRoom = useRecoilValue(checkChatRoomState);
-  // const [chats, setChats] = useRecoilState(chatListState);
-  const [chatList, setChatList] = useState<Array<ChatListProps>>([]);
+  const chatRooms = useRecoilValue(chatRoomListState);
+  const [chatList, setChatList] = useRecoilState(chatListState);
+  const socketChat = useRecoilValue(socketChatAddState);
   const userId = typeof window !== "undefined" && Number(getUserId());
 
   const { mutate: getChatList } = useMutation({
     mutationFn: (data: chatListType) => Api.v1FetchChatList(data),
     onSuccess: (res) => {
       const { chatList } = res.data.data;
-      setChatList(chatList);
-    },
-    onError: () => {
-      // interceptor에서 공통 error 처리
+      setChatList({
+        chatList: chatList,
+      });
     },
   });
 
@@ -46,27 +46,31 @@ const ChatMessageList = () => {
       lastChatSeq: -1,
       listCount: 20,
     });
-  }, []);
+  }, [checkChatRoom]);
+
+  useEffect(() => {
+    getChatList({
+      chatRoomId: checkChatRoom.chatRoomId,
+      lastChatSeq: -1,
+      listCount: 20,
+    });
+  }, [chatRooms, socketChat]);
 
   return (
     <ChatList>
-      {chatList &&
-        chatList.map((item, index) => {
+      {chatList.chatList &&
+        chatList.chatList.map((item, index) => {
           return (
             <ChatItem key={index}>
               {(index === 0 || index % 4 === 0) && (
                 <ChatDateBox>
-                  안녕하세요
-                  <ChatDate>{item.dateTime.toString()}</ChatDate>
+                  <ChatDate>{getDateFormat(item.dateTime)}</ChatDate>
                 </ChatDateBox>
               )}
-              {/*<ChatContentBox
-                className={`${item.memberId !== userId && "opposite"}`}
-              >*/}
               <ChatContentBox
-                className={`${item.chatId !== userId && "opposite"}`}
+                className={`${item.senderMemberId !== userId && "opposite"}`}
               >
-                <ChatTime>{item.dateTime.toString()}</ChatTime>
+                <ChatTime>{getTimeFormat(item.dateTime)}</ChatTime>
                 <ChatContent>{item.message}</ChatContent>
               </ChatContentBox>
             </ChatItem>

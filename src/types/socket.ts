@@ -12,3 +12,11 @@ export interface socketCommentDeleteMsgType {
   method: string;
   commentId: number;
 }
+
+export interface socketChatAddType {
+  chatRoomId: number;
+  chatId: number;
+  chat: string;
+  senderMemberId: number;
+  senderNickname: string;
+}

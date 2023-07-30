@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { instance } from ".";
+import { instance, instanceWithToken } from "@/api";
 import { InputValueType } from "@/hooks/useHandleInput";
 
 interface SubmitValues {
@@ -24,7 +24,7 @@ export const useLogin = () => {
 };
 
 export const logout = async (userId: string) => {
-  await instance.get(`/api/members/logout/${userId}`);
+  await instanceWithToken.get(`/api/members/logout/${userId}`);
 };
 
 export const useSignup = () => {
