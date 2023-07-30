@@ -11,6 +11,8 @@ import {
   WrapHeader,
   WrapLogo,
 } from "@/styles/components/layout/Header";
+import { AlertBadge } from "@/styles/components/alert/Alert";
+import Alert from "@/components/alert/Alert";
 import { getUserId, clearToken } from "@/utils/tokenControl";
 import Image from "next/image";
 // socket
@@ -20,6 +22,7 @@ export default function Header() {
   const path = usePathname();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [
     socketConnect,
@@ -96,11 +99,11 @@ export default function Header() {
             </MenuIconItem>
             <MenuIconItem
               href="#"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
+              onClick={() => setIsAlertOpen((item) => !item)}
+              className="alert"
             >
               <Image src="/images/bell.svg" width={27} height={23} alt="알림" />
+              <AlertBadge>14</AlertBadge>
             </MenuIconItem>
             <MenuItem
               href="#"
@@ -116,6 +119,7 @@ export default function Header() {
             <MenuItem href="/signup">회원가입</MenuItem>
           </>
         )}
+        {isAlertOpen && <Alert />}
       </Menu>
     </WrapHeader>
   );
