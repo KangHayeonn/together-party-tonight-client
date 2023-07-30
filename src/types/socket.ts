@@ -20,3 +20,8 @@ export interface socketChatAddType {
   senderMemberId: number;
   senderNickname: string;
 }
+
+export interface socketAlertMsgType {
+  alertType: string;
+  alertId: number;
+}

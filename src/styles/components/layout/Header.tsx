@@ -7,6 +7,7 @@ const WrapHeader = styled.header`
   display: flex;
   justify-content: space-between;
   padding: 20px 30px 15px;
+  position: relative;
 `;
 
 const WrapLogo = styled(Link)`
