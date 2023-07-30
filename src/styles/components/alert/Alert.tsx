@@ -22,7 +22,6 @@ const AlertTitle = styled.div`
 
 const AlertTabs = styled.div`
   display: flex;
-  gap: 0.5rem;
   margin-bottom: 3px;
 `;
 
@@ -30,9 +29,13 @@ const AlertTab = styled.div`
   font-size: 14px;
   font-weight: 600;
   color: #0f47a1;
-  background-color: #ecf2ff;
   padding: 2px 15px;
   border-radius: 20px;
+  cursor: pointer;
+
+  &.check {
+    background-color: #ecf2ff;
+  }
 `;
 
 const AlertContents = styled.div`
@@ -66,6 +69,11 @@ const AlertItem = styled.li`
   font-size: 14px;
   font-weight: 600;
   color: #000;
+
+  &.disabled {
+    font-weight: 400;
+    color: #bdc8d6;
+  }
 `;
 
 const AlertItemTop = styled.div`
@@ -79,6 +87,14 @@ const AlertItemTop = styled.div`
 
   & > img:hover {
     opacity: 0.7;
+  }
+
+  & > img {
+    cursor: pointer;
+
+    &.disabled {
+      cursor: none;
+    }
   }
 `;
 
