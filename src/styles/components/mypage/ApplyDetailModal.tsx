@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 const ModalInnerMini = styled.div`
   width: 530px;
+  min-height: 400px;
   padding: 30px 50px;
 `;
 

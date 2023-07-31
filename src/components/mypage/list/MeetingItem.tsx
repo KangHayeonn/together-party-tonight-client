@@ -103,9 +103,27 @@ export default function MeetingItem({ item, category }: Props) {
         <ItemDate>
           {convertDate(item.modifiedDate || item.createdDate)}
         </ItemDate>
-        <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
-          {itemBtnObj[category].btnName}
-        </MeetingMoreBtn>
+        <div>
+          {item?.approvalStatus === "APPROVE" && (
+            <MeetingMoreBtn
+              onClick={() =>
+                setIsOpen((val) => ({
+                  ...val,
+                  isMyReview: true,
+                  isOpenReviewModal: true,
+                  clubItem: item,
+                  reviewId: -1,
+                }))
+              }
+              style={{ marginRight: "5px" }}
+            >
+              리뷰쓰기
+            </MeetingMoreBtn>
+          )}
+          <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
+            {itemBtnObj[category].btnName}
+          </MeetingMoreBtn>
+        </div>
       </ItemDateWrapper>
     </ListItem>
   );

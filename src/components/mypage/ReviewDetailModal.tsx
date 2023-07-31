@@ -23,17 +23,54 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
 import { LoadingWrapper, ProfileBtn } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
+import { isEmptyObj } from "@/utils";
 
 export default function DetailModal() {
-  const { isMyReview, reviewId } = useRecoilValue(ModalAtom);
+  const { isMyReview, reviewId, clubItem } = useRecoilValue(ModalAtom);
+  console.log(clubItem);
+
+  const [id, setId] = useState(reviewId);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewImg, setReviewImg] = useState("");
   const [reviewFile, setReviewFile] = useState<File | undefined>();
+  const [reviewData, setReviewData] = useState({
+    clubId: 0,
+    clubName: "",
+    nickname: "",
+    modifiedDate: "",
+    createdDate: "",
+    meetingDate: "",
+    rating: 0,
+  });
 
-  const { data, isLoading, refetch } = useQuery(["review", reviewId], () =>
-    MyPage.v1GetReviewDetail(reviewId),
+  const { isLoading, refetch } = useQuery(
+    ["review", id],
+    () => {
+      if (id !== -1) {
+        return MyPage.v1GetReviewDetail(id);
+      } else if (!isEmptyObj(clubItem)) {
+        setReviewData({
+          clubId: clubItem.clubId,
+          clubName: clubItem.clubName,
+          nickname: "",
+          modifiedDate: clubItem.modifiedDate,
+          createdDate: clubItem.createdDate,
+          meetingDate: clubItem.signupDate,
+          rating: 0,
+        });
+        setIsEdit(true);
+      }
+    },
+    {
+      onSuccess: (data) => {
+        setReviewData(data);
+        setText(data.reviewContent);
+        setReviewRating(data.rating);
+        setReviewImg(data.image);
+      },
+    },
   );
 
   const handleSetValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -47,7 +84,7 @@ export default function DetailModal() {
   const handleEditReview = () => {
     const formData = new FormData();
     const jsonString = JSON.stringify({
-      reviewId: reviewId,
+      ...(id === -1 ? { clubId: reviewData.clubId } : { reviewId: reviewId }),
       rating: reviewRating,
       reviewContent: text,
     });
@@ -58,9 +95,21 @@ export default function DetailModal() {
     if (reviewFile) {
       formData.append("image", reviewFile);
     }
-    editReview(formData);
+    id === -1 ? addReview(formData) : editReview(formData);
     setIsEdit(false);
   };
+
+  const { mutate: addReview } = useMutation(
+    (formData: FormData) => MyPage.v1AddReview(formData),
+    {
+      onSuccess: (res) => {
+        if (res.success === "true") {
+          setId(res.data.reviewId); // 검증 필요
+          refetch();
+        }
+      },
+    },
+  );
 
   const { mutate: editReview } = useMutation(
     (formData: FormData) => MyPage.v1UpdateReview(formData),
@@ -82,20 +131,10 @@ export default function DetailModal() {
     if (file) {
       reader.readAsDataURL(file);
       setReviewFile(file);
-      // const formData = new FormData();
-      // formData.append("image", file);
     }
   };
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      setText(data.reviewContent);
-      setReviewRating(data.rating);
-      setReviewImg(data.image);
-    }
-  }, [data, isLoading]);
-
-  if (isLoading || !data) {
+  if (isLoading) {
     return (
       <LoadingWrapper>
         <Loading />
@@ -104,27 +143,35 @@ export default function DetailModal() {
   }
 
   return (
-    <Modal title={data.clubName}>
+    <Modal title={reviewData.clubName}>
       <ModalInner>
-        <ReviewerInfo>
-          <Reviewer>
-            <Image
-              src="/images/Profile.svg"
-              width={30}
-              height={30}
-              alt="프로필 이미지"
-            />
-            &nbsp; {data.nickname}님이 작성함
-          </Reviewer>
-          <CreatedReview>
-            {toStringByFormatting(
-              new Date(data.modifiedDate || data.createdDate),
-            )}
-          </CreatedReview>
-        </ReviewerInfo>
+        {isEmptyObj(clubItem) && (
+          <ReviewerInfo>
+            <Reviewer>
+              <Image
+                src="/images/Profile.svg"
+                width={30}
+                height={30}
+                alt="프로필 이미지"
+              />
+              &nbsp; {reviewData.nickname}님이 작성함
+            </Reviewer>
+            <CreatedReview>
+              {toStringByFormatting(
+                new Date(reviewData.modifiedDate || reviewData.createdDate),
+              )}
+            </CreatedReview>
+          </ReviewerInfo>
+        )}
+
         <MeetingInfo>
           <ProfileBtn htmlFor="fileInput">
-            <Image src={reviewImg} width={130} height={130} alt="리뷰 이미지" />
+            <Image
+              src={reviewImg || "/images/defaultReview.svg"}
+              width={130}
+              height={130}
+              alt="리뷰 이미지"
+            />
             <input
               id="fileInput"
               type="file"
@@ -150,7 +197,7 @@ export default function DetailModal() {
                 height={16}
                 alt="시간 아이콘"
               />
-              {toStringByFormatting(new Date(data.meetingDate), "/")}
+              {toStringByFormatting(new Date(reviewData.meetingDate), "/")}
             </p>
           </InfoWrapper>
         </MeetingInfo>
@@ -178,7 +225,7 @@ export default function DetailModal() {
                   src="/images/Check.svg"
                   width={20}
                   height={20}
-                  alt="수정하기"
+                  alt="리뷰 저장"
                 />
               </EditBtn>
             </>
@@ -191,7 +238,7 @@ export default function DetailModal() {
                   height={16}
                   alt="별"
                 />
-                <ReviewRating>{data.rating}</ReviewRating>
+                <ReviewRating>{reviewData.rating}</ReviewRating>
               </RatingWrapper>
               {isMyReview && (
                 <div>
