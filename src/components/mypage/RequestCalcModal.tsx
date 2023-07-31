@@ -7,7 +7,7 @@ import {
 } from "@/styles/components/mypage/ApplyDetailModal";
 import Modal from "../common/Modal";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useState } from "react";
 import { ApplicationItem } from "@/types/mypage";
@@ -22,11 +22,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
+import { ErrorMessage } from "@/styles/page/Login";
 
 export default function RequestCalcModal() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
   const [price, setPrice] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { isLoading } = useQuery(
     ["application", clubId],
@@ -46,7 +49,15 @@ export default function RequestCalcModal() {
       MyPage.v1RequestBilling(clubId, price),
     {
       onSuccess: (res) => {
-        console.log(res);
+        if (res.success === "fail") {
+          setErrorMessage(res.errorMessage);
+        } else {
+          setErrorMessage("");
+          setIsOpen((val) => ({
+            ...val,
+            isOpenRequestCalcModal: false,
+          }));
+        }
       },
     },
   );
@@ -105,6 +116,7 @@ export default function RequestCalcModal() {
             height={45}
           />
         </RequestBtnWrapper>
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </ModalInnerMini>
     </Modal>
   );
