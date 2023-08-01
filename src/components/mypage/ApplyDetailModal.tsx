@@ -13,7 +13,7 @@ import {
 import Modal from "../common/Modal";
 import TextButton from "../common/TextButton";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
@@ -27,6 +27,7 @@ import {
 import { ApplicationItem } from "@/types/mypage";
 
 export default function ApplyDetailModal() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
 
   const [applyMember, setApplyMember] = useState<ApplicationItem[]>([]);
@@ -104,7 +105,12 @@ export default function ApplyDetailModal() {
           {applyMember.length > 0 &&
             applyMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member
+                  href={`/mypage/info/${item.memberId}`}
+                  onClick={() =>
+                    setIsOpen((val) => ({ ...val, isOpenApplyModal: false }))
+                  }
+                >
                   <Image
                     src={item.profileImage}
                     width={40}
@@ -151,7 +157,12 @@ export default function ApplyDetailModal() {
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member
+                  href={`/mypage/info/${item.memberId}`}
+                  onClick={() =>
+                    setIsOpen((val) => ({ ...val, isOpenApplyModal: false }))
+                  }
+                >
                   <Image
                     src={item.profileImage}
                     width={40}

@@ -18,7 +18,7 @@ export default function SideBar() {
   const curId = path?.split("/").at(-1);
   const curMenu = path?.split("/").at(-2);
   const [myPageList, setMyPageList] = useState(MyPageList);
-  const myId = typeof window !== "undefined" && getUserId();
+  const [myId, setMyId] = useState<string | null>("");
 
   const handleClickMenu = (item: string) => {
     const newPath = item === "info" ? item : `list/${item}`;
@@ -36,6 +36,13 @@ export default function SideBar() {
     }
     return text;
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const id = getUserId();
+      setMyId(id);
+    }
+  }, []);
 
   useEffect(() => {
     if (curId === myId) {
