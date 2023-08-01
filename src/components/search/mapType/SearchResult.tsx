@@ -17,6 +17,7 @@ import {
   SearchItemTag,
   SearchResultEmpty,
 } from "@/styles/components/search/mapType/SearchResult";
+import { categoryToKorMap } from "@/utils/categoryFormat";
 // recoil
 import { useRecoilValue } from "recoil";
 import { searchResponseState } from "@/recoil/search/searchState";
@@ -44,7 +45,9 @@ const SearchResult = () => {
                     alt="모임장소"
                   />
                   <SearchClubTitle>{item.clubName}</SearchClubTitle>
-                  <SearchClubCategory>{item.clubCategory}</SearchClubCategory>
+                  <SearchClubCategory>
+                    {categoryToKorMap.get(item.clubCategory)}
+                  </SearchClubCategory>
                 </SearchClubBox>
                 <SearchScoreBox>
                   <Image
