@@ -126,7 +126,7 @@ const KakaoMap = () => {
           {searchResponse.clubList &&
             searchResponse.clubList.map((value) => (
               <EventMarkerContainer
-                key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
+                key={`location${value.latitude}-${value.longitude}`}
                 position={{ lat: value.longitude, lng: value.latitude }}
                 content={{
                   clubId: value.clubId,

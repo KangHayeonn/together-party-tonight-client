@@ -32,7 +32,7 @@ const SearchResult = () => {
         searchResponse.clubList.map((item, index) => {
           return (
             <SearchResultItem
-              key={index}
+              key={`searchResult${index}`}
               className="search-item"
               onClick={() => router.push(`/search/${item.clubId}`)}
             >
@@ -64,8 +64,12 @@ const SearchResult = () => {
                 <SearchClubReview>리뷰 {item.reviewCnt}</SearchClubReview>
               </SearchItemContent>
               <SearchItemBottom>
-                {item.clubTags.map((item) => {
-                  return <SearchItemTag key={item}>#{item}</SearchItemTag>;
+                {item.clubTags.map((item, index) => {
+                  return (
+                    <SearchItemTag key={`clubTag${index}`}>
+                      #{item}
+                    </SearchItemTag>
+                  );
                 })}
               </SearchItemBottom>
             </SearchResultItem>

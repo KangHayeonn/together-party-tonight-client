@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import RoundButton from "@/components/common/RoundButton";
 import {
   SearchSummaryWrapper,
@@ -13,6 +14,7 @@ import {
   SummaryClubCategory,
   SummaryClubAddress,
 } from "@/styles/components/search/mapType/SearchItemSummary";
+import { getUserId } from "@/utils/tokenControl";
 // recoil
 import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
@@ -24,7 +26,9 @@ interface SearchItemSummaryProps {
 }
 
 const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
+  const router = useRouter();
   const clubDetail = useRecoilValue(clubDetailState);
+  const userId = typeof window !== "undefined" && Number(getUserId());
 
   const { mutate: signupClub } = useMutation({
     mutationFn: () => Api.v1SignupClub(clubId),
@@ -36,8 +40,11 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
   });
 
   const onClickClubSignup = () => {
-    // TODO : club sign up api logic
     signupClub();
+  };
+
+  const goSearchPage = () => {
+    router.back();
   };
 
   return (
@@ -52,6 +59,7 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
         height={40}
         alt="Back Button Icon"
         className="back-button"
+        onClick={goSearchPage}
       />
       <SearchSummaryBox>
         <SummaryInnerBox>
@@ -73,13 +81,15 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
             <SummaryClubAddress>{clubDetail.address}</SummaryClubAddress>
           </SummaryInnerBoxBottom>
         </SummaryInnerBox>
-        <RoundButton
-          text="신청하기"
-          onClickEvent={onClickClubSignup}
-          color="#fff"
-          background="#778DA9"
-          weight={500}
-        />
+        {clubDetail.memberId !== userId && clubDetail.isRecruit && (
+          <RoundButton
+            text="신청하기"
+            onClickEvent={onClickClubSignup}
+            color="#fff"
+            background="#778DA9"
+            weight={500}
+          />
+        )}
       </SearchSummaryBox>
     </SearchSummaryWrapper>
   );

@@ -19,21 +19,12 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
-// socket
-import useSocket from "@/hooks/useSocket";
+import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
   const loginMutation = useLogin();
-  const [
-    socketConnect,
-    socketDisconnect,
-    socketRequestMessage,
-    socketReceiveMessage,
-  ] = useSocket();
   const [errorMessage, setErrorMessage] = useState("");
-  const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [formValues, handleChange] = useHandleInput({
     email: "",
     password: "",

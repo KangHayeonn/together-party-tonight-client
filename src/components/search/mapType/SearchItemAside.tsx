@@ -7,14 +7,13 @@ import SearchItemSummary from "@/components/search/mapType/SearchItemSummary";
 import SearchItemTagList from "@/components/search/mapType/SearchItemTagList";
 import SearchItemDetail from "@/components/search/mapType/SearchItemDetail";
 import SearchItemComment from "@/components/search/mapType/SearchItemComment";
-import SearchOpenReviewBtn from "./SearchOpenReviewBtn";
-import SearchReviewList from "./SearchReviewList";
+import SearchOpenReviewBtn from "@/components/search/mapType/SearchOpenReviewBtn";
+import SearchReviewList from "@/components/search/mapType/SearchReviewList";
 import {
   SearchItemAsideWrapper,
   SearchItemClubWrapper,
   SearchItemDetailWrapper,
 } from "@/styles/components/search/mapType/SearchItemAside";
-import { searchTagList } from "@/utils/mock/search";
 // api
 import Api from "@/api/club";
 // recoil
@@ -77,7 +76,7 @@ const SearchItemAside = () => {
         </SearchItemDetailWrapper>
         <SearchItemComment clubId={Number(id)} />
       </SearchItemClubWrapper>
-      {openReview && <SearchReviewList />}
+      {openReview && <SearchReviewList clubId={Number(id)} />}
     </SearchItemAsideWrapper>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   SearchReviewListWrapper,
   SearchReviewClose,
@@ -15,65 +15,27 @@ import {
   SearchReviewDetail,
   SearchReviewContent,
 } from "@/styles/components/search/mapType/SearchReviewList";
-import { IReviewItem } from "@/types/mypage";
 // api
-import Api from "@/api/mypage";
-// recoil
-import { useRecoilValue } from "recoil";
-import { clubDetailState } from "@/recoil/club/clubState";
+import Api from "@/api/club";
 
-const SearchReviewList = () => {
+interface SearchReviewListProps {
+  clubId: number;
+}
+
+const SearchReviewList = ({ clubId }: SearchReviewListProps) => {
   const ulRef = useRef<HTMLDivElement>(null);
-  const clubDetail = useRecoilValue(clubDetailState);
-  const [reviewList, setReviewList] = useState<IReviewItem[]>([]);
 
-  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ["clubReviews"],
-    ({ pageParam = 0 }) =>
-      Api.v1GetReceivedReivew(
-        clubDetail.memberId.toString(),
-        pageParam,
-        20,
-        "createdDate,DESC",
-      ),
-    {
-      getNextPageParam: (lastPage) => {
-        // 현재 페이지 번호가 총 페이지 수를 넘어가면 더 이상 로드할 페이지가 없음
-        if (lastPage.page >= lastPage.totalPages - 1) {
-          return undefined;
-        }
-        return lastPage.page + 1;
-      },
-    },
+  const { data, isLoading } = useQuery(["clubReviews"], ({ pageParam = 0 }) =>
+    Api.v1FetchClubReviews(clubId, pageParam, 20),
   );
-
-  const handleScroll = () => {
-    if (!isLoading && ulRef.current) {
-      const { scrollTop, clientHeight, scrollHeight } = ulRef.current;
-      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight;
-
-      if (isScrolledToBottom && hasNextPage) {
-        fetchNextPage();
-      }
-    }
-  };
 
   useEffect(() => {
     if (data) {
-      const list = data.pages.map((obj) => obj.reviewList).flat();
-      setReviewList(list);
+      // const list = data.pages.map((obj) => obj.reviewList).flat();
+      console.log(data);
+      // setReviewList();
     }
   }, [data]);
-
-  useEffect(() => {
-    if (ulRef.current) {
-      ulRef.current.addEventListener("scroll", handleScroll);
-
-      return () => {
-        ulRef.current?.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [ulRef, hasNextPage]);
 
   return (
     <SearchReviewListWrapper>

@@ -29,7 +29,7 @@ const SearchCategory = ({
           return (
             <CheckBox
               text={`${item}`}
-              key={index}
+              key={`category${index}`}
               changeCategory={setCheckItems}
               checked={checkItems.includes(item) ? true : false}
             />
