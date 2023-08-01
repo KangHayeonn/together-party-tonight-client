@@ -13,6 +13,7 @@ import {
 } from "@/styles/components/mypage/ListItem";
 import { IClubItem, ItemBtnObjType } from "@/types/mypage";
 import {
+  isCheckPastMeeting,
   toStringByFormatting,
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
@@ -103,9 +104,29 @@ export default function MeetingItem({ item, category }: Props) {
         <ItemDate>
           {convertDate(item.modifiedDate || item.createdDate)}
         </ItemDate>
-        <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
-          {itemBtnObj[category].btnName}
-        </MeetingMoreBtn>
+        <div>
+          {item.approvalStatus === "APPROVE" &&
+            !item.isReviewWritten &&
+            isCheckPastMeeting(item.meetingDate) && (
+              <MeetingMoreBtn
+                onClick={() =>
+                  setIsOpen((val) => ({
+                    ...val,
+                    isMyReview: true,
+                    isOpenReviewModal: true,
+                    clubItem: item,
+                    reviewId: -1,
+                  }))
+                }
+                style={{ marginRight: "5px" }}
+              >
+                리뷰쓰기
+              </MeetingMoreBtn>
+            )}
+          <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
+            {itemBtnObj[category].btnName}
+          </MeetingMoreBtn>
+        </div>
       </ItemDateWrapper>
     </ListItem>
   );

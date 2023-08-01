@@ -70,7 +70,7 @@ export default function MyReviewList({ userId }: Props) {
         리뷰 리스트
         <ArrowBtn onClick={() => setIsFold((val) => !val)}>
           <Image
-            src={isFold ? "/images/arrowUp.svg" : "/images/arrowDown.svg"}
+            src={isFold ? "/images/arrowDown.svg" : "/images/arrowUp.svg"}
             width={13}
             height={13}
             alt="리뷰 펼치기/접기"

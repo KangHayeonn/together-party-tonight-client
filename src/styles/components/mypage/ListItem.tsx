@@ -9,7 +9,7 @@ const ListItem = styled.li`
   border-radius: 10px;
   margin-bottom: 20px;
   max-width: 800px;
-  min-width: 325px;
+  min-width: 425px;
 `;
 
 const ItemInfo = styled.div`
