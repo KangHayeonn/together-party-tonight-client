@@ -19,7 +19,7 @@ const SearchTagList = () => {
   let tagList: Array<string> = [];
   const { isLoading, error, data } = useQuery(
     ["searchTagsRandom"],
-    () => Api.v1SearchTagsRandom(),
+    () => Api.v1SearchTagsPopular(),
     {
       refetchOnWindowFocus: false,
       onSuccess: (res) => {
