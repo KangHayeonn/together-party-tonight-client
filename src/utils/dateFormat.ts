@@ -79,3 +79,10 @@ export const getTimeFormat = (date: Date) => {
 
   return `${timezone} ${newHour}시 ${newMinute}분`;
 };
+
+export const isCheckPastMeeting = (date: string) => {
+  const targetDate = new Date(date);
+  const today = new Date();
+
+  return targetDate <= today;
+};

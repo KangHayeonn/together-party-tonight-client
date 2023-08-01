@@ -150,6 +150,17 @@ const MyPage = {
     }
   },
 
+  async v1AddReview(formData: FormData) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/reviews`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
   async v1UpdateReview(formData: FormData) {
     try {
       const res = await instanceWithToken.put(`${prefix}/reviews`, formData, {

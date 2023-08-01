@@ -29,6 +29,11 @@ import { ApplicationItem } from "@/types/mypage";
 export default function MemberModal() {
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
+  const [masterMember, setMasterMember] = useState({
+    id: 0,
+    nickName: "",
+    profileImage: "/images/Profile.svg",
+  });
 
   const { isLoading } = useQuery(
     ["application", clubId],
@@ -39,6 +44,11 @@ export default function MemberModal() {
           (item: ApplicationItem) => item.approvalStatus === "APPROVE",
         );
         setCurrentMember(approvedItems);
+        setMasterMember({
+          id: data.applicationList[0].masterId,
+          nickName: data.applicationList[0].masterNickname,
+          profileImage: data.applicationList[0].masterProfileImage,
+        });
       },
     },
   );
@@ -76,6 +86,26 @@ export default function MemberModal() {
         <Line />
         <MemberListWrapper>
           <MemberCnt>모임원 {currentMember.length}</MemberCnt>
+          <MemberWrapper key={masterMember.id}>
+            <Member>
+              <Image
+                src={masterMember.profileImage}
+                width={40}
+                height={40}
+                alt="멤버 사진"
+              />
+              {masterMember.nickName}
+            </Member>
+            <div>
+              <TextButton
+                onClick={() => console.log("채팅하기")}
+                text="채팅하기"
+                width={75}
+                height={28}
+                fontSize={14}
+              />
+            </div>
+          </MemberWrapper>
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>

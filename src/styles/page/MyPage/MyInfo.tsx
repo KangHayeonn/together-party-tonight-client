@@ -36,6 +36,10 @@ const ProfileBtn = styled.label`
   border: 0;
   background-color: transparent;
   cursor: pointer;
+
+  & img {
+    border-radius: 10px;
+  }
 `;
 
 const ProfileEditBtn = styled.button`
