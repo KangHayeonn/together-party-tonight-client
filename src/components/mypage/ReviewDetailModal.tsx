@@ -27,8 +27,6 @@ import { isEmptyObj } from "@/utils";
 
 export default function DetailModal() {
   const { isMyReview, reviewId, clubItem } = useRecoilValue(ModalAtom);
-  console.log(clubItem);
-
   const [id, setId] = useState(reviewId);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
@@ -48,22 +46,10 @@ export default function DetailModal() {
   const { isLoading, refetch } = useQuery(
     ["review", id],
     () => {
-      if (id !== -1) {
-        return MyPage.v1GetReviewDetail(id);
-      } else if (!isEmptyObj(clubItem)) {
-        setReviewData({
-          clubId: clubItem.clubId,
-          clubName: clubItem.clubName,
-          nickname: "",
-          modifiedDate: clubItem.modifiedDate,
-          createdDate: clubItem.createdDate,
-          meetingDate: clubItem.signupDate,
-          rating: 0,
-        });
-        setIsEdit(true);
-      }
+      return MyPage.v1GetReviewDetail(id);
     },
     {
+      enabled: id !== -1,
       onSuccess: (data) => {
         setReviewData(data);
         setText(data.reviewContent);
@@ -103,6 +89,8 @@ export default function DetailModal() {
     (formData: FormData) => MyPage.v1AddReview(formData),
     {
       onSuccess: (res) => {
+        console.log("res", res);
+
         if (res.success === "true") {
           setId(res.data.reviewId); // 검증 필요
           refetch();
@@ -134,7 +122,22 @@ export default function DetailModal() {
     }
   };
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!isEmptyObj(clubItem)) {
+      setReviewData({
+        clubId: clubItem.clubId,
+        clubName: clubItem.clubName,
+        nickname: "",
+        modifiedDate: clubItem.modifiedDate,
+        createdDate: clubItem.createdDate,
+        meetingDate: clubItem.meetingDate,
+        rating: 0,
+      });
+      setIsEdit(true);
+    }
+  }, [clubItem]);
+
+  if (isLoading && id !== -1) {
     return (
       <LoadingWrapper>
         <Loading />

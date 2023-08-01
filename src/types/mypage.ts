@@ -34,6 +34,7 @@ export interface IClubItem {
   approvalStatus: string;
   clubState: boolean;
   clubId: number;
+  isReviewWritten: boolean;
 }
 
 export interface ApplicationItem {
