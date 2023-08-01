@@ -20,9 +20,10 @@ import Api from "@/api/club";
 
 interface SearchReviewListProps {
   clubId: number;
+  openReview: (item: boolean) => void;
 }
 
-const SearchReviewList = ({ clubId }: SearchReviewListProps) => {
+const SearchReviewList = ({ clubId, openReview }: SearchReviewListProps) => {
   const ulRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading } = useQuery(["clubReviews"], ({ pageParam = 0 }) =>
@@ -31,9 +32,7 @@ const SearchReviewList = ({ clubId }: SearchReviewListProps) => {
 
   useEffect(() => {
     if (data) {
-      // const list = data.pages.map((obj) => obj.reviewList).flat();
-      console.log(data);
-      // setReviewList();
+      // TODO : get review list logic
     }
   }, [data]);
 
@@ -45,6 +44,7 @@ const SearchReviewList = ({ clubId }: SearchReviewListProps) => {
           width={30}
           height={30}
           alt="Close Button Icon"
+          onClick={() => openReview(false)}
         />
       </SearchReviewClose>
       <SearchReviewTop>

@@ -9,10 +9,14 @@ import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
 
 interface SearchOpenReviewBtnProps {
+  isOpen: boolean;
   openReview: (item: boolean) => void;
 }
 
-const SearchOpenReviewBtn = ({ openReview }: SearchOpenReviewBtnProps) => {
+const SearchOpenReviewBtn = ({
+  isOpen,
+  openReview,
+}: SearchOpenReviewBtnProps) => {
   const clubDetail = useRecoilValue(clubDetailState);
 
   return (
@@ -28,13 +32,23 @@ const SearchOpenReviewBtn = ({ openReview }: SearchOpenReviewBtnProps) => {
         <SearchOpenReviewContent className="score">
           {clubDetail.ratingAvg.toFixed(1)}
         </SearchOpenReviewContent>
-        <Image
-          src="/images/doubleArrowRight.svg"
-          width={14}
-          height={14}
-          alt="Review Open Button Icon"
-          onClick={() => openReview(true)}
-        />
+        {!isOpen ? (
+          <Image
+            src="/images/doubleArrowRight.svg"
+            width={14}
+            height={14}
+            alt="Review Open Button Icon"
+            onClick={() => openReview(true)}
+          />
+        ) : (
+          <Image
+            src="/images/doubleArrowLeft.svg"
+            width={14}
+            height={14}
+            alt="Review Close Button Icon"
+            onClick={() => openReview(false)}
+          />
+        )}
       </SearchOpenReviewBtnBox>
     </SearchOpenReviewBtnWrapper>
   );

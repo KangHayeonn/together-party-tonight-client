@@ -29,6 +29,7 @@ const SearchResultItem = styled.li`
   gap: 0.625rem;
   border-bottom: 1px solid rgb(189, 200, 214, 0.75);
   text-decoration: none;
+  cursor: pointer;
 
   &:last-child {
     border-bottom: none;

@@ -72,11 +72,16 @@ const SearchItemAside = () => {
         <SearchItemDetailWrapper>
           <SearchItemTagList classType="secondary" />
           <SearchItemDetail />
-          <SearchOpenReviewBtn openReview={changeOpenReview} />
+          <SearchOpenReviewBtn
+            isOpen={openReview}
+            openReview={changeOpenReview}
+          />
         </SearchItemDetailWrapper>
         <SearchItemComment clubId={Number(id)} />
       </SearchItemClubWrapper>
-      {openReview && <SearchReviewList clubId={Number(id)} />}
+      {openReview && (
+        <SearchReviewList clubId={Number(id)} openReview={changeOpenReview} />
+      )}
     </SearchItemAsideWrapper>
   );
 };
