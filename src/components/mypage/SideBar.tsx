@@ -25,6 +25,18 @@ export default function SideBar() {
     router.push(`/mypage/${newPath}/${curId}`);
   };
 
+  const convertSideMenu = (text: string) => {
+    if (curId !== myId) {
+      const convertObj: Record<string, string> = {
+        마이페이지: "유저페이지",
+        "내 정보": "유저 정보",
+        "내 모임": "유저 모임",
+      };
+      return convertObj[text];
+    }
+    return text;
+  };
+
   useEffect(() => {
     if (curId === myId) {
       setMyPageList(MyPageList);
@@ -35,13 +47,13 @@ export default function SideBar() {
 
   return (
     <SideBarWrapper>
-      <MyPageTitle>마이페이지</MyPageTitle>
+      <MyPageTitle>{convertSideMenu("마이페이지")}</MyPageTitle>
       <nav>
         <ul>
           {myPageList.map((item: MyPageListItem) => (
             <li key={item.id}>
               <TextButton
-                text={item.text}
+                text={convertSideMenu(item.text)}
                 onClick={() => handleClickMenu(item.id)}
                 color={item.id === curMenu ? "#fff" : "#000"}
                 background={item.id === curMenu ? "#0d3471" : "#ecf2ff"}
@@ -51,9 +63,11 @@ export default function SideBar() {
               />
             </li>
           ))}
-          <li>
-            <ChatBtn href="/chat">채팅하기</ChatBtn>
-          </li>
+          {curId === myId && (
+            <li>
+              <ChatBtn href="/">채팅하기</ChatBtn>
+            </li>
+          )}
         </ul>
       </nav>
     </SideBarWrapper>
