@@ -17,6 +17,7 @@ import RoundButton from "@/components/common/RoundButton";
 import DropDown from "@/components/common/DropDown";
 // socket
 import useSocket from "@/hooks/useSocket";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 
 export default function Home() {
   const router = useRouter();
@@ -31,6 +32,12 @@ export default function Home() {
     socketReceiveMessage,
     socketClose,
   ] = useSocket();
+
+  // modal
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const submitModal = () => {
+    // TODO : api logic
+  };
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -108,6 +115,15 @@ export default function Home() {
       )}
       <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
+      <button onClick={() => setIsOpenModal(true)}>모달 열기</button>
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="정말 탈퇴하시겠습니까?"
+          modalText="회원 탈퇴시 모든 정보가 삭제되며 복구되지 않습니다."
+          onClose={setIsOpenModal}
+          handleSubmit={submitModal}
+        />
+      )}
     </div>
   );
 }
