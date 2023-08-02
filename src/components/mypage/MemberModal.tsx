@@ -147,7 +147,7 @@ export default function MemberModal() {
 
         <Line />
         <MemberListWrapper>
-          <MemberCnt>모임원 {currentMember.length}</MemberCnt>
+          <MemberCnt>모임장</MemberCnt>
           <MemberWrapper key={masterMember.id}>
             <Member
               href={`/mypage/info/${masterMember.id}`}
@@ -175,6 +175,7 @@ export default function MemberModal() {
               />
             </div>
           </MemberWrapper>
+          <MemberCnt>모임원 {currentMember.length}</MemberCnt>
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
