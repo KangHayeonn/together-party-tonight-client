@@ -144,10 +144,11 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
       <SearchCommentInputForm>
         <TextField
           message={message}
-          onChangeText={onChangeMessage}
           height={1.85}
           fontSize={0.875}
           placeholder="댓글을 달아보세요"
+          onChangeText={onChangeMessage}
+          handleEvent={onClickEvent}
         />
         <TextButton
           text="작성"

@@ -27,6 +27,7 @@ export interface TextProps {
   autoComplete?: string | undefined;
   fontSize?: number | undefined;
   value?: string | undefined;
+  handleEvent?: () => Promise<void>;
 }
 
 const TextField = ({
@@ -41,6 +42,7 @@ const TextField = ({
   inputType,
   onChangeText,
   autoComplete,
+  handleEvent,
   ...props
 }: TextProps) => {
   const [type, setType] = useState<string>(textType || "text");
@@ -48,6 +50,12 @@ const TextField = ({
   const showPw = () => {
     if (type === "text") setType("password");
     else setType("text");
+  };
+
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (handleEvent) handleEvent();
+    }
   };
 
   return (
@@ -61,6 +69,7 @@ const TextField = ({
           placeholder={placeholder}
           onChange={onChangeText}
           disabled={disabled}
+          onKeyDown={handleOnKeyPress}
           autoComplete={autoComplete}
           {...props}
         />
