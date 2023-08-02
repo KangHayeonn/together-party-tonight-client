@@ -35,7 +35,7 @@ const useSocket = () => {
     ws.current.onclose = (error) => {
       // disconnect error
       console.log("socket disconnect");
-      window.location.reload();
+      socketConnect(ws);
     };
   };
 

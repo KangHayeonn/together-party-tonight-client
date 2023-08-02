@@ -27,7 +27,7 @@ const SearchOption = () => {
     const categoryId = category === "최신순" ? "latest" : "popular";
     setSearchOptions({
       ...searchOptions,
-      category: categoryId,
+      sortFilter: categoryId,
     });
   };
 
