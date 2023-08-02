@@ -10,12 +10,12 @@ import {
 } from "@/styles/components/search/mapType/SearchItemDetail";
 import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
+import { getDateFormat, getTimeFormat } from "@/utils/dateFormat";
 
 const SearchItemDetail = () => {
   const router = useRouter();
   const clubDetail = useRecoilValue(clubDetailState);
   const onClickClubLeader = () => {
-    // TODO : club leader link
     router.push(`/mypage/info/${clubDetail.memberId}`);
   };
 
@@ -39,13 +39,17 @@ const SearchItemDetail = () => {
           alt="Clock Icon"
           className="detail-icon"
         />
-        <SearchDetailContent>{clubDetail.meetingDate}</SearchDetailContent>
+        <SearchDetailContent>{`${getDateFormat(
+          new Date(clubDetail.meetingDate),
+        )} ${getTimeFormat(
+          new Date(clubDetail.meetingDate),
+        )}`}</SearchDetailContent>
       </SearchDetailContentBox>
       <SearchDetailContentBox>
         <Image src="/images/user.svg" width={25} height={23} alt="User Icon" />
         <SearchDetailContent>
-          {clubDetail.isRecruit ? "모집중" : "모집완료"}
-          {clubDetail.memberCount}/{clubDetail.clubMaximum}
+          {`${clubDetail.isRecruit ? "모집중" : "모집완료"}  
+          ${clubDetail.memberCount} / ${clubDetail.clubMaximum}`}
         </SearchDetailContent>
       </SearchDetailContentBox>
       <SearchDetailContentBox>

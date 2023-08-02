@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import {
   ChatInputForm,
   ChatInput,
@@ -13,6 +14,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { checkChatRoomState, chatRoomListState } from "@/recoil/chat/chatState";
 
 const ChatRoomFormBottom = () => {
+  const params = useParams();
+  const { id } = params;
   const checkChatRoom = useRecoilValue(checkChatRoomState);
   const setChatRooms = useSetRecoilState(chatRoomListState);
   const [message, setMessage] = useState<string>("");
@@ -47,9 +50,8 @@ const ChatRoomFormBottom = () => {
   const onClickAddMessage = () => {
     const data = {
       chatMsg: message,
-      chatRoomId: checkChatRoom.chatRoomId,
+      chatRoomId: checkChatRoom.chatRoomId || Number(id),
     };
-
     addMessage(data);
   };
 

@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import {
   ClubInfo,
   ClubTitle,
@@ -15,7 +16,7 @@ import TextButton from "../common/TextButton";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
 import { useState } from "react";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
@@ -25,11 +26,29 @@ import {
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
 import { ApplicationItem } from "@/types/mypage";
+// api
+import Api from "@/api/chat";
+// recoil
+import { useRecoilState } from "recoil";
+import { checkChatRoomState } from "@/recoil/chat/chatState";
+
+interface MemberType {
+  id: number;
+  nickName: string;
+  profileImage: string;
+}
 
 export default function MemberModal() {
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
-  const [masterMember, setMasterMember] = useState({
+  const [masterMember, setMasterMember] = useState<MemberType>({
+    id: 0,
+    nickName: "",
+    profileImage: "/images/Profile.svg",
+  });
+  const router = useRouter();
+  const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
+  const [member, setMember] = useState<MemberType>({
     id: 0,
     nickName: "",
     profileImage: "/images/Profile.svg",
@@ -53,6 +72,43 @@ export default function MemberModal() {
     },
   );
 
+  const { refetch } = useQuery(
+    ["isExistChatRoom", member],
+    () => Api.v1IsExistChatRoom(member.id),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (res) => {
+        const { chatRoomId, chatRoomName } = res.data.data;
+        if (chatRoomId) {
+          setCheckChatRoom({
+            ...checkChatRoom,
+            chatRoomId: chatRoomId,
+            chatRoomName: chatRoomName,
+          });
+          router.push(`/chat/${chatRoomId}`);
+        } else {
+          createChatRoom(member.id);
+        }
+      },
+      enabled: false,
+    },
+  );
+
+  const { mutate: createChatRoom } = useMutation({
+    mutationFn: (otherMemberId: number) => Api.v1AddChatRoom(otherMemberId),
+    onSuccess: (res) => {
+      if (res.data.code === 200) {
+        const { chatRoomId } = res.data.data;
+        setCheckChatRoom({
+          ...checkChatRoom,
+          chatRoomId: chatRoomId,
+          chatRoomName: member.nickName,
+        });
+        router.push(`/chat/${chatRoomId}`);
+      }
+    },
+  });
+
   const convertDate = (date: string) => {
     const getDate = date.split("T");
     return `${toStringByFormatting(
@@ -68,6 +124,11 @@ export default function MemberModal() {
       </LoadingWrapper>
     );
   }
+
+  const chatMessage = (member: MemberType) => {
+    setMember(member);
+    refetch();
+  };
 
   return (
     <Modal title="모임원 보기">
@@ -98,7 +159,9 @@ export default function MemberModal() {
             </Member>
             <div>
               <TextButton
-                onClick={() => console.log("채팅하기")}
+                onClick={() => {
+                  chatMessage(masterMember);
+                }}
                 text="채팅하기"
                 width={75}
                 height={28}
@@ -120,7 +183,7 @@ export default function MemberModal() {
                 </Member>
                 <div>
                   <TextButton
-                    onClick={() => console.log("채팅하기")}
+                    onClick={() => chatMessage({ ...item, id: item.memberId })}
                     text="채팅하기"
                     width={75}
                     height={28}

@@ -1,4 +1,5 @@
 export const categoryMap = new Map();
+export const categoryToKorMap = new Map();
 
 const categoryArr = [
   ["운동", "exercise"],
@@ -12,4 +13,5 @@ const categoryArr = [
 
 categoryArr.forEach((item) => {
   categoryMap.set(item[0], item[1]);
+  categoryToKorMap.set(item[1], item[0]);
 });

@@ -17,6 +17,7 @@ import {
   SearchItemTag,
   SearchResultEmpty,
 } from "@/styles/components/search/mapType/SearchResult";
+import { categoryToKorMap } from "@/utils/categoryFormat";
 // recoil
 import { useRecoilValue } from "recoil";
 import { searchResponseState } from "@/recoil/search/searchState";
@@ -31,7 +32,7 @@ const SearchResult = () => {
         searchResponse.clubList.map((item, index) => {
           return (
             <SearchResultItem
-              key={index}
+              key={`searchResult${index}`}
               className="search-item"
               onClick={() => router.push(`/search/${item.clubId}`)}
             >
@@ -44,7 +45,9 @@ const SearchResult = () => {
                     alt="모임장소"
                   />
                   <SearchClubTitle>{item.clubName}</SearchClubTitle>
-                  <SearchClubCategory>{item.clubCategory}</SearchClubCategory>
+                  <SearchClubCategory>
+                    {categoryToKorMap.get(item.clubCategory)}
+                  </SearchClubCategory>
                 </SearchClubBox>
                 <SearchScoreBox>
                   <Image
@@ -61,8 +64,12 @@ const SearchResult = () => {
                 <SearchClubReview>리뷰 {item.reviewCnt}</SearchClubReview>
               </SearchItemContent>
               <SearchItemBottom>
-                {item.clubTags.map((item) => {
-                  return <SearchItemTag key={item}>#{item}</SearchItemTag>;
+                {item.clubTags.map((item, index) => {
+                  return (
+                    <SearchItemTag key={`clubTag${index}`}>
+                      #{item}
+                    </SearchItemTag>
+                  );
                 })}
               </SearchItemBottom>
             </SearchResultItem>

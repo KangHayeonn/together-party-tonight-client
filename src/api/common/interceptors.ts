@@ -4,7 +4,14 @@ import axios, {
   AxiosError,
   AxiosResponse,
 } from "axios";
-import { getAccessToken } from "@/utils/tokenControl";
+import {
+  getUserId,
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+  clearToken,
+} from "@/utils/tokenControl";
 import { logout } from "@/api/login";
 
 export const setInterceptors = (instance: AxiosInstance) => {
@@ -25,11 +32,9 @@ export const setInterceptors = (instance: AxiosInstance) => {
   );
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
-      // TODO : reissue login & common error message
       if (response.data.code === 401) {
         if (response.data.errorMessage === "만료된 토큰입니다.") {
-          localStorage.removeItem("accessToken");
-          const refreshToken = localStorage.getItem("refreshToken");
+          const refreshToken = getRefreshToken();
           return instance
             .post("/api/members/reissue", {
               refreshToken: `Bearer ${refreshToken}`,
@@ -38,8 +43,8 @@ export const setInterceptors = (instance: AxiosInstance) => {
               const newAccessToken = refreshResponse.data.data.accessToken;
               const newRefreshToken = refreshResponse.data.data.refreshToken;
 
-              localStorage.setItem("accessToken", newAccessToken);
-              localStorage.setItem("refreshToken", newRefreshToken);
+              setAccessToken(newAccessToken);
+              setRefreshToken(newRefreshToken);
               response.config.headers.Authorization = `Bearer ${newAccessToken}`;
               return instance(response.config);
             })
@@ -51,11 +56,9 @@ export const setInterceptors = (instance: AxiosInstance) => {
               return Promise.reject(formattedError);
             });
         } else {
-          const userId = localStorage.getItem("userId");
+          const userId = getUserId();
           if (userId) logout(userId);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("userId");
+          clearToken();
           window.location.reload();
         }
       }

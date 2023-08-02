@@ -159,6 +159,7 @@ export default function Info({ params: { id } }: Props) {
       {!isUpdateInfo ? (
         <>
           <MyInfo
+            userId={Number(id)}
             nickname={data.nickname}
             description={data.detail}
             profileImage={data.profileImage}

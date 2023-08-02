@@ -89,8 +89,6 @@ export default function DetailModal() {
     (formData: FormData) => MyPage.v1AddReview(formData),
     {
       onSuccess: (res) => {
-        console.log("res", res);
-
         if (res.success === "true") {
           setId(res.data.reviewId); // 검증 필요
           refetch();

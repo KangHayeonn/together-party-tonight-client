@@ -41,3 +41,8 @@ export interface chatRoomNameType {
   chatRoomId: number;
   chatRoomName: string;
 }
+
+export interface CreateChatRoomType {
+  nickName: string;
+  otherMemberId: number;
+}

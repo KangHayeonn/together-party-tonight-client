@@ -124,9 +124,9 @@ const KakaoMap = () => {
           level={6} // 지도의 확대 레벨
         >
           {searchResponse.clubList &&
-            searchResponse.clubList.map((value) => (
+            searchResponse.clubList.map((value, index) => (
               <EventMarkerContainer
-                key={`EventMarkerContainer-${value.latitude}-${value.longitude}`}
+                key={`location${index}`}
                 position={{ lat: value.longitude, lng: value.latitude }}
                 content={{
                   clubId: value.clubId,

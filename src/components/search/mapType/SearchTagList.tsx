@@ -19,7 +19,7 @@ const SearchTagList = () => {
   let tagList: Array<string> = [];
   const { isLoading, error, data } = useQuery(
     ["searchTagsRandom"],
-    () => Api.v1SearchTagsRandom(),
+    () => Api.v1SearchTagsPopular(),
     {
       refetchOnWindowFocus: false,
       onSuccess: (res) => {
@@ -67,7 +67,7 @@ const SearchTagList = () => {
       {newTagList &&
         newTagList.map((item, index) => {
           return (
-            <SearchTagItem key={item}>
+            <SearchTagItem key={`tag${index}`}>
               <SearchTagItemInput
                 type="checkbox"
                 id={item}
