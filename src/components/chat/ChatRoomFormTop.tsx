@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import {
   ChatRoomFormTitle,
   ChatRoomName,
 } from "@/styles/components/chat/ChatRoomForm";
 import { chatRoomNameType } from "@/types/chat";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 // api
 import Api from "@/api/chat";
 // recoil
@@ -13,10 +15,12 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { checkChatRoomState, chatRoomListState } from "@/recoil/chat/chatState";
 
 const ChatRoomFormTop = () => {
+  const router = useRouter();
   const checkChatRoom = useRecoilValue(checkChatRoomState);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [roomName, setRoomName] = useState<string>("");
   const setChatRooms = useSetRecoilState(chatRoomListState);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { isLoading, error, data, refetch } = useQuery(
     ["chatRoomList"],
@@ -45,8 +49,14 @@ const ChatRoomFormTop = () => {
     mutationFn: (id: number) => Api.v1LeaveChatRoom(id),
     onSuccess: (res) => {
       refetch();
+      router.push("/chat");
     },
   });
+
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
+  };
 
   const changeRoomName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
@@ -105,8 +115,16 @@ const ChatRoomFormTop = () => {
         width={25}
         height={25}
         alt="ChatRoom Exit Icon"
-        onClick={() => onClickLeaveChatRoom()}
+        onClick={() => handleOpenModal()}
       />
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="채팅방을 나가시겠습니까?"
+          modalText="채팅방을 나가면 모든 채팅 기록은 사라집니다."
+          onClose={setIsOpenModal}
+          handleSubmit={onClickLeaveChatRoom}
+        />
+      )}
     </ChatRoomFormTitle>
   );
 };

@@ -20,6 +20,7 @@ import Loading from "@/components/common/Loading";
 import { CommentType } from "@/types/comment";
 import { getUserId } from "@/utils/tokenControl";
 import { elapsedTime } from "@/utils/dateFormat";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 // api
 import Api from "@/api/comment";
 // recoil
@@ -39,12 +40,19 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
   const [message, setMessage] = useState<string>("");
   const [commentList, setCommentList] = useState<Array<CommentType>>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [commentId, setCommentId] = useState<number>(-1);
   const memberId = Number(
     (typeof window !== "undefined" && Number(getUserId())) || -1,
   );
 
   const onChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
+  };
+
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
   };
 
   const { data, isLoading } = useQuery(
@@ -83,7 +91,8 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
   };
 
   const onClickDelete = (commentId: number) => {
-    deleteComment(commentId);
+    setCommentId(commentId);
+    handleOpenModal();
   };
 
   useEffect(() => {
@@ -135,10 +144,11 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
       <SearchCommentInputForm>
         <TextField
           message={message}
-          onChangeText={onChangeMessage}
           height={1.85}
           fontSize={0.875}
           placeholder="댓글을 달아보세요"
+          onChangeText={onChangeMessage}
+          handleEvent={onClickEvent}
         />
         <TextButton
           text="작성"
@@ -188,6 +198,14 @@ const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
           <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>
         )}
       </SearchCommentList>
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="댓글을 삭제하시겠습니까?"
+          modalText="댓글을 삭제하면 작성 기록이 사라집니다."
+          onClose={setIsOpenModal}
+          handleSubmit={() => deleteComment(commentId)}
+        />
+      )}
     </SearchCommentWrapper>
   );
 };
