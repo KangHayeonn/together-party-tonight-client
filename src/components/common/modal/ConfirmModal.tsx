@@ -25,8 +25,12 @@ const ConfirmModal = ({
 }: ConfirmModalProps) => {
   const onClickEvent = () => {
     handleSubmit();
+    document.body.style.overflow = "unset";
+    onClose(false);
   };
+
   const onClickClose = () => {
+    document.body.style.overflow = "unset";
     onClose(false);
   };
 

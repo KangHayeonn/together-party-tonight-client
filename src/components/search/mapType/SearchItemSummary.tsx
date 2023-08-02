@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import {
   SummaryClubAddress,
 } from "@/styles/components/search/mapType/SearchItemSummary";
 import { getUserId } from "@/utils/tokenControl";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 // recoil
 import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
@@ -29,6 +30,7 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
   const router = useRouter();
   const clubDetail = useRecoilValue(clubDetailState);
   const userId = typeof window !== "undefined" && Number(getUserId());
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { mutate: signupClub } = useMutation({
     mutationFn: () => Api.v1SignupClub(clubId),
@@ -38,6 +40,11 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
       if (code === 200) console.log("신청하기 완료");
     },
   });
+
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
+  };
 
   const onClickClubSignup = () => {
     signupClub();
@@ -84,13 +91,21 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
         {clubDetail.memberId !== userId && clubDetail.isRecruit && (
           <RoundButton
             text="신청하기"
-            onClickEvent={onClickClubSignup}
+            onClickEvent={() => handleOpenModal()}
             color="#fff"
             background="#778DA9"
             weight={500}
           />
         )}
       </SearchSummaryBox>
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="모임을 신청하시겠습니까?"
+          modalText="모임 신청 후 모임장의 응답을 기다려야합니다."
+          onClose={setIsOpenModal}
+          handleSubmit={onClickClubSignup}
+        />
+      )}
     </SearchSummaryWrapper>
   );
 };

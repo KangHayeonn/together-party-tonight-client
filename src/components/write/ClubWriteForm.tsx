@@ -14,15 +14,23 @@ import ClubWriteFilter from "@/components/write/ClubWriteFilter";
 import ClubWriteContent from "@/components/write/ClubWriteContent";
 import { ClubFormType, ClubAddressType } from "@/types/club";
 import { validationClubWrite } from "@/utils/func/ClubWriteFunc";
-import Api from "@/api/club";
 import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 import RoundButton from "@/components/common/RoundButton";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
+// api
+import Api from "@/api/club";
 
 const ClubWriteForm = () => {
   const router = useRouter();
 
   const setSearchKeyword = useSetRecoilState(searchKeywordState);
   const setSearchAddress = useSetRecoilState(searchState);
+
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
+  };
 
   const [clubForm, setClubForm] = useState<ClubFormType>({
     clubName: "",
@@ -65,10 +73,14 @@ const ClubWriteForm = () => {
 
   const onClickClubAddEvent = () => {
     if (validationClubWrite(clubForm)) {
-      const formData = createFormData(clubForm, imageFile);
-      addClubMutation(formData);
-      initClubForm();
+      handleOpenModal();
     }
+  };
+
+  const addNewClub = () => {
+    const formData = createFormData(clubForm, imageFile);
+    addClubMutation(formData);
+    initClubForm();
   };
 
   const onClubNameChange = (title: string) => {
@@ -177,6 +189,14 @@ const ClubWriteForm = () => {
           />
         </ClubWriteBottom>
       </ClubWriteFormBox>
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="모임을 만드시겠습니까?"
+          modalText="소중한 사람들과 즐거운 시간 만들어보세요."
+          onClose={setIsOpenModal}
+          handleSubmit={addNewClub}
+        />
+      )}
     </ClubWriteFormWrapper>
   );
 };

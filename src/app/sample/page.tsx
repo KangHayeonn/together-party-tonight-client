@@ -38,6 +38,10 @@ export default function Home() {
   const submitModal = () => {
     // TODO : api logic
   };
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
+  };
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -115,11 +119,12 @@ export default function Home() {
       )}
       <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
-      <button onClick={() => setIsOpenModal(true)}>모달 열기</button>
+      <button onClick={() => handleOpenModal()}>모달 열기</button>
       {isOpenModal && (
         <ConfirmModal
           modalTitle="정말 탈퇴하시겠습니까?"
           modalText="회원 탈퇴시 모든 정보가 삭제되며 복구되지 않습니다."
+          modalSubText="그래도 탈퇴하시겠습니까?"
           onClose={setIsOpenModal}
           handleSubmit={submitModal}
         />
