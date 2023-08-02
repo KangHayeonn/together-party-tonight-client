@@ -10,5 +10,9 @@ export interface IAlertList {
   alertId: number;
   alertReadDateTime: Date;
   alertType: string;
-  checkStatue: boolean;
+  checkStatus: boolean;
+}
+
+export interface alertUnReadCntType {
+  unReadCnt: number;
 }

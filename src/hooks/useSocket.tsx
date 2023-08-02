@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { MutableRefObject } from "react";
 import { getUserId } from "@/utils/tokenControl";
 import { useSetRecoilState } from "recoil";
@@ -8,6 +9,9 @@ import {
   socketCommentAddState,
   socketCommentDeleteState,
 } from "@/recoil/socket/socketState";
+import { alertUnReadCntState } from "@/recoil/alert/alertState";
+// api
+import Api from "@/api/alert";
 
 const webSocketUrl = `${process.env.NEXT_PUBLIC_SOCKET_BASE_URL}/api/chatting`;
 
@@ -16,6 +20,21 @@ const useSocket = () => {
   const setSocketDeleteComment = useSetRecoilState(socketCommentDeleteState);
   const setSocketAddChat = useSetRecoilState(socketChatAddState);
   const setSocketAlertMsg = useSetRecoilState(socketAlertMsgState);
+  const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
+
+  const { isLoading, error, data, refetch } = useQuery(
+    ["alertUnreadCnt"],
+    () => Api.v1GetUnReadCount(),
+    {
+      refetchOnWindowFocus: true,
+      onSuccess: (res) => {
+        if (res.data.data) {
+          const { alertUnreadCount } = res.data.data;
+          setUnReadAlertCnt({ unReadCnt: alertUnreadCount });
+        }
+      },
+    },
+  );
 
   const socketConnect = (
     ws: MutableRefObject<WebSocket | null>,
@@ -91,6 +110,8 @@ const useSocket = () => {
           alertId: data.alertId,
         });
       }
+
+      refetch();
     };
   };
 

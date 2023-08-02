@@ -7,9 +7,7 @@ const Alert = {
   async v1GetAlertList(data: getAlertListType) {
     try {
       const url = `${prefix}`;
-      const result = await instanceWithToken.get(url, {
-        params: data,
-      });
+      const result = await instanceWithToken.post(url, data);
       return result;
     } catch (err) {
       return Promise.reject(err);
@@ -20,7 +18,7 @@ const Alert = {
     try {
       const url = `${prefix}`;
       const result = await instanceWithToken.delete(url, {
-        data: {
+        params: {
           alertId: id,
         },
       });

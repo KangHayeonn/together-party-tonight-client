@@ -18,20 +18,17 @@ import { getUserId, clearToken } from "@/utils/tokenControl";
 import Image from "next/image";
 // socket
 import useSocket from "@/hooks/useSocket";
-// api
-import Api from "@/api/alert";
 // recoil
 import { useRecoilValue } from "recoil";
-import { socketAlertMsgState } from "@/recoil/socket/socketState";
+import { alertUnReadCntState } from "@/recoil/alert/alertState";
 
 export default function Header() {
   const path = usePathname();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
-  const [unReadAlertCnt, setUnReadAlertCnt] = useState<number>(0);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
-  const socketAlertMsg = useRecoilValue(socketAlertMsgState);
+  const unReadAlertCnt = useRecoilValue(alertUnReadCntState);
   const [
     socketConnect,
     socketDisconnect,
@@ -40,20 +37,6 @@ export default function Header() {
   ] = useSocket();
   const ws = useRef<WebSocket | null>(null);
   const userId = typeof window !== "undefined" && getUserId();
-
-  const { isLoading, error, data, refetch } = useQuery(
-    ["alertList"],
-    () => Api.v1GetUnReadCount(),
-    {
-      refetchOnWindowFocus: true,
-      onSuccess: (res) => {
-        if (res.data.data) {
-          const { alertUnreadCount } = res.data.data;
-          setUnReadAlertCnt(alertUnreadCount);
-        }
-      },
-    },
-  );
 
   const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -80,10 +63,6 @@ export default function Header() {
       socketLogin();
     }
   }, [path]);
-
-  useEffect(() => {
-    refetch();
-  }, [socketAlertMsg]);
 
   useEffect(() => {
     if (socketConnected) {
@@ -129,7 +108,7 @@ export default function Header() {
               className="alert"
             >
               <Image src="/images/bell.svg" width={27} height={23} alt="알림" />
-              <AlertBadge>{unReadAlertCnt}</AlertBadge>
+              <AlertBadge>{unReadAlertCnt.unReadCnt}</AlertBadge>
             </MenuIconItem>
             <MenuItem
               href="#"
