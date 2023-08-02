@@ -18,6 +18,9 @@ import { IAlertList } from "@/types/alert";
 // api
 import Api from "@/api/alert";
 import { getAlertListType } from "@/types/alert";
+// recoil
+import { useRecoilState } from "recoil";
+import { alertUnReadCntState } from "@/recoil/alert/alertState";
 
 const Alert = () => {
   const [alertAll, setAlertAll] = useState<boolean>(true);
@@ -27,13 +30,13 @@ const Alert = () => {
     listCount: 20,
   });
   const [alertList, setAlertList] = useState<Array<IAlertList>>([]);
+  const [unReadAlertCnt, setUnReadAlertCnt] =
+    useRecoilState(alertUnReadCntState);
 
-  /*
   const { isLoading, error, data, refetch } = useQuery(
     ["alertList"],
     () => Api.v1GetAlertList(options),
     {
-      refetchOnWindowFocus: true,
       onSuccess: (res) => {
         if (res.data.data) {
           const { alertList } = res.data.data;
@@ -41,19 +44,22 @@ const Alert = () => {
         }
       },
     },
-  );*/
+  );
 
   const { mutate: checkAlert } = useMutation({
     mutationFn: (id: number) => Api.v1ReadAlert(id),
     onSuccess: (res) => {
-      // refetch();
+      setUnReadAlertCnt({
+        unReadCnt: unReadAlertCnt.unReadCnt - 1,
+      });
+      refetch();
     },
   });
 
   const { mutate: deleteAlert } = useMutation({
     mutationFn: (id: number) => Api.v1DeleteAlert(id),
     onSuccess: (res) => {
-      // refetch();
+      refetch();
     },
   });
 
@@ -71,6 +77,38 @@ const Alert = () => {
       ...options,
       isAllOrNotRead: false,
     });
+  };
+
+  const formatAlertContent = (content: string, alertType: string) => {
+    const newContent = JSON.parse(content);
+    let contentResult = "";
+
+    switch (alertType) {
+      case "CHAT":
+        contentResult = `${newContent.nickName}님에게 채팅이 도착했습니다.`;
+        break;
+      case "LEAVE_CHATROOM":
+        contentResult = `${newContent.leaveMemberNickname}님이 채팅방을 나가셨습니다.`;
+        break;
+      case "BILLING_REQUEST":
+        contentResult = `${newContent.clubName}에서 ${newContent.price}원 정산 요청이 있습니다.`;
+        break;
+      case "BILLING_PAY":
+        contentResult = `${newContent.clubName}의 ${newContent.nickName}님이 정산 완료하였습니다.`;
+        break;
+      case "APPLY":
+        contentResult = `${newContent.nickName}님이 ${newContent.clubName}모임을 신청하였습니다.`;
+        break;
+      case "APPROVE":
+        contentResult = `${newContent.clubName}모임에 ${
+          newContent.approve ? "수락되었습니다." : "거절되었습니다."
+        }`;
+        break;
+      default:
+        break;
+    }
+
+    return contentResult;
   };
 
   return (
@@ -97,11 +135,13 @@ const Alert = () => {
               return (
                 <AlertItem
                   key={`alert${index}`}
-                  className={`${item.checkStatue ? "disabled" : ""}`}
+                  className={`${item.checkStatus ? "disabled" : ""}`}
                 >
                   <AlertItemTop>
-                    <AlertItemText>{item.alertContent}</AlertItemText>
-                    {!item.checkStatue ? (
+                    <AlertItemText>
+                      {formatAlertContent(item.alertContent, item.alertType)}
+                    </AlertItemText>
+                    {!item.checkStatus ? (
                       <Image
                         src={"/images/emailSuccess.svg"}
                         width={15}

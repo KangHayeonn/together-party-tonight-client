@@ -61,7 +61,7 @@ const ChatRoomListAside = () => {
   return (
     <ChatRoomListWrapper>
       <ChatRoomList>
-        {chatRooms.chatRoomList.length > 0 ? (
+        {chatRooms.chatRoomList?.length > 0 ? (
           chatRooms.chatRoomList.map((item, index) => {
             return (
               <ChatRoomItem

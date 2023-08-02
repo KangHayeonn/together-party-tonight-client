@@ -5,7 +5,7 @@ const AlertWrapper = styled.div`
   top: 4.5rem;
   right: 1rem;
   display: flex;
-  width: 22rem;
+  width: 30rem;
   flex-direction: column;
   background-color: #fff;
   box-shadow: 0 0 0.35rem rgba(0, 0, 0, 0.25);
@@ -101,7 +101,7 @@ const AlertItemTop = styled.div`
 const AlertItemBottom = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 15.5rem;
+  width: 24rem;
   font-size: 14px;
   font-weight: 600;
   color: #a9a9a9;
@@ -109,7 +109,7 @@ const AlertItemBottom = styled.div`
 
 const AlertItemText = styled.div`
   display: block;
-  width: 16rem;
+  width: 25.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
