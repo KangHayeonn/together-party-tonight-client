@@ -1,6 +1,9 @@
 "use client";
 
-import DetailModal from "@/components/mypage/DetailModal";
+import AuthLayout from "@/components/common/AuthLayout";
+import ApplyDetailModal from "@/components/mypage/ApplyDetailModal";
+import MemberModal from "@/components/mypage/MemberModal";
+import ReviewDetailModal from "@/components/mypage/ReviewDetailModal";
 import SideBar from "@/components/mypage/SideBar";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { MyPageWrapper } from "@/styles/page/MyPage/MyInfo";
@@ -15,11 +18,15 @@ function MyPageLayout({ children }: Props) {
   const modal = useRecoilValue(ModalAtom);
 
   return (
-    <MyPageWrapper>
-      <SideBar />
-      {children}
-      {modal.isOpen && <DetailModal title={modal.title} />}
-    </MyPageWrapper>
+    <AuthLayout>
+      <MyPageWrapper>
+        <SideBar />
+        {children}
+        {modal.isOpenReviewModal && <ReviewDetailModal />}
+        {modal.isOpenApplyModal && <ApplyDetailModal />}
+        {modal.isOpenMemberModal && <MemberModal />}
+      </MyPageWrapper>
+    </AuthLayout>
   );
 }
 

@@ -9,27 +9,49 @@ import {
   SearchInputForm,
   SearchInput,
 } from "@/styles/components/common/SearchForm";
+// recoil
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { searchKeywordState } from "@/recoil/search/searchState";
+
+export interface SearchPreview {
+  address: object;
+  address_name: string;
+  address_type: string;
+  road_address: object;
+  x: string;
+  y: string;
+}
 
 export interface SearchProps {
   placeholder?: string | undefined;
   height?: number | undefined;
   search?: string | undefined; // 검색어 저장
-  onChangeSearch?: React.ChangeEventHandler<HTMLInputElement>;
+  searchPreviewList?: Array<SearchPreview> | undefined;
+  searchByAddress?: () => void;
 }
 
 const SearchForm = ({
   placeholder,
-  onChangeSearch,
   search,
+  searchPreviewList,
+  searchByAddress,
   ...props
 }: SearchProps) => {
   const searchInput = useRef<HTMLInputElement>(null);
   const searchWrap = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const searchPreviewList = ["강남", "잠실", "판교", "홍대", "여의도", "성수"];
+
+  // recoil
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const resetSearchKeyword = useResetRecoilState(searchKeywordState);
 
   const onFocusSearch = () => {
     setIsFocus(true);
+    resetSearchKeyword();
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
   };
 
   const clickWrap = (e: MouseEvent) => {
@@ -39,6 +61,10 @@ const SearchForm = ({
     ) {
       setIsFocus(false);
     }
+  };
+
+  const onClickSearchBtn = () => {
+    if (searchByAddress) searchByAddress();
   };
 
   useEffect(() => {
@@ -51,6 +77,7 @@ const SearchForm = ({
         <SearchInputForm>
           <SearchInput
             type="text"
+            value={searchKeyword}
             placeholder={placeholder || "주소나 동네를 검색해보세요."}
             onChange={onChangeSearch}
             onFocus={onFocusSearch}
@@ -61,9 +88,15 @@ const SearchForm = ({
             width={16}
             height={16}
             alt="Search Icon"
+            onClick={() => onClickSearchBtn()}
           />
         </SearchInputForm>
-        {isFocus ? <SearchFormPreview searchList={searchPreviewList} /> : null}
+        {isFocus ? (
+          <SearchFormPreview
+            searchList={searchPreviewList}
+            isOpen={setIsFocus}
+          />
+        ) : null}
       </SearchField>
     </SearchWrapper>
   );

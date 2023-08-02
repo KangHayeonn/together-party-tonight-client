@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
-const ClubWriteTop = styled.div``;
+const ClubWriteTop = styled.div`
+  position: relative;
+`;
 
 const ClubWriteTitleInput = styled.input`
+  width: 100%;
   font-size: 2.5rem;
   font-weight: 600;
   line-height: 2rem;

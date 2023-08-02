@@ -40,8 +40,8 @@ const ChatRoomName = styled.div`
 `;
 
 const ChatList = styled.div`
-  min-height: 51.5rem;
-  max-height: 51.5rem;
+  min-height: 41.5rem;
+  max-height: 41.5rem;
   width: calc(100% - 28rem);
   overflow-y: auto;
   display: flex;

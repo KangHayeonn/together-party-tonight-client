@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   SearchResultList,
   SearchResultItem,
@@ -14,31 +15,27 @@ import {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
+  SearchResultEmpty,
 } from "@/styles/components/search/mapType/SearchResult";
+import { categoryToKorMap } from "@/utils/categoryFormat";
+// recoil
+import { useRecoilValue } from "recoil";
+import { searchResponseState } from "@/recoil/search/searchState";
 
-interface searchResultItem {
-  clubId: number;
-  clubName: string;
-  clubCategory: string;
-  clubTags: string[];
-  latitude: number;
-  longitude: number;
-  address: string;
-  ratingAvg: number;
-  reviewCnt: number;
-}
+const SearchResult = () => {
+  const router = useRouter();
+  const searchResponse = useRecoilValue(searchResponseState);
 
-interface searchResultProps {
-  searchResult?: Array<searchResultItem>;
-}
-
-const SearchResult = ({ searchResult }: searchResultProps) => {
   return (
     <SearchResultList>
-      {searchResult &&
-        searchResult.map((item, index) => {
+      {searchResponse.clubList.length > 0 ? (
+        searchResponse.clubList.map((item, index) => {
           return (
-            <SearchResultItem key={index} className="search-item">
+            <SearchResultItem
+              key={`searchResult${index}`}
+              className="search-item"
+              onClick={() => router.push(`/search/${item.clubId}`)}
+            >
               <SearchItemTop>
                 <SearchClubBox>
                   <Image
@@ -48,7 +45,9 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
                     alt="모임장소"
                   />
                   <SearchClubTitle>{item.clubName}</SearchClubTitle>
-                  <SearchClubCategory>{item.clubCategory}</SearchClubCategory>
+                  <SearchClubCategory>
+                    {categoryToKorMap.get(item.clubCategory)}
+                  </SearchClubCategory>
                 </SearchClubBox>
                 <SearchScoreBox>
                   <Image
@@ -57,7 +56,7 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
                     height={17}
                     alt="평점"
                   />
-                  <SearchScore>{item.ratingAvg}</SearchScore>
+                  <SearchScore>{item.ratingAvg.toFixed(1)}</SearchScore>
                 </SearchScoreBox>
               </SearchItemTop>
               <SearchItemContent>
@@ -65,13 +64,20 @@ const SearchResult = ({ searchResult }: searchResultProps) => {
                 <SearchClubReview>리뷰 {item.reviewCnt}</SearchClubReview>
               </SearchItemContent>
               <SearchItemBottom>
-                {item.clubTags.map((item) => {
-                  return <SearchItemTag key={item}>#{item}</SearchItemTag>;
+                {item.clubTags.map((item, index) => {
+                  return (
+                    <SearchItemTag key={`clubTag${index}`}>
+                      #{item}
+                    </SearchItemTag>
+                  );
                 })}
               </SearchItemBottom>
             </SearchResultItem>
           );
-        })}
+        })
+      ) : (
+        <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>
+      )}
     </SearchResultList>
   );
 };

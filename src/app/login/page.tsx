@@ -1,9 +1,10 @@
 "use client";
 
-import { instance } from "@/api";
-import { kakaoURL } from "@/api/login";
+import { useQuery } from "@tanstack/react-query";
+import { kakaoURL, useLogin } from "@/api/login";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
+import useHandleInput from "@/hooks/useHandleInput";
 import {
   Hr,
   Line,
@@ -16,35 +17,38 @@ import {
   SocialWrapper,
   ErrorMessage,
 } from "@/styles/page/Login";
-import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
+// recoil
+import { useSetRecoilState } from "recoil";
+import { alertUnReadCntState } from "@/recoil/alert/alertState";
+// api
+import Api from "@/api/alert";
 
 export default function Login() {
-  const [formValues, setFormValues] = useState<LoginFormValues>({
+  const router = useRouter();
+  const loginMutation = useLogin();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [formValues, handleChange] = useHandleInput({
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState("");
+  const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const loginMutation = useMutation((credentials: LoginFormValues) =>
-    instance
-      .post("/api/members/login", credentials)
-      .then((response) => response.data),
+  const { isLoading, error, data, refetch } = useQuery(
+    ["alertUnreadCnt"],
+    () => Api.v1GetUnReadCount(),
+    {
+      onSuccess: (res) => {
+        if (res.data.data) {
+          const { alertUnreadCount } = res.data.data;
+          setUnReadAlertCnt({ unReadCnt: alertUnreadCount });
+        }
+      },
+      enabled: false,
+    },
   );
 
   const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,7 +62,8 @@ export default function Login() {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("userId", response.data.userId);
-          window.location.href = "/";
+          refetch();
+          router.push("/");
         }
       },
     });

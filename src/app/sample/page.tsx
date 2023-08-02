@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { fetchPosts } from "@/api/test";
 import { nameState } from "@/recoil/sample/sampleState";
 import { StyledButton } from "@/styles/page/sample";
@@ -15,12 +15,33 @@ import CheckBox from "@/components/common/CheckBox";
 import ToastBox from "@/components/common/ToastBox";
 import RoundButton from "@/components/common/RoundButton";
 import DropDown from "@/components/common/DropDown";
+// socket
+import useSocket from "@/hooks/useSocket";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 
 export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [isShowToast, setIsShowToast] = useState<boolean>(false);
+  const [socketConnected, setSocketConnected] = useState<boolean>(false);
+  const [
+    socketConnect,
+    socketDisconnect,
+    socketRequestMessage,
+    socketReceiveMessage,
+    socketClose,
+  ] = useSocket();
+
+  // modal
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const submitModal = () => {
+    // TODO : api logic
+  };
+  const handleOpenModal = () => {
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
+  };
 
   // react-query
   const { isLoading, error, data } = useQuery({
@@ -48,8 +69,33 @@ export default function Home() {
   };
 
   const onClickRoundBtnEvent = () => {
-    // console.log("check");
+    // click check
   };
+
+  // socket 연동 테스트
+  const ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    if (!ws.current) {
+      if (socketConnect(ws)) setSocketConnected(true);
+    }
+
+    socketDisconnect(ws);
+    socketReceiveMessage(ws);
+
+    return () => {
+      // socket clean up
+      socketClose(ws);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socketConnected) {
+      if (!ws.current) {
+        socketRequestMessage(ws);
+      }
+    }
+  }, [socketConnected]);
 
   return (
     <div>
@@ -65,14 +111,24 @@ export default function Home() {
       <h2>Common Components</h2>
       <TextButton text="모임 만들기" onClick={onClickEvent} />
       <TextField message={message} onChangeText={onChangeMessage} />
-      <SearchForm search={search} onChangeSearch={onChangeSearch} />
-      <NumberForm min={0} max={10} />
+      <SearchForm search={search} />
+      <NumberForm min={0} max={30} />
       <CheckBox text="한식" />
       {isShowToast && (
         <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
       )}
-      <RoundButton text="#태그" onClick={onClickRoundBtnEvent} />
+      <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
+      <button onClick={() => handleOpenModal()}>모달 열기</button>
+      {isOpenModal && (
+        <ConfirmModal
+          modalTitle="정말 탈퇴하시겠습니까?"
+          modalText="회원 탈퇴시 모든 정보가 삭제되며 복구되지 않습니다."
+          modalSubText="그래도 탈퇴하시겠습니까?"
+          onClose={setIsOpenModal}
+          handleSubmit={submitModal}
+        />
+      )}
     </div>
   );
 }

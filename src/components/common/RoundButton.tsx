@@ -11,12 +11,12 @@ export interface RoundBtnProps {
   color?: string | undefined;
   weight?: number | undefined;
   border?: number | undefined;
-  onClick: React.MouseEventHandler<HTMLElement>;
+  onClickEvent?: React.MouseEventHandler<HTMLElement> | undefined;
 }
 
 const RoundButton = ({
   text,
-  onClick,
+  onClickEvent,
   disabled = false,
   ...props
 }: RoundBtnProps) => {
@@ -29,7 +29,7 @@ const RoundButton = ({
   return (
     <RoundBtnWrapper
       className={`${btnActive && "active"}`}
-      onClick={onClickBtn}
+      onClick={onClickEvent || onClickBtn}
       disabled={disabled}
       {...props}
     >

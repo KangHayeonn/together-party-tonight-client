@@ -134,3 +134,5 @@ export const kakaoMapData = [
     latlng: { lat: 33.451393, lng: 126.570738 },
   },
 ];
+
+export const optionList = ["최신순", "인기순"];

@@ -94,6 +94,10 @@ const SearchReviewItem = styled.div`
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 15px;
+
+  img {
+    border-radius: 13px;
+  }
 `;
 
 const SearchReviewBox = styled.div`

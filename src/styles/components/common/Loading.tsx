@@ -33,7 +33,8 @@ const loadingTextOpacity = keyframes`
 `;
 
 const LoadingContainer = styled.div`
-  position: relative;
+  position: absolute;
+  z-index: 10;
   margin: 40px auto;
 `;
 

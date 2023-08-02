@@ -10,7 +10,7 @@ export interface ButtonProps {
   width?: number | undefined;
   height?: number | undefined;
   weight?: number | undefined;
-  border?: boolean | undefined;
+  border?: string | undefined;
   margin?: string | undefined;
   hovercolor?: string | undefined;
   hoverbackgroundcolor?: string | undefined;

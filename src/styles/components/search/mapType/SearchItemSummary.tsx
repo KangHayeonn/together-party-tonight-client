@@ -20,7 +20,7 @@ const SearchSummaryWrapper = styled.div`
 
 const SearchSummaryBox = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
   background-color: #fff;
   border-radius: 5px;

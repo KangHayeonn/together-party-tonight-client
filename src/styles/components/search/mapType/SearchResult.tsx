@@ -29,6 +29,7 @@ const SearchResultItem = styled.li`
   gap: 0.625rem;
   border-bottom: 1px solid rgb(189, 200, 214, 0.75);
   text-decoration: none;
+  cursor: pointer;
 
   &:last-child {
     border-bottom: none;
@@ -117,6 +118,15 @@ const SearchItemTag = styled.div`
   letter-spacing: 0.25px;
 `;
 
+const SearchResultEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+  font-size: 16px;
+  color: #a0a0a0;
+`;
+
 export {
   SearchResultList,
   SearchResultItem,
@@ -131,4 +141,5 @@ export {
   SearchClubReview,
   SearchItemBottom,
   SearchItemTag,
+  SearchResultEmpty,
 };

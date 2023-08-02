@@ -26,6 +26,8 @@ export interface TextProps {
   wrapperwidth?: string | undefined;
   autoComplete?: string | undefined;
   fontSize?: number | undefined;
+  value?: string | undefined;
+  handleEvent?: () => Promise<void>;
 }
 
 const TextField = ({
@@ -34,11 +36,13 @@ const TextField = ({
   className,
   placeholder,
   isError,
+  message,
   errorMessage,
   textType,
   inputType,
   onChangeText,
   autoComplete,
+  handleEvent,
   ...props
 }: TextProps) => {
   const [type, setType] = useState<string>(textType || "text");
@@ -48,16 +52,24 @@ const TextField = ({
     else setType("text");
   };
 
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (handleEvent) handleEvent();
+    }
+  };
+
   return (
     <TextWrapper {...props}>
       <TextInputForm>
         <TextInput
           name={name}
           type={type}
+          value={message}
           className={className}
           placeholder={placeholder}
           onChange={onChangeText}
           disabled={disabled}
+          onKeyDown={handleOnKeyPress}
           autoComplete={autoComplete}
           {...props}
         />
