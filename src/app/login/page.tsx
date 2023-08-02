@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { kakaoURL, useLogin } from "@/api/login";
 import TextButton from "@/components/common/TextButton";
 import TextField from "@/components/common/TextField";
@@ -20,6 +21,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+// recoil
+import { useSetRecoilState } from "recoil";
+import { alertUnReadCntState } from "@/recoil/alert/alertState";
+// api
+import Api from "@/api/alert";
 
 export default function Login() {
   const router = useRouter();
@@ -29,6 +35,21 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
+
+  const { isLoading, error, data, refetch } = useQuery(
+    ["alertUnreadCnt"],
+    () => Api.v1GetUnReadCount(),
+    {
+      onSuccess: (res) => {
+        if (res.data.data) {
+          const { alertUnreadCount } = res.data.data;
+          setUnReadAlertCnt({ unReadCnt: alertUnreadCount });
+        }
+      },
+      enabled: false,
+    },
+  );
 
   const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -41,6 +62,7 @@ export default function Login() {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("userId", response.data.userId);
+          refetch();
           router.push("/");
         }
       },

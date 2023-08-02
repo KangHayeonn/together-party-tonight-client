@@ -43,6 +43,7 @@ export default function Header() {
     if (userId) {
       await logout(userId);
       clearToken();
+      setIsAlertOpen(false);
       setIsLoggedIn(false);
       router.replace("/");
     }
