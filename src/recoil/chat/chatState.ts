@@ -1,5 +1,10 @@
 import { atom } from "recoil";
-import { ChatRoomListType, ChatListType, ChatRoomType } from "@/types/chat";
+import {
+  ChatRoomListType,
+  ChatListType,
+  ChatRoomType,
+  CreateChatRoomType,
+} from "@/types/chat";
 
 const chatRoomListState = atom<ChatRoomListType>({
   key: "chatRoomListState",
@@ -25,4 +30,17 @@ const checkChatRoomState = atom<ChatRoomType>({
   },
 });
 
-export { chatRoomListState, chatListState, checkChatRoomState };
+const createChatRoomState = atom<CreateChatRoomType>({
+  key: "createChatRoomState",
+  default: {
+    nickName: "",
+    otherMemberId: -1,
+  },
+});
+
+export {
+  chatRoomListState,
+  chatListState,
+  checkChatRoomState,
+  createChatRoomState,
+};

@@ -25,7 +25,7 @@ export default function Redirect() {
           router.push("/");
         }
       } catch (error) {
-        console.error(error);
+        return Promise.reject(error);
       }
     },
     [router],
