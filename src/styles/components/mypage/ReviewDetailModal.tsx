@@ -84,6 +84,17 @@ const TextLen = styled.p`
   color: #778da9;
 `;
 
+const EditBtnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImgEditLabel = styled.label`
+  display: flex;
+  align-items: center;
+`;
+
 export {
   ModalInner,
   ReviewerInfo,
@@ -97,4 +108,6 @@ export {
   TextWrapper,
   TextArea,
   TextLen,
+  EditBtnWrapper,
+  ImgEditLabel,
 };

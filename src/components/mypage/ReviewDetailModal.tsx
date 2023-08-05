@@ -3,7 +3,9 @@ import Modal from "../common/Modal";
 import {
   CreatedReview,
   EditBtn,
+  EditBtnWrapper,
   EditWrapper,
+  ImgEditLabel,
   InfoWrapper,
   MeetingInfo,
   ModalInner,
@@ -24,6 +26,11 @@ import MyPage from "@/api/mypage";
 import { LoadingWrapper, ProfileBtn } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
 import { isEmptyObj } from "@/utils";
+import {
+  Button,
+  ClubImageUpdateBtn,
+  Line,
+} from "@/styles/components/write/ClubWriteImage";
 
 export default function DetailModal() {
   const setIsOpen = useSetRecoilState(ModalAtom);
@@ -32,10 +39,9 @@ export default function DetailModal() {
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
-  const [reviewImg, setReviewImg] = useState<string | null>("");
+  const [reviewImg, setReviewImg] = useState<string>("");
+
   const [reviewFile, setReviewFile] = useState<File | undefined>();
-  console.log("img", reviewImg);
-  console.log("file", reviewFile);
   const [reviewData, setReviewData] = useState({
     clubId: 0,
     clubName: "",
@@ -53,7 +59,7 @@ export default function DetailModal() {
     },
     {
       enabled: false,
-      onSuccess: async (data) => {
+      onSuccess: (data) => {
         setReviewData(data);
         setText(data.reviewContent);
         setReviewRating(data.rating);
@@ -63,6 +69,11 @@ export default function DetailModal() {
       },
     },
   );
+
+  const handleDelImg = () => {
+    setReviewImg("");
+    setReviewFile(undefined);
+  };
 
   const handleSetValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -130,6 +141,17 @@ export default function DetailModal() {
     }
   };
 
+  const getReviewImg = () => {
+    const isDefaultReviewImg =
+      !reviewImg || reviewImg.includes("review_default");
+
+    if (isEdit && isDefaultReviewImg) {
+      return "/images/defaultPlusReview.svg";
+    } else {
+      return reviewImg || "/images/defaultReview.svg";
+    }
+  };
+
   useEffect(() => {
     if (!isEmptyObj(clubItem)) {
       setReviewData({
@@ -146,7 +168,7 @@ export default function DetailModal() {
   }, [clubItem]);
 
   useEffect(() => {
-    if (id !== 1) refetch();
+    if (id !== -1) refetch();
     if (reviewImg) {
       console.log("있네있어");
     }
@@ -183,22 +205,34 @@ export default function DetailModal() {
         )}
 
         <MeetingInfo>
-          <ProfileBtn htmlFor="fileInput">
-            <Image
-              src={reviewImg || "/images/defaultReview.svg"}
-              width={130}
-              height={130}
-              alt="리뷰 이미지"
-            />
-            <input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              onChange={handleUploadReviewImg}
-              style={{ display: "none" }}
-              disabled={!isEdit}
-            />
-          </ProfileBtn>
+          <div>
+            <ProfileBtn htmlFor="fileInput">
+              <Image
+                src={getReviewImg()}
+                width={130}
+                height={130}
+                alt="리뷰 이미지"
+              />
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                onChange={handleUploadReviewImg}
+                style={{ display: "none" }}
+                disabled={!isEdit}
+              />
+            </ProfileBtn>
+            {isEdit && (
+              <EditBtnWrapper>
+                <Button onClick={handleDelImg}>삭제</Button>
+                <Line />
+                <ImgEditLabel htmlFor="fileInput">
+                  <ClubImageUpdateBtn>수정</ClubImageUpdateBtn>
+                </ImgEditLabel>
+              </EditBtnWrapper>
+            )}
+          </div>
+
           <InfoWrapper>
             <p>
               <Image
