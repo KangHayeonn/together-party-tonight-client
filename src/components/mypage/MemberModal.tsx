@@ -137,7 +137,7 @@ export default function MemberModal() {
         <ClubTitle>{clubItem.clubName}</ClubTitle>
         <ClubInfo>
           <MeetingDate>
-            모임일자 {convertDate(clubItem.createdDate)}
+            모임일자 {convertDate(clubItem.meetingDate)}
           </MeetingDate>
           <MeetingMember>
             {clubItem.clubState ? "모집중" : "모집완료"} {clubItem.appliedCount}

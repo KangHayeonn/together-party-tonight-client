@@ -14,9 +14,9 @@ import {
   TextLen,
   TextWrapper,
 } from "@/styles/components/mypage/ReviewDetailModal";
-import { ReviewRating } from "@/styles/components/mypage/ListItem";
+import { ReviewRating, ReviewText } from "@/styles/components/mypage/ListItem";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { toStringByFormatting } from "@/utils/dateFormat";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -26,13 +26,16 @@ import Loading from "../common/Loading";
 import { isEmptyObj } from "@/utils";
 
 export default function DetailModal() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const { isMyReview, reviewId, clubItem } = useRecoilValue(ModalAtom);
   const [id, setId] = useState(reviewId);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
-  const [reviewImg, setReviewImg] = useState("");
+  const [reviewImg, setReviewImg] = useState<string | null>("");
   const [reviewFile, setReviewFile] = useState<File | undefined>();
+  console.log("img", reviewImg);
+  console.log("file", reviewFile);
   const [reviewData, setReviewData] = useState({
     clubId: 0,
     clubName: "",
@@ -44,17 +47,19 @@ export default function DetailModal() {
   });
 
   const { isLoading, refetch } = useQuery(
-    ["review", id],
+    ["review"],
     () => {
       return MyPage.v1GetReviewDetail(id);
     },
     {
-      enabled: id !== -1,
-      onSuccess: (data) => {
+      enabled: false,
+      onSuccess: async (data) => {
         setReviewData(data);
         setText(data.reviewContent);
         setReviewRating(data.rating);
         setReviewImg(data.image);
+        // const imgFile = await MyPage.urlToFileObject(data.image, "image");
+        // setReviewFile(imgFile);
       },
     },
   );
@@ -70,7 +75,7 @@ export default function DetailModal() {
   const handleEditReview = () => {
     const formData = new FormData();
     const jsonString = JSON.stringify({
-      ...(id === -1 ? { clubId: reviewData.clubId } : { reviewId: reviewId }),
+      ...(id === -1 ? { clubId: reviewData.clubId } : { reviewId: id }),
       rating: reviewRating,
       reviewContent: text,
     });
@@ -90,18 +95,23 @@ export default function DetailModal() {
     {
       onSuccess: (res) => {
         if (res.success === "true") {
-          setId(res.data.reviewId); // 검증 필요
-          refetch();
+          setId(res.data.reviewId);
         }
       },
     },
   );
 
-  const { mutate: editReview } = useMutation(
-    (formData: FormData) => MyPage.v1UpdateReview(formData),
+  const { mutate: editReview } = useMutation((formData: FormData) =>
+    MyPage.v1UpdateReview(formData),
+  );
+
+  const { mutate: deleteReview } = useMutation(
+    (id: number) => MyPage.v1DeleteReview(id),
     {
       onSuccess: (res) => {
-        if (res.success === "true") refetch();
+        if (res.success === "true") {
+          setIsOpen((val) => ({ ...val, isOpenReviewModal: false }));
+        }
       },
     },
   );
@@ -111,7 +121,7 @@ export default function DetailModal() {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setReviewImg(reader.result?.toString() || "");
+      setReviewImg(reader.result as string);
     };
 
     if (file) {
@@ -134,6 +144,13 @@ export default function DetailModal() {
       setIsEdit(true);
     }
   }, [clubItem]);
+
+  useEffect(() => {
+    if (id !== 1) refetch();
+    if (reviewImg) {
+      console.log("있네있어");
+    }
+  }, []);
 
   if (isLoading && id !== -1) {
     return (
@@ -176,6 +193,7 @@ export default function DetailModal() {
             <input
               id="fileInput"
               type="file"
+              accept="image/*"
               onChange={handleUploadReviewImg}
               style={{ display: "none" }}
               disabled={!isEdit}
@@ -239,7 +257,7 @@ export default function DetailModal() {
                   height={16}
                   alt="별"
                 />
-                <ReviewRating>{reviewData.rating}</ReviewRating>
+                <ReviewRating>{reviewRating.toFixed(1)}</ReviewRating>
               </RatingWrapper>
               {isMyReview && (
                 <div>
@@ -257,6 +275,7 @@ export default function DetailModal() {
                       width={18}
                       height={18}
                       alt="삭제하기"
+                      onClick={() => deleteReview(id)}
                     />
                   </EditBtn>
                 </div>
@@ -268,6 +287,7 @@ export default function DetailModal() {
           {isEdit ? (
             <>
               <TextArea
+                maxLength={300}
                 onChange={(e) => handleSetValue(e)}
                 placeholder="리뷰 내용을 입력하세요."
                 value={text}
@@ -275,7 +295,7 @@ export default function DetailModal() {
               <TextLen>{text.length}/300</TextLen>
             </>
           ) : (
-            <p>{text}</p>
+            <ReviewText>{text}</ReviewText>
           )}
         </TextWrapper>
       </ModalInner>

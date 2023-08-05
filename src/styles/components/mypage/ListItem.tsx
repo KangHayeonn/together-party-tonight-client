@@ -87,6 +87,21 @@ const ReviewRating = styled.em`
   margin-left: 8px;
 `;
 
+const ReviewText = styled.p`
+  height: 120px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+`;
+
 export {
   UserWrapper,
   ReviewListItem,
@@ -101,4 +116,5 @@ export {
   ItemDate,
   MeetingMoreBtn,
   ReviewRating,
+  ReviewText,
 };

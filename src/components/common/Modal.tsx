@@ -12,14 +12,14 @@ import {
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useResetRecoilState } from "recoil";
 
 type Props = {
   children: React.ReactNode;
   title: string;
 };
 
-export default function Modal({ children, title }: Props) {
+export default function Modal({ children, title = '' }: Props) {
   const resetModal = useResetRecoilState(ModalAtom);
   const [isComponentDidMount, setIsComponentDidMount] = useState(false);
 
