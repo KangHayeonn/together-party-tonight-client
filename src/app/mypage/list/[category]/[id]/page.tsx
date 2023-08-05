@@ -6,6 +6,8 @@ import MeetingItem from "@/components/mypage/list/MeetingItem";
 import ReviewItem from "@/components/mypage/list/ReviewItem";
 import {
   ConvertApplyMeetingFilterName,
+  ConvertCalcApply,
+  ConvertCalcMyMeeting,
   ConvertMyMeetingFilterName,
   ConvertSortName,
   MypageListFilterList,
@@ -85,16 +87,22 @@ export default function Category({ params: { category, id } }: Props) {
   };
 
   const handleClickSelect = (item: string) => {
-    if (category === "meeting" || checkCalcObj.isCalMeeting) {
+    if (category === "meeting") {
       handleSortAndFilterChange({
         newFilterBy: ConvertMyMeetingFilterName[item],
       });
-    } else if (category === "apply" || checkCalcObj.isCalApply) {
+    } else if (category === "apply") {
       handleSortAndFilterChange({
         newFilterBy: ConvertApplyMeetingFilterName[item],
       });
     } else if (category === "review") {
       handleSortAndFilterChange({ newSortBy: ConvertSortName[item] });
+    } else if (category === "calculate") {
+      if (selected === "meeting") {
+        handleSortAndFilterChange({ newFilterBy: ConvertCalcMyMeeting[item] });
+      } else {
+        handleSortAndFilterChange({ newFilterBy: ConvertCalcApply[item] });
+      }
     }
   };
 
@@ -153,7 +161,9 @@ export default function Category({ params: { category, id } }: Props) {
           defaultText={category === "review" ? "최신 순" : "전체"}
           dropDownList={
             category === "calculate"
-              ? MypageListFilterList[selected]
+              ? MypageListFilterList[
+                  selected === "meeting" ? "calcMeeting" : "calcApply"
+                ]
               : MypageListFilterList[category]
           }
           changeText={handleClickSelect}

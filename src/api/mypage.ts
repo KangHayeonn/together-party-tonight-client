@@ -124,7 +124,6 @@ const MyPage = {
             filter,
             page,
             size,
-            sort: "createdDate,DESC",
           },
         },
       );
@@ -141,7 +140,6 @@ const MyPage = {
           filter,
           page,
           size,
-          sort: "createdDate,DESC",
         },
       });
       return res.data.data;
