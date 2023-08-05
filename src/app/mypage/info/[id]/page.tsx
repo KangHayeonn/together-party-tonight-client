@@ -10,6 +10,15 @@ import MyInfo from "@/components/mypage/info/MyInfo";
 import MyRating from "@/components/mypage/info/MyRating";
 import MyReviewList from "@/components/mypage/info/MyReviewList";
 import useHandleInput from "@/hooks/useHandleInput";
+import {
+  EditBtnWrapper,
+  ImgEditLabel,
+} from "@/styles/components/mypage/ReviewDetailModal";
+import {
+  Button,
+  ClubImageUpdateBtn,
+  Line,
+} from "@/styles/components/write/ClubWriteImage";
 import { ErrorMessage } from "@/styles/page/Login";
 import {
   ConfirmBox,
@@ -126,6 +135,12 @@ export default function Info({ params: { id } }: Props) {
     }
   };
 
+  const handleDeleteProfile = () => {
+    const formData = new FormData();
+    formData.append("profileImage", "");
+    uploadProfile(formData);
+  };
+
   const handleUpdatePassword = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (isEditPw) {
@@ -188,6 +203,21 @@ export default function Info({ params: { id } }: Props) {
                   onChange={handleUploadProfile}
                   style={{ display: "none" }}
                 />
+                <EditBtnWrapper>
+                  {data.profileImage.includes("member_default") ? (
+                    <ImgEditLabel htmlFor="fileInput">
+                      <ClubImageUpdateBtn>추가</ClubImageUpdateBtn>
+                    </ImgEditLabel>
+                  ) : (
+                    <>
+                      <ImgEditLabel htmlFor="fileInput">
+                        <ClubImageUpdateBtn>수정</ClubImageUpdateBtn>
+                      </ImgEditLabel>
+                      <Line />
+                      <Button onClick={handleDeleteProfile}>삭제</Button>
+                    </>
+                  )}
+                </EditBtnWrapper>
               </ProfileBtn>
               <UpdateTitle>프로필 수정</UpdateTitle>
             </TopWrapper>

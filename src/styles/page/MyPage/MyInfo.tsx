@@ -35,10 +35,12 @@ const ProfileBtn = styled.label`
   flex-direction: column;
   border: 0;
   background-color: transparent;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   & img {
-    border-radius: 10px;
+    border-radius: 50%;
   }
 `;
 

@@ -96,6 +96,21 @@ const ImgEditLabel = styled.label`
   align-items: center;
 `;
 
+const ReviewProfile = styled.label`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & img {
+    border-radius: 15px;
+  }
+`;
+
 export {
   ModalInner,
   ReviewerInfo,
@@ -111,4 +126,5 @@ export {
   TextLen,
   EditBtnWrapper,
   ImgEditLabel,
+  ReviewProfile,
 };

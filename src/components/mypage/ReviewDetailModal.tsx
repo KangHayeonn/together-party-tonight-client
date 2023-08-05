@@ -10,6 +10,7 @@ import {
   MeetingInfo,
   ModalInner,
   RatingWrapper,
+  ReviewProfile,
   Reviewer,
   ReviewerInfo,
   TextArea,
@@ -23,8 +24,6 @@ import { ModalAtom } from "@/recoil/modal/atom";
 import { toStringByFormatting } from "@/utils/dateFormat";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
-import { LoadingWrapper, ProfileBtn } from "@/styles/page/MyPage/MyInfo";
-import Loading from "../common/Loading";
 import { isEmptyObj } from "@/utils";
 import {
   Button,
@@ -171,18 +170,7 @@ export default function DetailModal() {
 
   useEffect(() => {
     if (id !== -1) refetch();
-    if (reviewImg) {
-      console.log("있네있어");
-    }
   }, []);
-
-  if (isLoading) {
-    return (
-      <LoadingWrapper>
-        <Loading />
-      </LoadingWrapper>
-    );
-  }
 
   return (
     <Modal title={reviewData.clubName}>
@@ -208,7 +196,7 @@ export default function DetailModal() {
 
         <MeetingInfo>
           <div>
-            <ProfileBtn htmlFor="fileInput">
+            <ReviewProfile htmlFor="fileInput">
               <Image
                 src={getReviewImg()}
                 width={130}
@@ -223,7 +211,7 @@ export default function DetailModal() {
                 style={{ display: "none" }}
                 disabled={!isEdit}
               />
-            </ProfileBtn>
+            </ReviewProfile>
             {isEdit && reviewFile && (
               <EditBtnWrapper>
                 <Button onClick={handleDelImg}>삭제</Button>
