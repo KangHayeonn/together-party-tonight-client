@@ -31,10 +31,12 @@ import {
   ClubImageUpdateBtn,
   Line,
 } from "@/styles/components/write/ClubWriteImage";
+import ConfirmModal from "../common/modal/ConfirmModal";
 
 export default function DetailModal() {
   const setIsOpen = useSetRecoilState(ModalAtom);
   const { isMyReview, reviewId, clubItem } = useRecoilValue(ModalAtom);
+  const [isOpenDelModal, setIsOpenDelModal] = useState(false);
   const [id, setId] = useState(reviewId);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState("");
@@ -174,7 +176,7 @@ export default function DetailModal() {
     }
   }, []);
 
-  if (isLoading && id !== -1) {
+  if (isLoading) {
     return (
       <LoadingWrapper>
         <Loading />
@@ -222,7 +224,7 @@ export default function DetailModal() {
                 disabled={!isEdit}
               />
             </ProfileBtn>
-            {isEdit && (
+            {isEdit && reviewFile && (
               <EditBtnWrapper>
                 <Button onClick={handleDelImg}>삭제</Button>
                 <Line />
@@ -309,7 +311,7 @@ export default function DetailModal() {
                       width={18}
                       height={18}
                       alt="삭제하기"
-                      onClick={() => deleteReview(id)}
+                      onClick={() => setIsOpenDelModal(true)}
                     />
                   </EditBtn>
                 </div>
@@ -333,6 +335,14 @@ export default function DetailModal() {
           )}
         </TextWrapper>
       </ModalInner>
+      {isOpenDelModal && (
+        <ConfirmModal
+          modalTitle="리뷰를 삭제하시겠습니까?"
+          modalText="리뷰 삭제시 복구할 수 없습니다."
+          onClose={setIsOpenDelModal}
+          handleSubmit={() => deleteReview(id)}
+        />
+      )}
     </Modal>
   );
 }

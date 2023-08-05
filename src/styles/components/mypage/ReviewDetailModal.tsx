@@ -88,6 +88,7 @@ const EditBtnWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 5px;
 `;
 
 const ImgEditLabel = styled.label`

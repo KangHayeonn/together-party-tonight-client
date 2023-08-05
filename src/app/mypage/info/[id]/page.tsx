@@ -3,6 +3,7 @@
 import MyPage from "@/api/mypage";
 import Loading from "@/components/common/Loading";
 import TextButton from "@/components/common/TextButton";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import EditInfo from "@/components/mypage/info/EditInfo";
 import EditPwInfo from "@/components/mypage/info/EditPwInfo";
 import MyInfo from "@/components/mypage/info/MyInfo";
@@ -39,6 +40,7 @@ export default function Info({ params: { id } }: Props) {
   const [isEditPw, setIsEditPw] = useState(false);
   const [isMyAccount, setIsMyAccount] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isOpenSignoutModal, setIsOpenSignoutModal] = useState(false);
 
   const initialValues = {
     profileImg: "",
@@ -271,11 +273,19 @@ export default function Info({ params: { id } }: Props) {
             )}
           </EditWrapper>
           <Withdrawal>
-            <WithdrawalBtn onClick={handleDeleteAccount}>
+            <WithdrawalBtn onClick={() => setIsOpenSignoutModal(true)}>
               회원탈퇴
             </WithdrawalBtn>
           </Withdrawal>
         </>
+      )}
+      {isOpenSignoutModal && (
+        <ConfirmModal
+          modalTitle="정말 탈퇴 하시겠습니까?"
+          modalText="탈퇴시 계정을 복구할 수 없습니다."
+          onClose={setIsOpenSignoutModal}
+          handleSubmit={handleDeleteAccount}
+        />
       )}
     </InfoWrapper>
   );
