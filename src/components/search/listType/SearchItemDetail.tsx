@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SearchItemDetailWrapper,
   SearchItemDetailContent,
@@ -9,12 +9,15 @@ import SearchItemTagList from "@/components/search/listType/SearchItemTagList";
 import TextButton from "@/components/common/TextButton";
 import { useRecoilValue } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
+import KakaoModal from "../map/KakaoMapModal";
 
 const SearchItemDetail = () => {
   const clubDetail = useRecoilValue(clubDetailState);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const onClickEvent = () => {
-    // TODO : kakao map modal open logic
+    document.body.style.overflow = "hidden";
+    setIsOpenModal(true);
   };
 
   return (
@@ -40,6 +43,9 @@ const SearchItemDetail = () => {
           height={33}
         />
       </SearchItemDetailBottom>
+      {isOpenModal && (
+        <KakaoModal modalTitle={clubDetail.clubName} onClose={setIsOpenModal} />
+      )}
     </SearchItemDetailWrapper>
   );
 };

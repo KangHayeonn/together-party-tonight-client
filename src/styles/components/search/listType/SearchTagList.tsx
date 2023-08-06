@@ -15,7 +15,7 @@ const SearchTagItemLabel = styled.div`
   justify-content: center;
   align-items: center;
   height: 1.75rem;
-  width: 80px;
+  padding: 3px 15px;
   color: #000;
   background-color: #eef3f9;
   cursor: pointer;
