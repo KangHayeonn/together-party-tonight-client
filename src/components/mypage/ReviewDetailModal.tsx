@@ -51,22 +51,26 @@ export default function DetailModal() {
     createdDate: "",
     meetingDate: "",
     rating: 0,
+    profileImage: "/images/Profile.svg",
   });
 
-  const { isLoading, refetch } = useQuery(
+  const { refetch } = useQuery(
     ["review"],
     () => {
       return MyPage.v1GetReviewDetail(id);
     },
     {
       enabled: false,
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setReviewData(data);
         setText(data.reviewContent);
         setReviewRating(data.rating);
         setReviewImg(data.image);
-        // const imgFile = await MyPage.urlToFileObject(data.image, "image");
-        // setReviewFile(imgFile);
+        const imgFile = await MyPage.urlToFileObject(
+          data.image,
+          "reviewImg.jpeg",
+        );
+        setReviewFile(imgFile);
       },
     },
   );
@@ -153,6 +157,8 @@ export default function DetailModal() {
     }
   };
 
+  console.log(clubItem);
+
   useEffect(() => {
     if (!isEmptyObj(clubItem)) {
       setReviewData({
@@ -163,6 +169,7 @@ export default function DetailModal() {
         createdDate: clubItem.createdDate,
         meetingDate: clubItem.meetingDate,
         rating: 0,
+        profileImage: "",
       });
       setIsEdit(true);
     }
@@ -179,7 +186,7 @@ export default function DetailModal() {
           <ReviewerInfo>
             <Reviewer>
               <Image
-                src="/images/Profile.svg"
+                src={reviewData.profileImage}
                 width={30}
                 height={30}
                 alt="프로필 이미지"
@@ -212,7 +219,7 @@ export default function DetailModal() {
                 disabled={!isEdit}
               />
             </ReviewProfile>
-            {isEdit && reviewFile && (
+            {isEdit && reviewFile && !reviewImg.includes("review_default") && (
               <EditBtnWrapper>
                 <Button onClick={handleDelImg}>삭제</Button>
                 <Line />

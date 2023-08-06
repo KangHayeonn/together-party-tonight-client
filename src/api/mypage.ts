@@ -17,7 +17,7 @@ const MyPage = {
         `${prefix}/members/nickname/${userId}`,
         { nickname },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -29,7 +29,7 @@ const MyPage = {
         `${prefix}/members/memberDetail/${userId}`,
         { details: description },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }

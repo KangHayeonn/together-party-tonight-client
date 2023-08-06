@@ -15,6 +15,10 @@ const ReviewerInfo = styled.div`
 const Reviewer = styled.div`
   display: flex;
   align-items: center;
+
+  & img {
+    border-radius: 50%;
+  }
 `;
 
 const CreatedReview = styled.p`

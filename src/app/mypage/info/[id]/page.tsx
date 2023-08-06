@@ -48,6 +48,7 @@ export default function Info({ params: { id } }: Props) {
   const [isUpdateInfo, setIsUpdateInfo] = useState(false);
   const [isEditPw, setIsEditPw] = useState(false);
   const [isMyAccount, setIsMyAccount] = useState(false);
+  const [isUpdateDone, setIsUpdateDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpenSignoutModal, setIsOpenSignoutModal] = useState(false);
 
@@ -62,7 +63,7 @@ export default function Info({ params: { id } }: Props) {
   const [formValues, handleChange, resetForm] = useHandleInput(initialValues);
 
   const { data, isLoading, refetch } = useQuery(
-    ["user", id],
+    ["user", id, isUpdateDone],
     () => MyPage.v1GetUser(id),
     {
       onSuccess: (data) => {
@@ -72,16 +73,23 @@ export default function Info({ params: { id } }: Props) {
           nickname: data.nickname,
           description: data.detail,
         });
+        setIsUpdateDone(false);
       },
     },
   );
 
   const { mutate: updateNickname } = useMutation({
     mutationFn: () => MyPage.v1UpdateNickname(id, formValues.nickname),
+    onSuccess: (data) => {
+      if (data.success === "true") setIsUpdateDone(true);
+    },
   });
 
   const { mutate: updateDesc } = useMutation({
     mutationFn: () => MyPage.v1UpdateDesc(id, formValues.description),
+    onSuccess: (data) => {
+      if (data.success === "true") setIsUpdateDone(true);
+    },
   });
 
   const { mutate: updatePassword } = useMutation({
