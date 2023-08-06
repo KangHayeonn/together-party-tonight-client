@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import {
   SearchItemBtnWrapper,
   SearchItemBtnBox,
@@ -9,18 +10,22 @@ import { SearchItemCommentProps } from "../mapType/SearchItemComment";
 import { getUserId } from "@/utils/tokenControl";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
 // api
-import Api from "@/api/club";
+import ClubApi from "@/api/club";
+import ChatApi from "@/api/chat";
 // recoil
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
+import { checkChatRoomState } from "@/recoil/chat/chatState";
 
 const SearchItemBtn = ({ clubId }: SearchItemCommentProps) => {
+  const router = useRouter();
   const userId = typeof window !== "undefined" && Number(getUserId());
   const clubDetail = useRecoilValue(clubDetailState);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
 
   const { mutate: signupClub } = useMutation({
-    mutationFn: () => Api.v1SignupClub(clubId),
+    mutationFn: () => ClubApi.v1SignupClub(clubId),
     onSuccess: (res) => {
       // TODO : signup club success
       const { code } = res.data;
@@ -38,8 +43,45 @@ const SearchItemBtn = ({ clubId }: SearchItemCommentProps) => {
     signupClub();
   };
 
+  const { refetch } = useQuery(
+    ["isExistChatRoom", userId],
+    () => ChatApi.v1IsExistChatRoom(clubDetail.memberId),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (res) => {
+        const { chatRoomId, chatRoomName } = res.data.data;
+        if (chatRoomId) {
+          setCheckChatRoom({
+            ...checkChatRoom,
+            chatRoomId: chatRoomId,
+            chatRoomName: chatRoomName,
+          });
+          router.push(`/chat/${chatRoomId}`);
+        } else {
+          createChatRoom(clubDetail.memberId);
+        }
+      },
+      enabled: false,
+    },
+  );
+
+  const { mutate: createChatRoom } = useMutation({
+    mutationFn: (otherMemberId: number) => ChatApi.v1AddChatRoom(otherMemberId),
+    onSuccess: (res) => {
+      if (res.data.code === 200) {
+        const { chatRoomId } = res.data.data;
+        setCheckChatRoom({
+          ...checkChatRoom,
+          chatRoomId: chatRoomId,
+          chatRoomName: clubDetail.nickName,
+        });
+        router.push(`/chat/${chatRoomId}`);
+      }
+    },
+  });
+
   const onClickChat = () => {
-    // TODO : chat api logic
+    refetch();
   };
 
   return (
