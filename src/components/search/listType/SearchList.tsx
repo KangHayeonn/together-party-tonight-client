@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   SearchListWrapper,
   SearchListBox,
@@ -14,16 +15,24 @@ import {
   SearchListItemContent,
   SearchListItemTag,
   SearchListItemBottom,
+  SearchResultEmpty,
 } from "@/styles/components/search/listType/SearchList";
 import DropDown from "@/components/common/DropDown";
 import SearchItemTagList from "@/components/search/listType/SearchItemTagList";
-import { clubList } from "@/utils/mock/search";
+import { categoryToKorMap } from "@/utils/categoryFormat";
+import { elapsedTime } from "@/utils/dateFormat";
 // recoil
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { searchOptionsState } from "@/recoil/search/searchState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  searchOptionsState,
+  searchResponseState,
+} from "@/recoil/search/searchState";
 
 const SearchList = () => {
+  const router = useRouter();
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
+  const searchResponse = useRecoilValue(searchResponseState);
+
   const optionList = ["최신순", "인기순"];
 
   const onSearchCategoryChange = (category: string) => {
@@ -38,7 +47,9 @@ const SearchList = () => {
     <SearchListWrapper>
       <SearchListBox>
         <SearchListBoxTop>
-          <SearchListTitle>총 {clubList.length}건</SearchListTitle>
+          <SearchListTitle>
+            총 {searchResponse.clubList.length}건
+          </SearchListTitle>
           <DropDown
             defaultText="최신순"
             dropDownList={optionList}
@@ -46,14 +57,17 @@ const SearchList = () => {
           />
         </SearchListBoxTop>
         <SearchListBoxBottom>
-          {clubList &&
-            clubList.map((item, index) => {
+          {searchResponse.clubList.length > 0 ? (
+            searchResponse.clubList.map((item, index) => {
               return (
-                <SearchListItem key={index}>
+                <SearchListItem
+                  key={index}
+                  onClick={() => router.push(`/search/list/${item.clubId}`)}
+                >
                   <SearchListItemTop>
                     <SearchItemLeft>
                       <SearchItemText className="category">
-                        {item.clubCategory}
+                        {categoryToKorMap.get(item.clubCategory)}
                       </SearchItemText>
                       <SearchItemText className="title">
                         {item.clubName}
@@ -67,7 +81,7 @@ const SearchList = () => {
                         alt="평점"
                       />
                       <SearchItemText className="review">
-                        {item.ratingAvg} 리뷰 {item.reviewCnt}
+                        {item.ratingAvg.toFixed(1)} 리뷰 {item.reviewCnt}
                       </SearchItemText>
                     </SearchItemRight>
                   </SearchListItemTop>
@@ -83,15 +97,19 @@ const SearchList = () => {
                   <SearchListItemBottom>
                     <SearchItemLeft>
                       <SearchItemText className="nick-name">
-                        lydia
+                        {item.nickName}
                       </SearchItemText>
-                      <SearchItemText className="date">5분전</SearchItemText>
+                      <SearchItemText className="date">
+                        {elapsedTime(item.modifiedDate || new Date())}
+                      </SearchItemText>
                       <SearchItemText className="address">
                         {item.address}
                       </SearchItemText>
                     </SearchItemLeft>
                     <SearchItemRight>
-                      <SearchItemText className="status">모집중</SearchItemText>
+                      <SearchItemText className="status">
+                        {item.isRecruit ? "모집중" : "모집완료"}
+                      </SearchItemText>
                       <SearchItemText>
                         <Image
                           src="/images/user.svg"
@@ -100,12 +118,17 @@ const SearchList = () => {
                           alt="User Icon"
                         />
                       </SearchItemText>
-                      <SearchItemText className="status">1/4</SearchItemText>
+                      <SearchItemText className="status">
+                        {item.memberCount}/{item.clubMaximum}
+                      </SearchItemText>
                     </SearchItemRight>
                   </SearchListItemBottom>
                 </SearchListItem>
               );
-            })}
+            })
+          ) : (
+            <SearchResultEmpty>검색 결과가 없습니다</SearchResultEmpty>
+          )}
         </SearchListBoxBottom>
       </SearchListBox>
     </SearchListWrapper>
