@@ -12,6 +12,7 @@ const AlertWrapper = styled.div`
   border-radius: 5px;
   padding: 10px 15px 15px;
   gap: 0.5rem;
+  z-index: 999;
 `;
 
 const AlertTitle = styled.div`
