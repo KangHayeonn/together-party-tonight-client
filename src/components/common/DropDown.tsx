@@ -51,7 +51,7 @@ const DropDown = ({
 
   return (
     <DropDownWrapper ref={menuWrap} {...props}>
-      <DropDownBtn>
+      <DropDownBtn type="button">
         {title}
         <Image
           src={`${!isOpen ? "/images/arrowDown.svg" : "/images/arrowUp.svg"}`}
