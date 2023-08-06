@@ -17,10 +17,16 @@ const SearchTemplate = ({ children, classType }: SearchTemplateProps) => {
   const path = usePathname();
   const searchType = path?.split("/").at(-1);
 
+  const changeSearchType = () => {
+    return searchType === "list"
+      ? router.push("/search")
+      : router.push("/search/list");
+  };
+
   return (
     <SearchPageWrapper className={classType}>
       {children}
-      <SearchTypeBtn onClick={() => router.push("/search/list")}>
+      <SearchTypeBtn onClick={() => changeSearchType()}>
         {searchType === "list" ? "맵으로 보기" : "리스트로 보기"}
       </SearchTypeBtn>
     </SearchPageWrapper>

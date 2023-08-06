@@ -60,6 +60,8 @@ const SearchFilter = () => {
             <SearchOptionContent>
               <RoundButton
                 text="옵션 적용"
+                color="#fff"
+                background="#778da9"
                 onClickEvent={onClickRoundBtnEvent}
               />
             </SearchOptionContent>
