@@ -7,9 +7,12 @@ import {
 } from "@/styles/components/search/listType/SearchItemDetail";
 import SearchItemTagList from "@/components/search/listType/SearchItemTagList";
 import TextButton from "@/components/common/TextButton";
-import { searchTagList } from "@/utils/mock/search";
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
 
 const SearchItemDetail = () => {
+  const clubDetail = useRecoilValue(clubDetailState);
+
   const onClickEvent = () => {
     // TODO : kakao map modal open logic
   };
@@ -17,11 +20,13 @@ const SearchItemDetail = () => {
   return (
     <SearchItemDetailWrapper>
       <SearchItemDetailContent>
-        초보여도 괜찮습니다.
-        <br /> 일주일에 2번정도 목동 테니스장에서 저녁시간에 치실 분 구해요.
+        {clubDetail.clubContent}
       </SearchItemDetailContent>
       <SearchItemDetailTagWrapper>
-        <SearchItemTagList tagList={searchTagList} classType="secondary" />
+        <SearchItemTagList
+          tagList={clubDetail.clubTags}
+          classType="secondary"
+        />
       </SearchItemDetailTagWrapper>
       <SearchItemDetailBottom>
         <TextButton

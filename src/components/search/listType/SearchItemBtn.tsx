@@ -4,8 +4,9 @@ import {
   SearchItemBtnBox,
 } from "@/styles/components/search/listType/SearchItemBtn";
 import TextButton from "@/components/common/TextButton";
+import { SearchItemCommentProps } from "../mapType/SearchItemComment";
 
-const SearchItemBtn = () => {
+const SearchItemBtn = ({ clubId }: SearchItemCommentProps) => {
   const onClickClubApply = () => {
     // TODO : club apply api logic
   };

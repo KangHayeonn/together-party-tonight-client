@@ -15,8 +15,9 @@ import {
 import TextField from "@/components/common/TextField";
 import TextButton from "@/components/common/TextButton";
 import { commentList } from "@/utils/mock/search";
+import { SearchItemCommentProps } from "../mapType/SearchItemComment";
 
-const SearchItemComment = () => {
+const SearchItemComment = ({ clubId }: SearchItemCommentProps) => {
   const [message, setMessage] = useState<string>("");
 
   const onChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
