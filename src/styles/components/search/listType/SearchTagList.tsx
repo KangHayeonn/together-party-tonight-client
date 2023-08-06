@@ -10,20 +10,7 @@ const SearchTagItem = styled.div`
   margin-right: 10px;
 `;
 
-const SearchTagItemInput = styled.input`
-  appearance: none;
-  margin: 0;
-
-  &:checked + .label-tag {
-    background-color: #bdc8d6;
-  }
-
-  &:hover + .label-tag {
-    opacity: 0.5;
-  }
-`;
-
-const SearchTagItemLabel = styled.label`
+const SearchTagItemLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +23,7 @@ const SearchTagItemLabel = styled.label`
   font-weight: 500;
   line-height: 1rem;
   border-radius: 7px;
+  margin-top: 25px;
 
   &.secondary {
     color: #fff;
@@ -43,9 +31,4 @@ const SearchTagItemLabel = styled.label`
   }
 `;
 
-export {
-  SearchTagListWrapper,
-  SearchTagItem,
-  SearchTagItemInput,
-  SearchTagItemLabel,
-};
+export { SearchTagListWrapper, SearchTagItem, SearchTagItemLabel };

@@ -47,6 +47,10 @@ const DropDown = ({
   useEffect(() => {
     document.addEventListener("click", clickWrap);
     dropDownList ? setList(dropDownList) : setList(searchCategoryList);
+
+    return () => {
+      document.removeEventListener("click", clickWrap);
+    };
   }, [dropDownList]);
 
   return (

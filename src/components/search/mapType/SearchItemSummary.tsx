@@ -38,6 +38,7 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
       // TODO : signup club success
       const { code } = res.data;
       if (code === 200) console.log("신청하기 완료");
+      // errorMessage : 권한이 없습니다
     },
   });
 

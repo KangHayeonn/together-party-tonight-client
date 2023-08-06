@@ -67,14 +67,17 @@ const SearchTagList = () => {
       {newTagList &&
         newTagList.map((item, index) => {
           return (
-            <SearchTagItem key={`tag${index}`}>
+            <SearchTagItem key={`tags${index}`}>
               <SearchTagItemInput
                 type="checkbox"
-                id={item}
+                id={`tags${index}`}
                 value={item}
                 onChange={(e) => handleCheckTag(e)}
               />
-              <SearchTagItemLabel htmlFor={item} className="label-tag">
+              <SearchTagItemLabel
+                htmlFor={`tags${index}`}
+                className="label-tag"
+              >
                 {item}
               </SearchTagItemLabel>
             </SearchTagItem>

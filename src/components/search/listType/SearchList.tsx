@@ -18,14 +18,32 @@ import {
 import DropDown from "@/components/common/DropDown";
 import SearchItemTagList from "@/components/search/listType/SearchItemTagList";
 import { clubList } from "@/utils/mock/search";
+// recoil
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
 
 const SearchList = () => {
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
+  const optionList = ["최신순", "인기순"];
+
+  const onSearchCategoryChange = (category: string) => {
+    const categoryId = category === "최신순" ? "latest" : "popular";
+    setSearchOptions({
+      ...searchOptions,
+      sortFilter: categoryId,
+    });
+  };
+
   return (
     <SearchListWrapper>
       <SearchListBox>
         <SearchListBoxTop>
           <SearchListTitle>총 {clubList.length}건</SearchListTitle>
-          <DropDown />
+          <DropDown
+            defaultText="최신순"
+            dropDownList={optionList}
+            changeText={onSearchCategoryChange}
+          />
         </SearchListBoxTop>
         <SearchListBoxBottom>
           {clubList &&
