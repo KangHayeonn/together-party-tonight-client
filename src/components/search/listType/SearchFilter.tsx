@@ -14,11 +14,35 @@ import SliderForm from "@/components/common/SliderForm";
 import SearchStatus from "@/components/search/mapType/SearchStatus";
 import SearchTagList from "@/components/search/mapType/SearchTagList";
 import RoundButton from "@/components/common/RoundButton";
-import { searchTagList } from "@/utils/mock/search";
+// recoil
+import { useRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
 
 const SearchFilter = () => {
+  const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const onClickRoundBtnEvent = () => {
     // TODO : search api logic
+  };
+
+  const onSearchDistanceChange = (distance: number) => {
+    setSearchOptions({
+      ...searchOptions,
+      distance: distance,
+    });
+  };
+
+  const onSearchStatusChange = (status: string) => {
+    setSearchOptions({
+      ...searchOptions,
+      status: status === "전체" ? "all" : "recruit",
+    });
+  };
+
+  const onSearchMaxNumChange = (maxNum: number) => {
+    setSearchOptions({
+      ...searchOptions,
+      memberNum: maxNum,
+    });
   };
 
   return (
@@ -34,6 +58,7 @@ const SearchFilter = () => {
                   minText="0km"
                   maxText="10km"
                   defaultValue={5}
+                  changeNum={onSearchDistanceChange}
                 />
               </SearchSliderWrapper>
             </SearchDataContent>
@@ -41,13 +66,21 @@ const SearchFilter = () => {
           <SearchTableRow>
             <SearchDataTitle>모집 상태</SearchDataTitle>
             <SearchDataContent>
-              <SearchStatus defaultValue="전체" />
+              <SearchStatus
+                defaultValue="전체"
+                changeStatusType={onSearchStatusChange}
+              />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
             <SearchDataTitle>모집 인원</SearchDataTitle>
             <SearchDataContent>
-              <NumberForm min={0} max={30} />
+              <NumberForm
+                min={0}
+                max={30}
+                defaultNum={10}
+                changeMax={onSearchMaxNumChange}
+              />
             </SearchDataContent>
           </SearchTableRow>
           <SearchTableRow>
