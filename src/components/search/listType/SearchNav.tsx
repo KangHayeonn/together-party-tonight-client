@@ -11,6 +11,7 @@ import {
 import Api from "@/api/search";
 import { SearchPreview } from "@/components/common/SearchForm";
 import { validationSearchByAddress } from "@/utils/func/SearchFunc";
+import { searchCategoryList } from "@/utils/mock/search";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   searchKeywordState,
@@ -86,6 +87,13 @@ const SearchNav = () => {
     setSearchKeyword("");
   };
 
+  const onSearchCategoryChange = (categoryArr: Array<string>) => {
+    setSearchOptions({
+      ...searchOptions,
+      category: categoryArr.length > 7 ? "모두" : categoryArr.toString(),
+    });
+  };
+
   useEffect(() => {
     setPreviewList(data?.data.documents);
   }, [data]);
@@ -111,7 +119,10 @@ const SearchNav = () => {
           searchByAddress={onClickSearchBtn}
         />
       </SearchFormWrapper>
-      <SearchCategory />
+      <SearchCategory
+        categoryList={searchCategoryList}
+        changeCategory={onSearchCategoryChange}
+      />
     </SearchNavWrapper>
   );
 };
