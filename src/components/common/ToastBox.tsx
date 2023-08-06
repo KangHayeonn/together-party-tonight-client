@@ -2,21 +2,26 @@
 
 import React, { useEffect, SetStateAction } from "react";
 import { ToastBoxWrapper } from "@/styles/components/common/ToastBox";
+import { useSetRecoilState } from "recoil";
+import { ToastState } from "@/recoil/common/commonState";
 
 interface ToastBoxProps {
   text?: string | undefined;
-  setIsShow: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const ToastBox = ({ text, setIsShow }: ToastBoxProps) => {
+const ToastBox = ({ text }: ToastBoxProps) => {
+  const setIsOpenToast = useSetRecoilState(ToastState);
   useEffect(() => {
     const close = setTimeout(() => {
-      setIsShow(false);
+      setIsOpenToast({
+        isOpenToast: false,
+        toastMsg: "",
+      });
     }, 3000);
     return () => {
       clearTimeout(close);
     };
-  }, [setIsShow]);
+  }, [setIsOpenToast]);
 
   return <ToastBoxWrapper>{text}</ToastBoxWrapper>;
 };

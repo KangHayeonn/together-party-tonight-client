@@ -13,6 +13,7 @@ import Api from "@/api/chat";
 // recoil
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { checkChatRoomState, chatRoomListState } from "@/recoil/chat/chatState";
+import { ToastState } from "@/recoil/common/commonState";
 
 const ChatRoomFormTop = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const ChatRoomFormTop = () => {
   const [roomName, setRoomName] = useState<string>("");
   const setChatRooms = useSetRecoilState(chatRoomListState);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const { isLoading, error, data, refetch } = useQuery(
     ["chatRoomList"],
@@ -48,6 +50,12 @@ const ChatRoomFormTop = () => {
   const { mutate: leaveRoom } = useMutation({
     mutationFn: (id: number) => Api.v1LeaveChatRoom(id),
     onSuccess: (res) => {
+      if (res.data.code === 200) {
+        setIsOpenToast({
+          isOpenToast: true,
+          toastMsg: "채팅방 나가기가 완료되었습니다.",
+        });
+      }
       refetch();
       router.push("/chat");
     },
