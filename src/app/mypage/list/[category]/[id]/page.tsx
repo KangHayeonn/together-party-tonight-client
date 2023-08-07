@@ -11,6 +11,7 @@ import {
   MypageListFilterList,
   mypageCategory,
 } from "@/constant";
+import { ModalAtom } from "@/recoil/modal/atom";
 import { CalculateSelect } from "@/recoil/mypage/atom";
 import { MeetingInfo } from "@/styles/components/mypage/ReviewDetailModal";
 import { MypageListWrapper } from "@/styles/page/MyPage/ListLayout";
@@ -23,7 +24,7 @@ import {
 import { IClubItem, IReviewItem } from "@/types/mypage";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 type Props = {
   params: { category: string; id: string };
@@ -31,6 +32,7 @@ type Props = {
 
 export default function Category({ params: { category, id } }: Props) {
   const ulRef = useRef<HTMLUListElement>(null);
+  const { isOpenReviewModal } = useRecoilValue(ModalAtom);
   const [selected, setSelected] = useRecoilState(CalculateSelect);
   const [total, setTotal] = useState(0);
   const [sortBy, setSortBy] = useState("createdDate,DESC");
@@ -48,7 +50,7 @@ export default function Category({ params: { category, id } }: Props) {
   };
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ["list", category, sortBy, filterBy],
+    ["list", category, sortBy, filterBy, isOpenReviewModal],
     ({ pageParam = 0 }) => fetchListData(pageParam, sortBy, filterBy),
     {
       getNextPageParam: (lastPage) => {

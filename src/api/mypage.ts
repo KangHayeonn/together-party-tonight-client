@@ -17,7 +17,7 @@ const MyPage = {
         `${prefix}/members/nickname/${userId}`,
         { nickname },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -29,7 +29,7 @@ const MyPage = {
         `${prefix}/members/memberDetail/${userId}`,
         { details: description },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -172,6 +172,17 @@ const MyPage = {
     }
   },
 
+  async v1DeleteReview(reviewId: number) {
+    try {
+      const res = await instanceWithToken.delete(
+        `${prefix}/reviews/${reviewId}`,
+      );
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
   async v1GetReviewDetail(reviewId: number) {
     try {
       const res = await instanceWithToken.get(`${prefix}/reviews/${reviewId}`);
@@ -214,6 +225,18 @@ const MyPage = {
     } catch (err) {
       return Promise.reject(err);
     }
+  },
+
+  async urlToFileObject(url: string, filename: string) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    const fileObject = new File([blob], filename, {
+      lastModified: new Date().getTime(),
+      type: blob.type,
+    });
+
+    return fileObject;
   },
 };
 

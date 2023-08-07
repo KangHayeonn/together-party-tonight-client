@@ -14,7 +14,7 @@ export default function Redirect() {
       try {
         const response = await instance.post("/api/members/oauth/kakao/token", {
           authorizationCode: code,
-          redirectUri: "http://localhost:3000/redirect",
+          redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/redirect`,
         });
         if (response.data.data.success === "fail") {
           router.push("/login");

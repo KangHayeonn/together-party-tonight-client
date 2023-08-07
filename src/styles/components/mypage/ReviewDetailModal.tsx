@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 const ModalInner = styled.div`
   width: 630px;
+  /* min-height: 443.5px; */
   padding: 30px 50px;
 `;
 
@@ -14,6 +15,10 @@ const ReviewerInfo = styled.div`
 const Reviewer = styled.div`
   display: flex;
   align-items: center;
+
+  & img {
+    border-radius: 50%;
+  }
 `;
 
 const CreatedReview = styled.p`
@@ -83,6 +88,33 @@ const TextLen = styled.p`
   color: #778da9;
 `;
 
+const EditBtnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+`;
+
+const ImgEditLabel = styled.label`
+  display: flex;
+  align-items: center;
+`;
+
+const ReviewProfile = styled.label`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & img {
+    border-radius: 15px;
+  }
+`;
+
 export {
   ModalInner,
   ReviewerInfo,
@@ -96,4 +128,7 @@ export {
   TextWrapper,
   TextArea,
   TextLen,
+  EditBtnWrapper,
+  ImgEditLabel,
+  ReviewProfile,
 };
