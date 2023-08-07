@@ -25,12 +25,11 @@ const TotalMeeting = styled.p`
 
 const SelectWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 165px;
-  margin-right: 25px;
+  margin-top: 10px;
   font-size: 18px;
 
   & button {
+    margin-right: 20px;
     background-color: transparent;
     color: #9c9c9c;
 

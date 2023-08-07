@@ -2,7 +2,9 @@
 
 import AuthLayout from "@/components/common/AuthLayout";
 import ApplyDetailModal from "@/components/mypage/ApplyDetailModal";
+import CalcAccountModal from "@/components/mypage/CalcAccountModal";
 import MemberModal from "@/components/mypage/MemberModal";
+import RequestCalcModal from "@/components/mypage/RequestCalcModal";
 import ReviewDetailModal from "@/components/mypage/ReviewDetailModal";
 import SideBar from "@/components/mypage/SideBar";
 import { ModalAtom } from "@/recoil/modal/atom";
@@ -25,6 +27,8 @@ function MyPageLayout({ children }: Props) {
         {modal.isOpenReviewModal && <ReviewDetailModal />}
         {modal.isOpenApplyModal && <ApplyDetailModal />}
         {modal.isOpenMemberModal && <MemberModal />}
+        {modal.isOpenRequestCalcModal && <RequestCalcModal />}
+        {modal.isOpenCalcAccountModal && <CalcAccountModal />}
       </MyPageWrapper>
     </AuthLayout>
   );

@@ -124,7 +124,6 @@ const MyPage = {
             filter,
             page,
             size,
-            sort: "createdDate,DESC",
           },
         },
       );
@@ -141,7 +140,6 @@ const MyPage = {
           filter,
           page,
           size,
-          sort: "createdDate,DESC",
         },
       });
       return res.data.data;
@@ -237,6 +235,40 @@ const MyPage = {
     });
 
     return fileObject;
+  },
+
+  async v1RequestBilling(clubId: number, price: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing`, {
+        clubId,
+        price,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1RequestBillingAccount(clubId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/club`, {
+        clubId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1RequestBillingPayment(billingHistoryId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/payment`, {
+        billingHistoryId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
   },
 };
 

@@ -29,7 +29,6 @@ import { ApplicationItem } from "@/types/mypage";
 export default function ApplyDetailModal() {
   const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
-
   const [applyMember, setApplyMember] = useState<ApplicationItem[]>([]);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
 
@@ -112,7 +111,7 @@ export default function ApplyDetailModal() {
                   }
                 >
                   <Image
-                    src={item.profileImage}
+                    src={item.profileImage || "/images/Profile.svg"}
                     width={40}
                     height={40}
                     alt="멤버 사진"
@@ -164,7 +163,7 @@ export default function ApplyDetailModal() {
                   }
                 >
                   <Image
-                    src={item.profileImage}
+                    src={item.profileImage || "/images/Profile.svg"}
                     width={40}
                     height={40}
                     alt="멤버 사진"
