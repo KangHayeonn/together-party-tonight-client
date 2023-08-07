@@ -45,4 +45,20 @@ const MenuIconItem = styled(Link)`
   padding-bottom: 3px;
 `;
 
-export { WrapHeader, WrapLogo, Title, Menu, MenuItem, MenuIconItem };
+const MenuIconItemBtn = styled.button`
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  padding-bottom: 3px;
+  background-color: transparent;
+`;
+
+export {
+  WrapHeader,
+  WrapLogo,
+  Title,
+  Menu,
+  MenuItem,
+  MenuIconItem,
+  MenuIconItemBtn,
+};

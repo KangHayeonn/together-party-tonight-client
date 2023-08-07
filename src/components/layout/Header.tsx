@@ -2,11 +2,11 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { logout } from "@/api/login";
 import {
   Menu,
   MenuIconItem,
+  MenuIconItemBtn,
   MenuItem,
   Title,
   WrapHeader,
@@ -57,8 +57,7 @@ export default function Header() {
     socketReceiveMessage(ws);
   };
 
-  const handleOpenAlert = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const handleOpenAlert = () => {
     setIsAlertOpen((item) => !item);
   };
 
@@ -108,10 +107,14 @@ export default function Header() {
                 alt="프로필가기"
               />
             </MenuIconItem>
-            <MenuIconItem href="#" onClick={handleOpenAlert} className="alert">
+            <MenuIconItemBtn
+              type="button"
+              onClick={handleOpenAlert}
+              className="alert"
+            >
               <Image src="/images/bell.svg" width={27} height={23} alt="알림" />
               <AlertBadge>{unReadAlertCnt.unReadCnt}</AlertBadge>
-            </MenuIconItem>
+            </MenuIconItemBtn>
             <MenuItem
               href="#"
               onClick={handleLogout}

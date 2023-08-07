@@ -10,6 +10,7 @@ import {
   socketCommentDeleteState,
 } from "@/recoil/socket/socketState";
 import { alertUnReadCntState } from "@/recoil/alert/alertState";
+import { AlertToastState } from "@/recoil/common/commonState";
 // api
 import Api from "@/api/alert";
 
@@ -21,6 +22,7 @@ const useSocket = () => {
   const setSocketAddChat = useSetRecoilState(socketChatAddState);
   const setSocketAlertMsg = useSetRecoilState(socketAlertMsgState);
   const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
+  const setIsOpenAlertToast = useSetRecoilState(AlertToastState);
 
   const { isLoading, error, data, refetch } = useQuery(
     ["alertUnreadCnt"],
@@ -74,7 +76,7 @@ const useSocket = () => {
     if (!ws.current) return;
     ws.current.onmessage = (event: MessageEvent) => {
       const response = JSON.parse(event.data);
-      console.log("socket receive : " + JSON.stringify(response));
+      // console.log("socket receive : " + JSON.stringify(response));
       const { type, data } = response;
 
       if (type === "comment") {
@@ -109,6 +111,47 @@ const useSocket = () => {
           alertType: data.alertType,
           alertId: data.alertId,
         });
+
+        switch (data.alertType) {
+          case "CHAT":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "새로운 채팅이 도착했습니다.",
+            });
+            break;
+          case "LEAVE_CHATROOM":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "새로운 채팅 알람이 도착했습니다.",
+            });
+            break;
+          case "BILLING_REQUEST":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "새로운 정산 요청이 도착했습니다.",
+            });
+            break;
+          case "BILLING_PAY":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "정산 내역이 업데이트 되었습니다.",
+            });
+            break;
+          case "APPLY":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "새로운 모임 신청이 있습니다.",
+            });
+            break;
+          case "APPROVE":
+            setIsOpenAlertToast({
+              isOpenToast: true,
+              toastMsg: "모임 신청 응답이 도착했습니다.",
+            });
+            break;
+          default:
+            break;
+        }
       }
 
       refetch();

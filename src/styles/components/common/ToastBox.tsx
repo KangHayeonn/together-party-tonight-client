@@ -16,4 +16,20 @@ const ToastBoxWrapper = styled.div`
   letter-spacing: 0.5px;
 `;
 
-export { ToastBoxWrapper };
+const AlertToastBoxWrapper = styled.div`
+  position: fixed;
+  bottom: 15%;
+  right: -120px;
+  transform: translateX(-50%);
+  padding: 10px 4rem;
+  background: #0d99ff;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  z-index: 999;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.5px;
+`;
+
+export { ToastBoxWrapper, AlertToastBoxWrapper };

@@ -17,8 +17,9 @@ import {
 import { getUserId } from "@/utils/tokenControl";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
 // recoil
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
+import { ToastState } from "@/recoil/common/commonState";
 // api
 import Api from "@/api/club";
 
@@ -31,14 +32,18 @@ const SearchItemSummary = ({ clubId }: SearchItemSummaryProps) => {
   const clubDetail = useRecoilValue(clubDetailState);
   const userId = typeof window !== "undefined" && Number(getUserId());
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const { mutate: signupClub } = useMutation({
     mutationFn: () => Api.v1SignupClub(clubId),
     onSuccess: (res) => {
-      // TODO : signup club success
       const { code } = res.data;
-      if (code === 200) console.log("신청하기 완료");
-      // errorMessage : 권한이 없습니다
+      if (code === 200) {
+        setIsOpenToast({
+          isOpenToast: true,
+          toastMsg: "모임 신청이 완료되었습니다.",
+        });
+      }
     },
   });
 
