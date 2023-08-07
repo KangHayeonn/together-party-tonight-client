@@ -47,11 +47,15 @@ const DropDown = ({
   useEffect(() => {
     document.addEventListener("click", clickWrap);
     dropDownList ? setList(dropDownList) : setList(searchCategoryList);
+
+    return () => {
+      document.removeEventListener("click", clickWrap);
+    };
   }, [dropDownList]);
 
   return (
     <DropDownWrapper ref={menuWrap} {...props}>
-      <DropDownBtn>
+      <DropDownBtn type="button">
         {title}
         <Image
           src={`${!isOpen ? "/images/arrowDown.svg" : "/images/arrowUp.svg"}`}
