@@ -34,9 +34,9 @@ export default function MeetingItem({ item, category }: Props) {
       return item.billingRequest ? "정산내역" : "정산요청";
     }
     switch (item.billingState) {
-      case "Complete":
+      case "COMPLETED":
         return "정산내역";
-      case "Wait":
+      case "WAIT":
         return "정산하기";
       default:
         return "미정산";
@@ -79,15 +79,15 @@ export default function MeetingItem({ item, category }: Props) {
               clubId: item.clubId,
             }));
           } else {
-            if (item.billingState === "Complete") {
+            if (item.billingState === "COMPLETED") {
               setIsOpen((val) => ({
                 ...val,
                 isOpenCalcAccountModal: true,
                 clubItem: item,
                 clubId: item.clubId,
               }));
-            } else if (item.billingState === "Wait") {
-              // 정산하기 api 호출
+            } else if (item.billingState === "WAIT") {
+              // 팝업 노출 후, 정산하기 api 호출
             }
           }
         },
@@ -102,7 +102,6 @@ export default function MeetingItem({ item, category }: Props) {
       ".",
     )} ${toStringByFormattingTime(new Date(date))}`;
   };
-  // APPROVE(수락), PENDING(대기중), REFUSE(거절됨), KICKOUT(강퇴)
   const meetingState = (state: boolean | string) => {
     if (category === "apply") {
       const approvalObj: { [key: string]: string } = {

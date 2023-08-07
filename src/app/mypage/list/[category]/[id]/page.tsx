@@ -39,6 +39,7 @@ export default function Category({ params: { category, id } }: Props) {
   const [total, setTotal] = useState(0);
   const [sortBy, setSortBy] = useState("createdDate,DESC");
   const [filterBy, setFilterBy] = useState("ALL");
+  const [filterText, setFilterText] = useState("전체");
   const [curList, setCurList] = useState<IClubItem[] | IReviewItem[]>([]);
   const checkCalcObj = useMemo(() => {
     return {
@@ -88,16 +89,20 @@ export default function Category({ params: { category, id } }: Props) {
 
   const handleClickSelect = (item: string) => {
     if (category === "meeting") {
+      setFilterText(item);
       handleSortAndFilterChange({
         newFilterBy: ConvertMyMeetingFilterName[item],
       });
     } else if (category === "apply") {
+      setFilterText(item);
       handleSortAndFilterChange({
         newFilterBy: ConvertApplyMeetingFilterName[item],
       });
     } else if (category === "review") {
+      setFilterText(item);
       handleSortAndFilterChange({ newSortBy: ConvertSortName[item] });
     } else if (category === "calculate") {
+      setFilterText(item);
       if (selected === "meeting") {
         handleSortAndFilterChange({ newFilterBy: ConvertCalcMyMeeting[item] });
       } else {
@@ -141,6 +146,7 @@ export default function Category({ params: { category, id } }: Props) {
             className={selected === "meeting" ? "selected" : ""}
             onClick={() => {
               setSelected("meeting");
+              handleClickSelect("전체");
             }}
           >
             내 모임
@@ -149,6 +155,7 @@ export default function Category({ params: { category, id } }: Props) {
             className={selected === "apply" ? "selected" : ""}
             onClick={() => {
               setSelected("apply");
+              handleClickSelect("전체");
             }}
           >
             신청 모임
@@ -158,7 +165,8 @@ export default function Category({ params: { category, id } }: Props) {
       <MeetingInfo>
         <TotalMeeting>총 {total}개</TotalMeeting>
         <DropDown
-          defaultText={category === "review" ? "최신 순" : "전체"}
+          defaultText={"전체"}
+          text={filterText}
           dropDownList={
             category === "calculate"
               ? MypageListFilterList[

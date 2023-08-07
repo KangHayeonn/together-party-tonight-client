@@ -103,7 +103,9 @@ export default function RequestCalcModal() {
                   />
                   {item.nickName}
                 </Member>
-                <p>{Math.ceil(price / currentMember.length + 1)}</p>
+                <p>
+                  {price ? Math.ceil(price / (currentMember.length + 1)) : 0} 원
+                </p>
               </MemberWrapper>
             ))}
         </MemberListWrapper>
