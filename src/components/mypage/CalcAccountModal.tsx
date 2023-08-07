@@ -79,7 +79,6 @@ export default function CalcAccountModal() {
             {data.data.clubBillingHistoryDtoList.length - 1}명
           </Members>
           <Amount>{data.data.clubBillingHistoryDtoList[0].price}원</Amount>
-          {/* <CalcDate>정산일 2023.06.05 13:25</CalcDate> */}
         </CalcInfoWrapper>
         <Line />
         <MemberListWrapper>
