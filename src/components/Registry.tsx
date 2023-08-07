@@ -5,8 +5,9 @@ import { useServerInsertedHTML } from "next/navigation";
 import { ServerStyleSheet, StyleSheetManager } from "styled-components";
 import GlobalStyle from "@/styles/GlobalStyle";
 import ToastBox from "@/components/common/ToastBox";
+import AlertToastBox from "@/components/common/AlertToastBox";
 import { useRecoilValue } from "recoil";
-import { ToastState } from "@/recoil/common/commonState";
+import { ToastState, AlertToastState } from "@/recoil/common/commonState";
 
 export default function StyledComponentsRegistry({
   children,
@@ -17,6 +18,7 @@ export default function StyledComponentsRegistry({
   // x-ref: https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
   const isOpenToast = useRecoilValue(ToastState);
+  const isOpenAlertToast = useRecoilValue(AlertToastState);
 
   useServerInsertedHTML(() => {
     const styles = styledComponentsStyleSheet.getStyleElement();
@@ -29,6 +31,9 @@ export default function StyledComponentsRegistry({
       <>
         {children}
         {isOpenToast.isOpenToast && <ToastBox text={isOpenToast.toastMsg} />}
+        {isOpenAlertToast.isOpenToast && (
+          <AlertToastBox text={isOpenAlertToast.toastMsg} />
+        )}
       </>
     );
 

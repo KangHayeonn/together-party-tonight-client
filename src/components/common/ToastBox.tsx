@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, SetStateAction } from "react";
+import React, { useEffect } from "react";
 import { ToastBoxWrapper } from "@/styles/components/common/ToastBox";
 import { useSetRecoilState } from "recoil";
 import { ToastState } from "@/recoil/common/commonState";

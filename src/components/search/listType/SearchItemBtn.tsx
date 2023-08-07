@@ -13,9 +13,10 @@ import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import ClubApi from "@/api/club";
 import ChatApi from "@/api/chat";
 // recoil
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { clubDetailState } from "@/recoil/club/clubState";
 import { checkChatRoomState } from "@/recoil/chat/chatState";
+import { ToastState } from "@/recoil/common/commonState";
 
 const SearchItemBtn = ({ clubId }: SearchItemCommentProps) => {
   const router = useRouter();
@@ -23,14 +24,18 @@ const SearchItemBtn = ({ clubId }: SearchItemCommentProps) => {
   const clubDetail = useRecoilValue(clubDetailState);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const { mutate: signupClub } = useMutation({
     mutationFn: () => ClubApi.v1SignupClub(clubId),
     onSuccess: (res) => {
-      // TODO : signup club success
       const { code } = res.data;
-      if (code === 200) console.log("신청하기 완료");
-      // errorMessage : 권한이 없습니다
+      if (code === 200) {
+        setIsOpenToast({
+          isOpenToast: true,
+          toastMsg: "모임 신청이 완료되었습니다.",
+        });
+      }
     },
   });
 

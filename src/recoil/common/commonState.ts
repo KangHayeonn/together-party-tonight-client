@@ -5,12 +5,25 @@ interface ToastStateType {
   toastMsg: string;
 }
 
+interface AlertToastStateType {
+  isOpenToast: boolean;
+  toastMsg: string;
+}
+
 const ToastState = atom<ToastStateType>({
-  key: "commentListState",
+  key: "toastState",
   default: {
     isOpenToast: false,
     toastMsg: "",
   },
 });
 
-export { ToastState };
+const AlertToastState = atom<AlertToastStateType>({
+  key: "alertToastState",
+  default: {
+    isOpenToast: false,
+    toastMsg: "",
+  },
+});
+
+export { ToastState, AlertToastState };

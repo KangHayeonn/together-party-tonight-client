@@ -157,8 +157,6 @@ export default function DetailModal() {
     }
   };
 
-  console.log(clubItem);
-
   useEffect(() => {
     if (!isEmptyObj(clubItem)) {
       setReviewData({
