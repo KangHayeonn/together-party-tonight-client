@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   SearchResultList,
   SearchResultItem,
@@ -18,16 +19,78 @@ import {
   SearchResultEmpty,
 } from "@/styles/components/search/mapType/SearchResult";
 import { categoryToKorMap } from "@/utils/categoryFormat";
+// api
+import Api from "@/api/search";
 // recoil
-import { useRecoilValue } from "recoil";
-import { searchResponseState } from "@/recoil/search/searchState";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  searchResponseState,
+  searchOptionsState,
+} from "@/recoil/search/searchState";
 
 const SearchResult = () => {
   const router = useRouter();
-  const searchResponse = useRecoilValue(searchResponseState);
+  const searchOptions = useRecoilValue(searchOptionsState);
+  const [searchResponse, setSearchResponse] =
+    useRecoilState(searchResponseState);
+  const ulRef = useRef<HTMLUListElement | null>(null);
+  const page = 0;
+
+  const fetchSearchList = async (pageParam: number) => {
+    return Api.v1SearchByOptions(searchOptions, pageParam);
+  };
+
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ["searchResultByMap"],
+    ({ pageParam = page }) => fetchSearchList(pageParam),
+    {
+      getNextPageParam: (res) => {
+        if (res.data.code === 200) {
+          const { count } = res.data.data;
+          if (count >= 20) {
+            return page + 1;
+          }
+          return undefined;
+        }
+      },
+    },
+  );
+
+  const handleScroll = () => {
+    if (!isLoading && ulRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = ulRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight; // 스크롤이 가장 아래로
+
+      if (isScrolledToBottom && hasNextPage) {
+        fetchNextPage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (ulRef.current) {
+      ulRef.current.addEventListener("scroll", handleScroll);
+
+      return () => {
+        ulRef.current?.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [ulRef, hasNextPage]);
+
+  useEffect(() => {
+    if (!!data && data.pages !== undefined) {
+      const list = data.pages.map((obj) => obj.data.data.clubList).flat();
+      if (list.length > 0) {
+        setSearchResponse({
+          ...searchResponse,
+          clubList: [...list],
+        });
+      }
+    }
+  }, [data]);
 
   return (
-    <SearchResultList>
+    <SearchResultList ref={ulRef}>
       {searchResponse.clubList.length > 0 ? (
         searchResponse.clubList.map((item, index) => {
           return (
