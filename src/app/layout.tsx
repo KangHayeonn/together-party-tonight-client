@@ -11,7 +11,7 @@ export const metadata = {
     icon: "/images/Logo.svg",
   },
   description: "실시간 거리 기반 모임 추천/신청 서비스",
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL("https://www.topato.site/"),
   openGraph: {
     author: "TogetherPartyTonight",
     title: "투바투",

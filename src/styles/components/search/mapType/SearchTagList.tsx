@@ -14,6 +14,7 @@ const SearchTagItem = styled.div`
 const SearchTagItemInput = styled.input`
   appearance: none;
   margin: 0;
+  cursor: pointer;
 
   &:checked + .label-tag {
     background-color: #bdc8d6;

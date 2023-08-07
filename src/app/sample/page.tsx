@@ -23,7 +23,6 @@ export default function Home() {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [search, setSearch] = useState<string>("");
-  const [isShowToast, setIsShowToast] = useState<boolean>(false);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [
     socketConnect,
@@ -114,9 +113,6 @@ export default function Home() {
       <SearchForm search={search} />
       <NumberForm min={0} max={30} />
       <CheckBox text="한식" />
-      {isShowToast && (
-        <ToastBox text="토스트메시지" setIsShow={setIsShowToast} />
-      )}
       <RoundButton text="#태그" onClickEvent={onClickRoundBtnEvent} />
       <DropDown />
       <button onClick={() => handleOpenModal()}>모달 열기</button>

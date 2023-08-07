@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import MyPage from "@/api/mypage";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { CalculateSelect } from "@/recoil/mypage/atom";
 import {
@@ -17,7 +19,7 @@ import {
   toStringByFormatting,
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type Props = {
@@ -27,7 +29,38 @@ type Props = {
 
 export default function MeetingItem({ item, category }: Props) {
   const setIsOpen = useSetRecoilState(ModalAtom);
-  const curCalculate = useRecoilValue(CalculateSelect);
+  const calculateType = useRecoilValue(CalculateSelect);
+  const [isOpenCalcModal, setIsOpenCalcModal] = useState(false);
+  const [calcPrice, setCalcPrice] = useState(0);
+  const [billingId, setBillingId] = useState(-1);
+
+  const translateBtnName = (calculateType: string) => {
+    if (calculateType === "meeting") {
+      return item.billingRequest ? "정산내역" : "정산요청";
+    }
+    switch (item.billingState) {
+      case "COMPLETED":
+        return "정산내역";
+      case "WAIT":
+        return "정산하기";
+      default:
+        return "미정산";
+    }
+  };
+
+  const getBillingPrice = async (clubId: number) => {
+    try {
+      const res = await MyPage.v1RequestBillingAccount(clubId);
+      const billingList = res.data.clubBillingHistoryDtoList;
+      setBillingId(billingList[0].id);
+      const price = billingList[0].price
+        ? Math.ceil(billingList[0].price / (billingList.length + 1))
+        : 0;
+      setCalcPrice(Number(price));
+    } catch (error) {
+      Promise.reject(error);
+    }
+  };
 
   const itemBtnObj: ItemBtnObjType = useMemo(() => {
     return {
@@ -54,11 +87,39 @@ export default function MeetingItem({ item, category }: Props) {
         },
       },
       calculate: {
-        btnName: curCalculate === "myMeeting" ? "정산 만들기" : "정산하기",
-        handleFunc: () => {},
+        btnName: translateBtnName(calculateType),
+        handleFunc: (item) => {
+          if (Object.prototype.hasOwnProperty.call(item, "billingRequest")) {
+            setIsOpen((val) => ({
+              ...val,
+              ...(item.billingRequest
+                ? { isOpenCalcAccountModal: true }
+                : { isOpenRequestCalcModal: true }),
+              clubId: item.clubId,
+            }));
+          } else {
+            if (item.billingState === "COMPLETED") {
+              setIsOpen((val) => ({
+                ...val,
+                isOpenCalcAccountModal: true,
+                clubItem: item,
+                clubId: item.clubId,
+              }));
+            } else if (item.billingState === "WAIT") {
+              getBillingPrice(item.clubId);
+              setIsOpenCalcModal(true);
+            } else {
+              setIsOpen((val) => ({
+                ...val,
+                isOpenCalcAccountModal: true,
+                clubId: item.clubId,
+              }));
+            }
+          }
+        },
       },
     };
-  }, [curCalculate]);
+  }, [calculateType, item]);
 
   const convertDate = (date: string) => {
     const getDate = date.split("T");
@@ -67,7 +128,6 @@ export default function MeetingItem({ item, category }: Props) {
       ".",
     )} ${toStringByFormattingTime(new Date(date))}`;
   };
-  // APPROVE(수락), PENDING(대기중), REFUSE(거절됨), KICKOUT(강퇴)
   const meetingState = (state: boolean | string) => {
     if (category === "apply") {
       const approvalObj: { [key: string]: string } = {
@@ -128,6 +188,14 @@ export default function MeetingItem({ item, category }: Props) {
           </MeetingMoreBtn>
         </div>
       </ItemDateWrapper>
+      {isOpenCalcModal && (
+        <ConfirmModal
+          modalTitle="정산하기"
+          modalText={`정산 금액은 ${calcPrice}원 입니다. 정산하시겠습니까?`}
+          onClose={setIsOpenCalcModal}
+          handleSubmit={() => MyPage.v1RequestBillingPayment(billingId)}
+        />
+      )}
     </ListItem>
   );
 }

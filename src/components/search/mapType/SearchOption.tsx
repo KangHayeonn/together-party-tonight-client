@@ -33,7 +33,7 @@ const SearchOption = () => {
 
   const { refetch } = useQuery(
     ["searchByAddress", searchOptions],
-    () => Api.v1SearchByOptions(searchOptions),
+    () => Api.v1SearchByOptions(searchOptions, 0),
     {
       onSuccess: (res) => {
         const { clubList, count, totalCount } = res.data.data;

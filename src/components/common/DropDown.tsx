@@ -12,6 +12,7 @@ import { searchCategoryList } from "@/utils/mock/search";
 
 export interface DropDownProps {
   defaultText?: string | undefined;
+  text?: string | undefined;
   width?: number | undefined;
   dropDownList?: Array<string>;
   changeText?: (category: string) => void | undefined;
@@ -19,6 +20,7 @@ export interface DropDownProps {
 
 const DropDown = ({
   defaultText,
+  text,
   dropDownList,
   changeText,
   ...props
@@ -47,12 +49,16 @@ const DropDown = ({
   useEffect(() => {
     document.addEventListener("click", clickWrap);
     dropDownList ? setList(dropDownList) : setList(searchCategoryList);
+
+    return () => {
+      document.removeEventListener("click", clickWrap);
+    };
   }, [dropDownList]);
 
   return (
     <DropDownWrapper ref={menuWrap} {...props}>
       <DropDownBtn>
-        {title}
+        {text || title}
         <Image
           src={`${!isOpen ? "/images/arrowDown.svg" : "/images/arrowUp.svg"}`}
           width={12}

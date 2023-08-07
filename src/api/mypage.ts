@@ -17,7 +17,7 @@ const MyPage = {
         `${prefix}/members/nickname/${userId}`,
         { nickname },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -29,7 +29,7 @@ const MyPage = {
         `${prefix}/members/memberDetail/${userId}`,
         { details: description },
       );
-      return res.data.data;
+      return res.data;
     } catch (err) {
       return Promise.reject(err);
     }
@@ -124,7 +124,6 @@ const MyPage = {
             filter,
             page,
             size,
-            sort: "createdDate,DESC",
           },
         },
       );
@@ -141,7 +140,6 @@ const MyPage = {
           filter,
           page,
           size,
-          sort: "createdDate,DESC",
         },
       });
       return res.data.data;
@@ -166,6 +164,17 @@ const MyPage = {
       const res = await instanceWithToken.put(`${prefix}/reviews`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1DeleteReview(reviewId: number) {
+    try {
+      const res = await instanceWithToken.delete(
+        `${prefix}/reviews/${reviewId}`,
+      );
       return res.data;
     } catch (err) {
       return Promise.reject(err);
@@ -209,6 +218,52 @@ const MyPage = {
     try {
       const res = await instanceWithToken.post(`${prefix}/clubs/kickout`, {
         clubSignupId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async urlToFileObject(url: string, filename: string) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    const fileObject = new File([blob], filename, {
+      lastModified: new Date().getTime(),
+      type: blob.type,
+    });
+
+    return fileObject;
+  },
+
+  async v1RequestBilling(clubId: number, price: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing`, {
+        clubId,
+        price,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1RequestBillingAccount(clubId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/club`, {
+        clubId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1RequestBillingPayment(billingHistoryId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/payment`, {
+        billingHistoryId,
       });
       return res.data;
     } catch (err) {

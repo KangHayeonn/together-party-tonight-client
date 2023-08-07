@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
@@ -40,7 +40,13 @@ const Alert = () => {
       onSuccess: (res) => {
         if (res.data.data) {
           const { alertList } = res.data.data;
-          setAlertList(alertList);
+          if (!alertAll) {
+            setAlertList((tempArr) =>
+              tempArr.filter((item) => !item.checkStatus),
+            );
+          } else {
+            setAlertList(alertList);
+          }
         }
       },
     },
@@ -78,6 +84,10 @@ const Alert = () => {
       isAllOrNotRead: false,
     });
   };
+
+  useEffect(() => {
+    refetch();
+  }, [alertAll]);
 
   const formatAlertContent = (content: string, alertType: string) => {
     const newContent = JSON.parse(content);

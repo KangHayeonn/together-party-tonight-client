@@ -20,7 +20,7 @@ const Search = {
     }
   },
   // 옵션 기반 검색
-  async v1SearchByOptions(options: fetchSearchByOptionsProps) {
+  async v1SearchByOptions(options: fetchSearchByOptionsProps, page: number) {
     try {
       const url = `${prefix}/search`;
       const result = await instance.get(url, {
@@ -33,8 +33,8 @@ const Search = {
           tags: `${options.tags}`,
           sortFilter: `${options.sortFilter}`,
           status: `${options.status}`,
-          page: `${options.page}`,
           size: `${options.size}`,
+          page,
         },
       });
       return result;

@@ -45,6 +45,7 @@ const SearchListTitle = styled.div``;
 const SearchListItem = styled.div`
   padding: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 `;
 
 const SearchListItemTop = styled.div`
@@ -115,6 +116,15 @@ const SearchListItemContent = styled.div`
 
 const SearchListItemTag = styled.div``;
 
+const SearchResultEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+  font-size: 16px;
+  color: #a0a0a0;
+`;
+
 export {
   SearchListWrapper,
   SearchListBox,
@@ -129,4 +139,5 @@ export {
   SearchListItemContent,
   SearchListItemTag,
   SearchListItemBottom,
+  SearchResultEmpty,
 };

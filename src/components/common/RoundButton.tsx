@@ -28,6 +28,7 @@ const RoundButton = ({
 
   return (
     <RoundBtnWrapper
+      type="button"
       className={`${btnActive && "active"}`}
       onClick={onClickEvent || onClickBtn}
       disabled={disabled}

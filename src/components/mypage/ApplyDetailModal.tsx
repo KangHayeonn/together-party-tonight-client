@@ -13,7 +13,7 @@ import {
 import Modal from "../common/Modal";
 import TextButton from "../common/TextButton";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
@@ -27,8 +27,8 @@ import {
 import { ApplicationItem } from "@/types/mypage";
 
 export default function ApplyDetailModal() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
-
   const [applyMember, setApplyMember] = useState<ApplicationItem[]>([]);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
 
@@ -90,7 +90,7 @@ export default function ApplyDetailModal() {
         <ClubTitle>{clubItem.clubName}</ClubTitle>
         <ClubInfo>
           <MeetingDate>
-            모임일자 {convertDate(clubItem.createdDate)}
+            모임일자 {convertDate(clubItem.meetingDate)}
           </MeetingDate>
           <MeetingMember>
             {clubItem.clubState ? "모집중" : "모집완료"} {clubItem.appliedCount}
@@ -104,9 +104,14 @@ export default function ApplyDetailModal() {
           {applyMember.length > 0 &&
             applyMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member
+                  href={`/mypage/info/${item.memberId}`}
+                  onClick={() =>
+                    setIsOpen((val) => ({ ...val, isOpenApplyModal: false }))
+                  }
+                >
                   <Image
-                    src={item.profileImage}
+                    src={item.profileImage || "/images/Profile.svg"}
                     width={40}
                     height={40}
                     alt="멤버 사진"
@@ -151,9 +156,14 @@ export default function ApplyDetailModal() {
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member
+                  href={`/mypage/info/${item.memberId}`}
+                  onClick={() =>
+                    setIsOpen((val) => ({ ...val, isOpenApplyModal: false }))
+                  }
+                >
                   <Image
-                    src={item.profileImage}
+                    src={item.profileImage || "/images/Profile.svg"}
                     width={40}
                     height={40}
                     alt="멤버 사진"

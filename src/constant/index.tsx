@@ -40,7 +40,8 @@ const MypageListFilterList: MypageCategory = {
   meeting: ["전체", "모집중", "모집 완료"],
   apply: ["전체", "수락", "대기중", "거절됨", "강퇴"],
   review: ["최신 순", "오래된 순", "평점 높은 순", "평점 낮은 순"],
-  calculate: ["전체"],
+  calcMeeting: ["전체", "미요청", "요청완료"],
+  calcApply: ["전체", "미정산", "대기중", "정산완료"],
 };
 
 const ConvertMyMeetingFilterName: ICategory = {
@@ -64,6 +65,19 @@ const ConvertSortName: ICategory = {
   "평점 낮은 순": "rating,ASC",
 };
 
+const ConvertCalcMyMeeting: ICategory = {
+  전체: "ALL",
+  미요청: "BILLING_NOT_STARTED",
+  요청완료: "BILLING_IN_PROGRESS",
+};
+
+const ConvertCalcApply: ICategory = {
+  전체: "ALL",
+  미정산: "NO_REQUEST",
+  대기중: "WAIT",
+  정산완료: "COMPLETED",
+};
+
 export {
   MyPageBtnStyleObj,
   MyPageList,
@@ -72,4 +86,6 @@ export {
   ConvertMyMeetingFilterName,
   ConvertApplyMeetingFilterName,
   ConvertSortName,
+  ConvertCalcMyMeeting,
+  ConvertCalcApply,
 };

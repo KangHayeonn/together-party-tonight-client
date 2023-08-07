@@ -35,6 +35,8 @@ export interface IClubItem {
   clubState: boolean;
   clubId: number;
   isReviewWritten: boolean;
+  billingRequest: boolean;
+  billingState: string;
 }
 
 export interface ApplicationItem {

@@ -14,7 +14,7 @@ import {
 import Modal from "../common/Modal";
 import TextButton from "../common/TextButton";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
@@ -39,6 +39,7 @@ interface MemberType {
 }
 
 export default function MemberModal() {
+  const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
   const [masterMember, setMasterMember] = useState<MemberType>({
@@ -136,7 +137,7 @@ export default function MemberModal() {
         <ClubTitle>{clubItem.clubName}</ClubTitle>
         <ClubInfo>
           <MeetingDate>
-            모임일자 {convertDate(clubItem.createdDate)}
+            모임일자 {convertDate(clubItem.meetingDate)}
           </MeetingDate>
           <MeetingMember>
             {clubItem.clubState ? "모집중" : "모집완료"} {clubItem.appliedCount}
@@ -146,9 +147,14 @@ export default function MemberModal() {
 
         <Line />
         <MemberListWrapper>
-          <MemberCnt>모임원 {currentMember.length}</MemberCnt>
+          <MemberCnt>모임장</MemberCnt>
           <MemberWrapper key={masterMember.id}>
-            <Member>
+            <Member
+              href={`/mypage/info/${masterMember.id}`}
+              onClick={() =>
+                setIsOpen((val) => ({ ...val, isOpenMemberModal: false }))
+              }
+            >
               <Image
                 src={masterMember.profileImage}
                 width={40}
@@ -169,10 +175,16 @@ export default function MemberModal() {
               />
             </div>
           </MemberWrapper>
+          <MemberCnt>모임원 {currentMember.length}</MemberCnt>
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member
+                  href={`/mypage/info/${item.memberId}`}
+                  onClick={() =>
+                    setIsOpen((val) => ({ ...val, isOpenMemberModal: false }))
+                  }
+                >
                   <Image
                     src={item.profileImage}
                     width={40}

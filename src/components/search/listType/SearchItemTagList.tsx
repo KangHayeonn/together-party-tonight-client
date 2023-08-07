@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   SearchTagListWrapper,
   SearchTagItem,
-  SearchTagItemInput,
   SearchTagItemLabel,
 } from "@/styles/components/search/listType/SearchTagList";
 
@@ -13,7 +12,6 @@ interface SearchItemTagList {
 
 const SearchItemTagList = ({ tagList, classType }: SearchItemTagList) => {
   const [newTagList, setNewTagList] = useState<Array<string>>([]);
-  const [openMore, setOpenMore] = useState<boolean>(false);
 
   const onCloseItems = useCallback(() => {
     const tempList = tagList?.filter((item, index) => index < 7);
@@ -30,24 +28,12 @@ const SearchItemTagList = ({ tagList, classType }: SearchItemTagList) => {
         newTagList.map((item, index) => {
           return (
             <SearchTagItem key={index}>
-              <SearchTagItemInput type="checkbox" id={item} value={item} />
-              <SearchTagItemLabel
-                htmlFor={item}
-                className={`label-tag ${classType}`}
-              >
+              <SearchTagItemLabel className={`label-tag ${classType}`}>
                 #{item}
               </SearchTagItemLabel>
             </SearchTagItem>
           );
         })}
-      {tagList?.length > 7 ? (
-        <SearchTagItem>
-          <SearchTagItemInput type="checkbox" id="more" value="more" />
-          <SearchTagItemLabel htmlFor="more" className={` ${classType}`}>
-            ···
-          </SearchTagItemLabel>
-        </SearchTagItem>
-      ) : null}
     </SearchTagListWrapper>
   );
 };
