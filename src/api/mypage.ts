@@ -248,6 +248,28 @@ const MyPage = {
       return Promise.reject(err);
     }
   },
+
+  async v1RequestBillingAccount(clubId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/club`, {
+        clubId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
+  async v1RequestBillingPayment(billingHistoryId: number) {
+    try {
+      const res = await instanceWithToken.post(`${prefix}/billing/payment`, {
+        billingHistoryId,
+      });
+      return res.data;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
 };
 
 export default MyPage;

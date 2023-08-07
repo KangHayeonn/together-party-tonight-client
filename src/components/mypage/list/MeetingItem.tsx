@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import MyPage from "@/api/mypage";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { CalculateSelect } from "@/recoil/mypage/atom";
 import {
@@ -17,7 +19,7 @@ import {
   toStringByFormatting,
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type Props = {
@@ -28,6 +30,9 @@ type Props = {
 export default function MeetingItem({ item, category }: Props) {
   const setIsOpen = useSetRecoilState(ModalAtom);
   const calculateType = useRecoilValue(CalculateSelect);
+  const [isOpenCalcModal, setIsOpenCalcModal] = useState(false);
+  const [calcPrice, setCalcPrice] = useState(0);
+  const [billingId, setBillingId] = useState(-1);
 
   const translateBtnName = (calculateType: string) => {
     if (calculateType === "meeting") {
@@ -40,6 +45,20 @@ export default function MeetingItem({ item, category }: Props) {
         return "정산하기";
       default:
         return "미정산";
+    }
+  };
+
+  const getBillingPrice = async (clubId: number) => {
+    try {
+      const res = await MyPage.v1RequestBillingAccount(clubId);
+      const billingList = res.data.clubBillingHistoryDtoList;
+      setBillingId(billingList[0].id);
+      const price = billingList[0].price
+        ? Math.ceil(billingList[0].price / (billingList.length + 1))
+        : 0;
+      setCalcPrice(Number(price));
+    } catch (error) {
+      Promise.reject(error);
     }
   };
 
@@ -87,7 +106,14 @@ export default function MeetingItem({ item, category }: Props) {
                 clubId: item.clubId,
               }));
             } else if (item.billingState === "WAIT") {
-              // 팝업 노출 후, 정산하기 api 호출
+              getBillingPrice(item.clubId);
+              setIsOpenCalcModal(true);
+            } else {
+              setIsOpen((val) => ({
+                ...val,
+                isOpenCalcAccountModal: true,
+                clubId: item.clubId,
+              }));
             }
           }
         },
@@ -162,6 +188,14 @@ export default function MeetingItem({ item, category }: Props) {
           </MeetingMoreBtn>
         </div>
       </ItemDateWrapper>
+      {isOpenCalcModal && (
+        <ConfirmModal
+          modalTitle="정산하기"
+          modalText={`정산 금액은 ${calcPrice}원 입니다. 정산하시겠습니까?`}
+          onClose={setIsOpenCalcModal}
+          handleSubmit={() => MyPage.v1RequestBillingPayment(billingId)}
+        />
+      )}
     </ListItem>
   );
 }

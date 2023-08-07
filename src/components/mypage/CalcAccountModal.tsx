@@ -8,7 +8,7 @@ import {
 } from "@/styles/components/mypage/ApplyDetailModal";
 import Modal from "../common/Modal";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useState } from "react";
 import { ApplicationItem } from "@/types/mypage";
@@ -22,52 +22,64 @@ import {
   Members,
   SelectWrapper,
 } from "@/styles/components/mypage/CalcAccountModal";
+import { useQuery } from "@tanstack/react-query";
+import MyPage from "@/api/mypage";
+import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
+import Loading from "../common/Loading";
+
+interface IMember {
+  id: number;
+  memberId: number;
+  nickname: string;
+  price: number;
+  billingState: string;
+}
 
 export default function CalcAccountModal() {
-  const { clubItem, clubId } = useRecoilValue(ModalAtom);
-  const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
-  const [inpPay, setInpPay] = useState(0);
+  const { clubId } = useRecoilValue(ModalAtom);
+  const resetModal = useResetRecoilState(ModalAtom);
   const [isCalc, setIsCalc] = useState(false);
+  const [yetMember, setYetMember] = useState<IMember[]>([]);
+  const [completeMember, setCompleteMember] = useState<IMember[]>([]);
 
-  const dummyList = [
+  const { isLoading, data } = useQuery(
+    ["account", clubId],
+    () => MyPage.v1RequestBillingAccount(clubId),
     {
-      memberId: 1,
-      nickName: "정기수",
-      profileImage: "/images/Naver.svg",
+      onSuccess: (res) => {
+        if (res.success === "true") {
+          res.data.clubBillingHistoryDtoList.forEach((member: IMember) => {
+            if (member.billingState === "결제대기") {
+              setYetMember((val) => [...val, member]);
+            } else {
+              setCompleteMember((val) => [...val, member]);
+            }
+          });
+        }
+      },
     },
-    {
-      memberId: 2,
-      nickName: "정기수2",
-      profileImage: "/images/Naver.svg",
-    },
-  ];
-  const dummyList2 = [
-    {
-      memberId: 1,
-      nickName: "정기수",
-      profileImage: "/images/Naver.svg",
-    },
-    {
-      memberId: 2,
-      nickName: "정기수2",
-      profileImage: "/images/Naver.svg",
-    },
-    {
-      memberId: 2,
-      nickName: "정기수3",
-      profileImage: "/images/Naver.svg",
-    },
-  ];
+  );
 
-  const showDummy = isCalc ? dummyList2 : dummyList;
+  const showMember = isCalc ? completeMember : yetMember;
+
+  if (isLoading) {
+    return (
+      <LoadingWrapper>
+        <Loading />
+      </LoadingWrapper>
+    );
+  }
 
   return (
     <Modal title="정산내역">
       <ModalInnerMini>
         <CalcInfoWrapper>
-          <Members>정기수 외 3명</Members>
-          <Amount>2,000원</Amount>
-          <CalcDate>정산일 2023.06.05 13:25</CalcDate>
+          <Members>
+            {data.data.clubBillingHistoryDtoList[0].nickname} 외{" "}
+            {data.data.clubBillingHistoryDtoList.length - 1}명
+          </Members>
+          <Amount>{data.data.clubBillingHistoryDtoList[0].price}원</Amount>
+          {/* <CalcDate>정산일 2023.06.05 13:25</CalcDate> */}
         </CalcInfoWrapper>
         <Line />
         <MemberListWrapper>
@@ -78,7 +90,7 @@ export default function CalcAccountModal() {
                 setIsCalc(false);
               }}
             >
-              미정산 {dummyList.length}
+              미정산 {yetMember.length}
             </button>
             <button
               className={isCalc ? "selected" : ""}
@@ -86,21 +98,21 @@ export default function CalcAccountModal() {
                 setIsCalc(true);
               }}
             >
-              정산완료 {dummyList2.length}
+              정산완료 {completeMember.length}
             </button>
           </SelectWrapper>
-          {showDummy.length > 0 &&
-            showDummy.map((item) => (
+          {showMember.length > 0 &&
+            showMember.map((item) => (
               <MemberWrapper key={item.memberId}>
                 <MemberWrap>
-                  <Member>
+                  <Member href="/" onClick={(e) => e.preventDefault()}>
                     <Image
-                      src={item.profileImage}
+                      src={"/images/Profile"}
                       width={40}
                       height={40}
                       alt="멤버 사진"
                     />
-                    {item.nickName}
+                    {item.nickname}
                   </Member>
                   <TextButton
                     text="채팅하기"
@@ -113,14 +125,21 @@ export default function CalcAccountModal() {
                     border="true"
                   />
                 </MemberWrap>
-                <p>500</p>
+                <p>
+                  {item.price
+                    ? Math.ceil(
+                        item.price /
+                          (data.data.clubBillingHistoryDtoList.length + 1),
+                      )
+                    : 0}
+                </p>
               </MemberWrapper>
             ))}
         </MemberListWrapper>
         <RequestBtnWrapper>
           <TextButton
             text="확인"
-            onClick={() => console.log(1)}
+            onClick={resetModal}
             fontSize={16}
             width={110}
             height={40}

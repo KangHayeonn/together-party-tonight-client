@@ -34,7 +34,6 @@ type Props = {
 
 export default function Category({ params: { category, id } }: Props) {
   const ulRef = useRef<HTMLUListElement>(null);
-  const { isOpenReviewModal } = useRecoilValue(ModalAtom);
   const [selected, setSelected] = useRecoilState(CalculateSelect);
   const [total, setTotal] = useState(0);
   const [sortBy, setSortBy] = useState("createdDate,DESC");
@@ -74,7 +73,7 @@ export default function Category({ params: { category, id } }: Props) {
   const handleScroll = () => {
     if (!isLoading && ulRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = ulRef.current;
-      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight;
+      const isScrolledToBottom = scrollTop + clientHeight + 0.7 >= scrollHeight;
 
       if (isScrolledToBottom && hasNextPage) {
         fetchNextPage();

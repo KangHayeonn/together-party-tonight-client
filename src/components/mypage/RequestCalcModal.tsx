@@ -94,7 +94,7 @@ export default function RequestCalcModal() {
           {currentMember.length > 0 &&
             currentMember.map((item) => (
               <MemberWrapper key={item.memberId}>
-                <Member>
+                <Member href="/" onClick={(e) => e.preventDefault()}>
                   <Image
                     src={item.profileImage}
                     width={40}
