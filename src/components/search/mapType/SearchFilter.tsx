@@ -26,7 +26,6 @@ const SearchFilter = () => {
   };
 
   const onSearchCategoryChange = (categoryArr: Array<string>) => {
-    // category change
     setSearchOptions({
       ...searchOptions,
       category: categoryArr.length > 7 ? "모두" : categoryArr.toString(),

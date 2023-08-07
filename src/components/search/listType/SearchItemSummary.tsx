@@ -8,18 +8,24 @@ import {
   SearchItemSummaryBox,
   SearchItemSummaryText,
 } from "@/styles/components/search/listType/SearchItemSummary";
+import { useRecoilValue } from "recoil";
+import { clubDetailState } from "@/recoil/club/clubState";
+import { getDateFormat, getTimeFormat } from "@/utils/dateFormat";
+import { elapsedTime } from "@/utils/dateFormat";
 
 const SearchItemSummary = () => {
+  const clubDetail = useRecoilValue(clubDetailState);
+
   return (
     <SearchItemSummaryWrapper>
       <SearchItemSummaryLeft>
-        <SearchItemSummaryTitle>테니스 같이 치실 분</SearchItemSummaryTitle>
+        <SearchItemSummaryTitle>{clubDetail.clubName}</SearchItemSummaryTitle>
         <SearchItemSummaryBox>
           <SearchItemSummaryText className="detail">
-            23.06.05 15:33
+            {`${elapsedTime(new Date(clubDetail.modifiedDate))}`}
           </SearchItemSummaryText>
           <SearchItemSummaryText className="detail">
-            lydia
+            {clubDetail.nickName}
           </SearchItemSummaryText>
         </SearchItemSummaryBox>
       </SearchItemSummaryLeft>
@@ -31,14 +37,16 @@ const SearchItemSummary = () => {
             height={20}
             alt="Star Icon"
           />
-          <SearchItemSummaryText className="rating">4.5</SearchItemSummaryText>
+          <SearchItemSummaryText className="rating">
+            {clubDetail.ratingAvg.toFixed(1)}
+          </SearchItemSummaryText>
           <SearchItemSummaryText className="review">
-            리뷰 14
+            리뷰 {clubDetail.reviewCnt}
           </SearchItemSummaryText>
         </SearchItemSummaryBox>
         <SearchItemSummaryBox>
           <SearchItemSummaryText className="status">
-            모집중
+            {clubDetail.isRecruit ? "모집중" : "모집완료"}
           </SearchItemSummaryText>
           <Image
             src="/images/user.svg"
@@ -46,7 +54,9 @@ const SearchItemSummary = () => {
             height={21}
             alt="User Icon"
           />
-          <SearchItemSummaryText className="recruit">1/4</SearchItemSummaryText>
+          <SearchItemSummaryText className="recruit">
+            {clubDetail.memberCount}/{clubDetail.clubMaximum}
+          </SearchItemSummaryText>
         </SearchItemSummaryBox>
         <SearchItemSummaryBox>
           <Image
@@ -56,7 +66,11 @@ const SearchItemSummary = () => {
             alt="Clock Icon"
             className="clock"
           />
-          <SearchItemSummaryText>2023/06/06 오전 10:00</SearchItemSummaryText>
+          <SearchItemSummaryText>
+            {`${getDateFormat(
+              new Date(clubDetail.meetingDate),
+            )} ${getTimeFormat(new Date(clubDetail.meetingDate))}`}
+          </SearchItemSummaryText>
         </SearchItemSummaryBox>
       </SearchItemSummaryRight>
     </SearchItemSummaryWrapper>

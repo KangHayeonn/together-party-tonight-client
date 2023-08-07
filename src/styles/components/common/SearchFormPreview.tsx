@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 const SearchPreviewWrapper = styled.div`
-  // width: calc(100% - 10px);
   width: 100%;
   background-color: #f0efef;
   max-height: 11rem;
   overflow-y: auto;
   border-radius: 7px;
   z-index: 999;
+  margin-top: 5px;
 
   &::-webkit-scrollbar {
     width: 7px;

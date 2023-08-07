@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { styled } from "styled-components";
 
 const ModalInnerMini = styled.div`
@@ -45,9 +46,10 @@ const MemberWrapper = styled.div`
   padding: 12px 0;
 `;
 
-const Member = styled.div`
+const Member = styled(Link)`
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   & img {
     margin-right: 10px;

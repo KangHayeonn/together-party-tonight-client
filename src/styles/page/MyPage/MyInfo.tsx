@@ -35,10 +35,12 @@ const ProfileBtn = styled.label`
   flex-direction: column;
   border: 0;
   background-color: transparent;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   & img {
-    border-radius: 10px;
+    border-radius: 50%;
   }
 `;
 
@@ -171,6 +173,11 @@ const WithdrawalBtn = styled.button`
 `;
 
 const LoadingWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

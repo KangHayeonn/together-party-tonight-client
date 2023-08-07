@@ -2,7 +2,6 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { logout } from "@/api/login";
 import {
   Menu,

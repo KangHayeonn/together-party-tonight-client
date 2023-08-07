@@ -3,12 +3,22 @@
 import MyPage from "@/api/mypage";
 import Loading from "@/components/common/Loading";
 import TextButton from "@/components/common/TextButton";
+import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import EditInfo from "@/components/mypage/info/EditInfo";
 import EditPwInfo from "@/components/mypage/info/EditPwInfo";
 import MyInfo from "@/components/mypage/info/MyInfo";
 import MyRating from "@/components/mypage/info/MyRating";
 import MyReviewList from "@/components/mypage/info/MyReviewList";
 import useHandleInput from "@/hooks/useHandleInput";
+import {
+  EditBtnWrapper,
+  ImgEditLabel,
+} from "@/styles/components/mypage/ReviewDetailModal";
+import {
+  Button,
+  ClubImageUpdateBtn,
+  Line,
+} from "@/styles/components/write/ClubWriteImage";
 import { ErrorMessage } from "@/styles/page/Login";
 import {
   ConfirmBox,
@@ -38,7 +48,9 @@ export default function Info({ params: { id } }: Props) {
   const [isUpdateInfo, setIsUpdateInfo] = useState(false);
   const [isEditPw, setIsEditPw] = useState(false);
   const [isMyAccount, setIsMyAccount] = useState(false);
+  const [isUpdateDone, setIsUpdateDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isOpenSignoutModal, setIsOpenSignoutModal] = useState(false);
 
   const initialValues = {
     profileImg: "",
@@ -51,7 +63,7 @@ export default function Info({ params: { id } }: Props) {
   const [formValues, handleChange, resetForm] = useHandleInput(initialValues);
 
   const { data, isLoading, refetch } = useQuery(
-    ["user", id],
+    ["user", id, isUpdateDone],
     () => MyPage.v1GetUser(id),
     {
       onSuccess: (data) => {
@@ -61,16 +73,23 @@ export default function Info({ params: { id } }: Props) {
           nickname: data.nickname,
           description: data.detail,
         });
+        setIsUpdateDone(false);
       },
     },
   );
 
   const { mutate: updateNickname } = useMutation({
     mutationFn: () => MyPage.v1UpdateNickname(id, formValues.nickname),
+    onSuccess: (data) => {
+      if (data.success === "true") setIsUpdateDone(true);
+    },
   });
 
   const { mutate: updateDesc } = useMutation({
     mutationFn: () => MyPage.v1UpdateDesc(id, formValues.description),
+    onSuccess: (data) => {
+      if (data.success === "true") setIsUpdateDone(true);
+    },
   });
 
   const { mutate: updatePassword } = useMutation({
@@ -122,6 +141,12 @@ export default function Info({ params: { id } }: Props) {
       formData.append("profileImage", file);
       uploadProfile(formData);
     }
+  };
+
+  const handleDeleteProfile = () => {
+    const formData = new FormData();
+    formData.append("profileImage", "");
+    uploadProfile(formData);
   };
 
   const handleUpdatePassword = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -186,6 +211,21 @@ export default function Info({ params: { id } }: Props) {
                   onChange={handleUploadProfile}
                   style={{ display: "none" }}
                 />
+                <EditBtnWrapper>
+                  {data.profileImage.includes("member_default") ? (
+                    <ImgEditLabel htmlFor="fileInput">
+                      <ClubImageUpdateBtn>추가</ClubImageUpdateBtn>
+                    </ImgEditLabel>
+                  ) : (
+                    <>
+                      <ImgEditLabel htmlFor="fileInput">
+                        <ClubImageUpdateBtn>수정</ClubImageUpdateBtn>
+                      </ImgEditLabel>
+                      <Line />
+                      <Button onClick={handleDeleteProfile}>삭제</Button>
+                    </>
+                  )}
+                </EditBtnWrapper>
               </ProfileBtn>
               <UpdateTitle>프로필 수정</UpdateTitle>
             </TopWrapper>
@@ -271,11 +311,19 @@ export default function Info({ params: { id } }: Props) {
             )}
           </EditWrapper>
           <Withdrawal>
-            <WithdrawalBtn onClick={handleDeleteAccount}>
+            <WithdrawalBtn onClick={() => setIsOpenSignoutModal(true)}>
               회원탈퇴
             </WithdrawalBtn>
           </Withdrawal>
         </>
+      )}
+      {isOpenSignoutModal && (
+        <ConfirmModal
+          modalTitle="정말 탈퇴 하시겠습니까?"
+          modalText="탈퇴시 계정을 복구할 수 없습니다."
+          onClose={setIsOpenSignoutModal}
+          handleSubmit={handleDeleteAccount}
+        />
       )}
     </InfoWrapper>
   );

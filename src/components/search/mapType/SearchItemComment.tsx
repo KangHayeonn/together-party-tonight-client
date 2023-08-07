@@ -30,7 +30,7 @@ import {
   socketCommentDeleteState,
 } from "@/recoil/socket/socketState";
 
-interface SearchItemCommentProps {
+export interface SearchItemCommentProps {
   clubId: number;
 }
 

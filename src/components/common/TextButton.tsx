@@ -24,7 +24,7 @@ const TextButton = ({
   ...props
 }: ButtonProps) => {
   return (
-    <BtnWrapper onClick={onClick} disabled={disabled} {...props}>
+    <BtnWrapper type="button" onClick={onClick} disabled={disabled} {...props}>
       {text}
     </BtnWrapper>
   );

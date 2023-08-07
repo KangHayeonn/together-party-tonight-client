@@ -41,7 +41,6 @@ const SearchCategoryItemLabel = styled.label`
   background-color: #fff;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
   line-height: 1rem;
 `;
 
