@@ -55,6 +55,11 @@ const MeetingMoreBtn = styled.button`
   border: 1px solid #dadada;
   border-radius: 5px;
   padding: 3px 18px;
+
+  &:disabled {
+    color: #a9a9a9;
+    pointer-events: none;
+  }
 `;
 
 const UserWrapper = styled.div`

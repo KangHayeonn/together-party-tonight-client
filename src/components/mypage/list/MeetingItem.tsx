@@ -120,12 +120,6 @@ export default function MeetingItem({ item, category }: Props) {
             } else if (item.billingState === "WAIT") {
               getBillingPrice(item.clubId);
               setIsOpenCalcModal(true);
-            } else {
-              setIsOpen((val) => ({
-                ...val,
-                isOpenCalcAccountModal: true,
-                clubId: item.clubId,
-              }));
             }
           }
         },
@@ -195,7 +189,10 @@ export default function MeetingItem({ item, category }: Props) {
                 리뷰쓰기
               </MeetingMoreBtn>
             )}
-          <MeetingMoreBtn onClick={() => itemBtnObj[category].handleFunc(item)}>
+          <MeetingMoreBtn
+            onClick={() => itemBtnObj[category].handleFunc(item)}
+            disabled={itemBtnObj[category].btnName === "미정산"}
+          >
             {itemBtnObj[category].btnName}
           </MeetingMoreBtn>
         </div>
