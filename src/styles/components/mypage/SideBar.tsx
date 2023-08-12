@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const SideBarWrapper = styled.div`
   display: flex;
