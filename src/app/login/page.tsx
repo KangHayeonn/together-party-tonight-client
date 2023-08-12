@@ -37,7 +37,7 @@ export default function Login() {
   });
   const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
 
-  const { isLoading, error, data, refetch } = useQuery(
+  const { refetch } = useQuery(
     ["alertUnreadCnt"],
     () => Api.v1GetUnReadCount(),
     {
@@ -117,7 +117,7 @@ export default function Login() {
           <Hr />
         </SimpleLogin>
         <SocialWrapper>
-          <SocialButton onClick={handleKakaoLogin}>
+          <SocialButton type="button" onClick={handleKakaoLogin}>
             <Image
               src="/images/Kakao.svg"
               width={45}
@@ -125,7 +125,7 @@ export default function Login() {
               alt="Kakao 로그인"
             />
           </SocialButton>
-          <SocialButton>
+          <SocialButton type="button">
             <Image
               src="/images/Naver.svg"
               width={45}
@@ -133,7 +133,7 @@ export default function Login() {
               alt="Naver 로그인"
             />
           </SocialButton>
-          <SocialButton>
+          <SocialButton type="button">
             <Image
               src="/images/Google.svg"
               width={45}

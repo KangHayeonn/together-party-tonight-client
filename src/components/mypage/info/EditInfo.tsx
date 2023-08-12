@@ -1,6 +1,7 @@
+"use client";
+
 import TextField from "@/components/common/TextField";
 import { EditInfoWrapper, EditBtn } from "@/styles/page/MyPage/MyInfo";
-import { MutationFunction } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 

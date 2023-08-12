@@ -1,7 +1,6 @@
 import {
   Line,
   Member,
-  MemberCnt,
   MemberListWrapper,
   MemberWrapper,
   ModalInnerMini,
@@ -11,12 +10,10 @@ import Image from "next/image";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useState } from "react";
-import { ApplicationItem } from "@/types/mypage";
 import { RequestBtnWrapper } from "@/styles/components/mypage/RequestCalcModal";
 import TextButton from "../common/TextButton";
 import {
   Amount,
-  CalcDate,
   CalcInfoWrapper,
   MemberWrap,
   Members,
@@ -33,6 +30,7 @@ interface IMember {
   nickname: string;
   price: number;
   billingState: string;
+  memberProfileImage: string;
 }
 
 export default function CalcAccountModal() {
@@ -106,7 +104,7 @@ export default function CalcAccountModal() {
                 <MemberWrap>
                   <Member href="/" onClick={(e) => e.preventDefault()}>
                     <Image
-                      src={"/images/Profile"}
+                      src={item.memberProfileImage || "/images/Profile.svg"}
                       width={40}
                       height={40}
                       alt="멤버 사진"
@@ -122,6 +120,7 @@ export default function CalcAccountModal() {
                     color="#000"
                     background="#fff"
                     border="true"
+                    margin="0 0 0 20px"
                   />
                 </MemberWrap>
                 <p>

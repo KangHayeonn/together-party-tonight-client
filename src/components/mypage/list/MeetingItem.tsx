@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+"use client";
+
 import MyPage from "@/api/mypage";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
 import { ModalAtom } from "@/recoil/modal/atom";
@@ -19,6 +20,7 @@ import {
   toStringByFormatting,
   toStringByFormattingTime,
 } from "@/utils/dateFormat";
+import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -27,7 +29,16 @@ type Props = {
   category: string;
 };
 
+interface IBilling {
+  id: number;
+  memberId: number;
+  nickname: string;
+  price: number;
+  billingState: string;
+}
+
 export default function MeetingItem({ item, category }: Props) {
+  const pathname = usePathname();
   const setIsOpen = useSetRecoilState(ModalAtom);
   const calculateType = useRecoilValue(CalculateSelect);
   const [isOpenCalcModal, setIsOpenCalcModal] = useState(false);
@@ -52,11 +63,12 @@ export default function MeetingItem({ item, category }: Props) {
     try {
       const res = await MyPage.v1RequestBillingAccount(clubId);
       const billingList = res.data.clubBillingHistoryDtoList;
-      setBillingId(billingList[0].id);
-      const price = billingList[0].price
-        ? Math.ceil(billingList[0].price / (billingList.length + 1))
-        : 0;
-      setCalcPrice(Number(price));
+      const id = pathname.split("/").at(-1);
+      const myBilling = billingList.find(
+        (obj: IBilling) => obj.memberId === Number(id),
+      );
+      setBillingId(myBilling.id);
+      setCalcPrice(myBilling.price);
     } catch (error) {
       Promise.reject(error);
     }

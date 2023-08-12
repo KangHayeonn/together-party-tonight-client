@@ -21,7 +21,10 @@ export default function Redirect() {
           authorizationCode: code,
           redirectUri: `${process.env.NEXT_PUBLIC_BASE_URL}/redirect`,
         });
-        if (response.data.data.success === "fail") {
+        if (
+          response?.data?.data?.success === undefined ||
+          response.data.data.success === "fail"
+        ) {
           router.push("/login");
         } else {
           setAccessToken(response.data.data.accessToken);
