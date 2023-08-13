@@ -101,7 +101,7 @@ const SearchListAside = () => {
 
   const initSearchOptions = () => {
     setSearchOptions({
-      category: "",
+      category: "모두",
       distance: 5,
       lat: 0,
       lng: 0,

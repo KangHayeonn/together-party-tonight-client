@@ -42,7 +42,6 @@ const SearchFormPreview = ({
                 onClick={() => changeSearchItem(item)}
                 className={`${index === selectedIdx ? "checked" : ""}`}
               >
-                {index === selectedIdx}
                 {item.address_name}
               </SearchPreviewItem>
             );
