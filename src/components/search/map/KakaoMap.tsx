@@ -79,8 +79,8 @@ const KakaoMap = () => {
   const [addressY, setAddressY] = useState<number>(37.5068914);
 
   useEffect(() => {
-    const clubList = searchResponse.clubList;
-    if (searchResponse.clubList.length > 0) {
+    const clubList = searchResponse?.clubList || [];
+    if (clubList && clubList.length > 0) {
       setAddressX(clubList[0].latitude);
       setAddressY(clubList[0].longitude);
     } else {
@@ -96,14 +96,18 @@ const KakaoMap = () => {
     const script = document.createElement("script");
     script.src = KAKAO_SDK_URL;
     script.async = true;
-    script.onload = () => {
-      // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
+
+    const handleScriptLoad = () => {
       setMapLoaded(true);
     };
+
+    // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
+    script.onload = handleScriptLoad;
     document.head.appendChild(script);
 
     // 컴포넌트 언마운트 시 스크립트를 제거
     return () => {
+      script.removeEventListener("load", handleScriptLoad);
       document.head.removeChild(script);
     };
   }, []);
@@ -123,8 +127,8 @@ const KakaoMap = () => {
           style={{ width: "100%", height: "100%" }} // 지도의 크기
           level={6} // 지도의 확대 레벨
         >
-          {searchResponse.clubList &&
-            searchResponse.clubList.map((value, index) => (
+          {searchResponse?.clubList &&
+            searchResponse?.clubList.map((value, index) => (
               <EventMarkerContainer
                 key={`location${index}`}
                 position={{ lat: value.longitude, lng: value.latitude }}
