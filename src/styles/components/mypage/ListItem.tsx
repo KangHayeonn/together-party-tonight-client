@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const ListItem = styled.li`
   padding: 20px 40px;
@@ -55,6 +55,11 @@ const MeetingMoreBtn = styled.button`
   border: 1px solid #dadada;
   border-radius: 5px;
   padding: 3px 18px;
+
+  &:disabled {
+    color: #a9a9a9;
+    pointer-events: none;
+  }
 `;
 
 const UserWrapper = styled.div`

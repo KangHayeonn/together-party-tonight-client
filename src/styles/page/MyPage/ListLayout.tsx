@@ -1,6 +1,6 @@
 "use client";
 
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const MypageListWrapper = styled.ul`
   max-height: 600px;
