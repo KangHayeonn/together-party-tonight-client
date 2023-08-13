@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState, useRef } from "react";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { SearchListAsideWrapper } from "@/styles/components/search/mapType/SearchListAside";
 import SearchForm from "@/components/common/SearchForm";
 import SearchFilter from "@/components/search/mapType/SearchFilter";
@@ -13,7 +13,7 @@ import { validationSearchByAddress } from "@/utils/func/SearchFunc";
 import Api from "@/api/search";
 import { SearchPreview } from "@/components/common/SearchForm";
 // recoil
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   searchKeywordState,
   searchState,
@@ -25,10 +25,13 @@ const SearchListAside = () => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const [searchAddress, setSearchAddress] = useRecoilState(searchState);
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
-  const setSearchResponse = useSetRecoilState(searchResponseState);
+  const [searchResponse, setSearchResponse] =
+    useRecoilState(searchResponseState);
   const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
+  const ulRef = useRef<HTMLUListElement | null>(null);
+  const page = 0;
 
-  const { isLoading, error, data } = useQuery(
+  const { data } = useQuery(
     ["searchAddress", searchKeyword],
     () => Api.v1SearchAddress({ address: searchKeyword }),
     {
@@ -37,34 +40,81 @@ const SearchListAside = () => {
     },
   );
 
-  const { refetch } = useQuery(
-    ["searchByAddress"],
-    async () => {
-      const options = {
-        lat: searchOptions.lat,
-        lng: searchOptions.lng,
-        page: searchOptions.page,
-      };
-      const response = await Api.v1SearchByAddress(options);
-      return response;
-    },
+  const fetchSearchList = async (pageParam: number) => {
+    if (searchOptions.category === "") {
+      setSearchOptions({
+        ...searchOptions,
+        category: "모두",
+      });
+    }
+    return Api.v1SearchByOptions(searchOptions, pageParam);
+  };
+
+  const {
+    data: searchData,
+    isLoading: searchLoading,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["searchResultByMap"],
+    ({ pageParam = page }) => fetchSearchList(pageParam),
     {
-      enabled: false,
-      onSuccess: (res) => {
-        const { clubList, count, totalCount } = res.data.data;
-        setSearchResponse({
-          clubList: [...clubList],
-          count: count,
-          totalCount: totalCount,
-        });
+      getNextPageParam: (res) => {
+        if (res.data.code === 200) {
+          const { count } = res.data.data;
+          if (count >= 20) {
+            return page + 1;
+          }
+          return undefined;
+        }
       },
     },
   );
 
+  const handleScroll = () => {
+    if (!searchLoading && ulRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = ulRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight; // 스크롤이 가장 아래로
+
+      if (isScrolledToBottom && hasNextPage) {
+        fetchNextPage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (ulRef.current) {
+      ulRef.current.addEventListener("scroll", handleScroll);
+
+      return () => {
+        ulRef.current?.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [ulRef, hasNextPage]);
+
+  useEffect(() => {
+    if (!!searchData && searchData.pages !== undefined) {
+      const list = searchData.pages
+        .map((obj) => obj.data.data?.clubList)
+        .flat();
+      if (list) {
+        setSearchResponse({
+          ...searchResponse,
+          clubList: [...list],
+        });
+      } else {
+        setSearchResponse({
+          ...searchResponse,
+          clubList: [],
+        });
+      }
+    }
+  }, [searchData]);
+
   const onClickSearchBtn = () => {
     if (validationSearchByAddress(searchOptions)) {
       refetch();
-      initSearchOptions();
     }
   };
 
@@ -113,8 +163,8 @@ const SearchListAside = () => {
       />
       <SearchFilter />
       <SearchTagList />
-      <SearchOption />
-      <SearchResult />
+      <SearchOption searchByOptions={onClickSearchBtn} />
+      <SearchResult ulRef={ulRef} />
     </SearchListAsideWrapper>
   );
 };

@@ -1,25 +1,17 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import DropDown from "@/components/common/DropDown";
 import TextButton from "@/components/common/TextButton";
 import { SearchOptionWrapper } from "@/styles/components/search/mapType/SearchOption";
-import { validationSearchByOptions } from "@/utils/func/SearchFunc";
-// api
-import Api from "@/api/search";
 // recoil
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  searchState,
-  searchKeywordState,
-  searchOptionsState,
-  searchResponseState,
-} from "@/recoil/search/searchState";
+import { useRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
 
-const SearchOption = () => {
-  const setSearchKeyword = useSetRecoilState(searchKeywordState);
-  const [searchAddress, setSearchAddress] = useRecoilState(searchState);
+interface SearchOptionProps {
+  searchByOptions: () => void;
+}
+
+const SearchOption = ({ searchByOptions }: SearchOptionProps) => {
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
-  const setSearchResponse = useSetRecoilState(searchResponseState);
 
   const optionList = ["최신순", "인기순"];
 
@@ -31,42 +23,6 @@ const SearchOption = () => {
     });
   };
 
-  const { refetch } = useQuery(
-    ["searchByAddress", searchOptions],
-    () => Api.v1SearchByOptions(searchOptions, 0),
-    {
-      onSuccess: (res) => {
-        const { clubList, count, totalCount } = res.data.data;
-        setSearchResponse({
-          clubList: [...clubList],
-          count: count,
-          totalCount: totalCount,
-        });
-      },
-      enabled: false,
-    },
-  );
-
-  const onClickSearch = () => {
-    if (validationSearchByOptions(searchOptions)) {
-      refetch();
-      initSearchOptions();
-    }
-  };
-
-  const initSearchOptions = () => {
-    setSearchOptions({
-      ...searchOptions,
-      page: 0,
-      size: 20,
-    });
-    setSearchAddress({
-      ...searchAddress,
-      address_name: "",
-    });
-    setSearchKeyword("");
-  };
-
   return (
     <SearchOptionWrapper>
       <DropDown
@@ -76,7 +32,7 @@ const SearchOption = () => {
       />
       <TextButton
         text="옵션 적용"
-        onClick={onClickSearch}
+        onClick={searchByOptions}
         fontSize={14}
         weight={500}
         width={100}

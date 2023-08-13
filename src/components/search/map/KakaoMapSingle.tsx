@@ -79,17 +79,15 @@ const KakaoMap = () => {
     script.src = KAKAO_SDK_URL;
     script.async = true;
 
-    const handleScriptLoad = () => {
+    script.onload = () => {
+      // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
       setMapLoaded(true);
     };
 
-    // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
-    script.onload = handleScriptLoad;
     document.head.appendChild(script);
 
     // 컴포넌트 언마운트 시 스크립트를 제거
     return () => {
-      script.removeEventListener("load", handleScriptLoad);
       document.head.removeChild(script);
     };
   }, []);
