@@ -31,6 +31,7 @@ import Api from "@/api/chat";
 // recoil
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { checkChatRoomState } from "@/recoil/chat/chatState";
+import { getUserId } from "@/utils/tokenControl";
 
 interface MemberType {
   id: number;
@@ -39,6 +40,7 @@ interface MemberType {
 }
 
 export default function MemberModal() {
+  const userId = getUserId();
   const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
@@ -166,17 +168,19 @@ export default function MemberModal() {
               />
               {masterMember.nickName}
             </Member>
-            <div>
-              <TextButton
-                onClick={() => {
-                  chatMessage(masterMember);
-                }}
-                text="채팅하기"
-                width={75}
-                height={28}
-                fontSize={14}
-              />
-            </div>
+            {masterMember.id !== Number(userId) && (
+              <div>
+                <TextButton
+                  onClick={() => {
+                    chatMessage(masterMember);
+                  }}
+                  text="채팅하기"
+                  width={75}
+                  height={28}
+                  fontSize={14}
+                />
+              </div>
+            )}
           </MemberWrapper>
           <MemberCnt>모임원 {currentMember.length}</MemberCnt>
           {currentMember.length > 0 &&
@@ -196,15 +200,19 @@ export default function MemberModal() {
                   />
                   {item.nickName}
                 </Member>
-                <div>
-                  <TextButton
-                    onClick={() => chatMessage({ ...item, id: item.memberId })}
-                    text="채팅하기"
-                    width={75}
-                    height={28}
-                    fontSize={14}
-                  />
-                </div>
+                {item.memberId !== Number(userId) && (
+                  <div>
+                    <TextButton
+                      onClick={() =>
+                        chatMessage({ ...item, id: item.memberId })
+                      }
+                      text="채팅하기"
+                      width={75}
+                      height={28}
+                      fontSize={14}
+                    />
+                  </div>
+                )}
               </MemberWrapper>
             ))}
         </MemberListWrapper>

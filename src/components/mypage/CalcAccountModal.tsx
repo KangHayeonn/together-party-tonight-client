@@ -35,6 +35,7 @@ interface IMember {
   nickname: string;
   price: number;
   billingState: string;
+  memberProfileImage: string;
 }
 
 export default function CalcAccountModal() {
@@ -51,6 +52,7 @@ export default function CalcAccountModal() {
     nickname: "",
     price: 0,
     billingState: "",
+    memberProfileImage: "",
   });
 
   const { isLoading, data } = useQuery(
@@ -162,7 +164,7 @@ export default function CalcAccountModal() {
                 <MemberWrap>
                   <Member href="/" onClick={(e) => e.preventDefault()}>
                     <Image
-                      src={"/images/Profile.svg"}
+                      src={item.memberProfileImage || "/images/Profile.svg"}
                       width={40}
                       height={40}
                       alt="멤버 사진"
@@ -180,6 +182,7 @@ export default function CalcAccountModal() {
                     color="#000"
                     background="#fff"
                     border="true"
+                    margin="0 0 0 20px"
                   />
                 </MemberWrap>
                 <p>
