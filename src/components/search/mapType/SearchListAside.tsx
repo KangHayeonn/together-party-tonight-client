@@ -93,25 +93,6 @@ const SearchListAside = () => {
     }
   }, [ulRef, hasNextPage]);
 
-  useEffect(() => {
-    if (!!searchData && searchData.pages !== undefined) {
-      const list = searchData.pages
-        .map((obj) => obj.data.data?.clubList)
-        .flat();
-      if (list) {
-        setSearchResponse({
-          ...searchResponse,
-          clubList: [...list],
-        });
-      } else {
-        setSearchResponse({
-          ...searchResponse,
-          clubList: [],
-        });
-      }
-    }
-  }, [searchData]);
-
   const onClickSearchBtn = () => {
     if (validationSearchByAddress(searchOptions)) {
       refetch();
@@ -137,6 +118,24 @@ const SearchListAside = () => {
     });
     setSearchKeyword("");
   };
+
+  useEffect(() => {
+    if (!!searchData && searchData.pages !== undefined) {
+      if (searchData.pages[0]) {
+        const { data } = searchData.pages[0];
+        if (data.code !== 200) return;
+      }
+      const list = searchData.pages
+        .map((obj) => obj.data.data?.clubList)
+        .flat();
+      if (list) {
+        setSearchResponse({
+          ...searchResponse,
+          clubList: [...list],
+        });
+      }
+    }
+  }, [searchData]);
 
   useEffect(() => {
     setPreviewList(data?.data.documents);
