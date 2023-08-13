@@ -77,7 +77,7 @@ const Alert = ({ setIsOpen }: AlertProps) => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["searchResultByMap"],
+    ["getAlertList"],
     ({ pageParam = -1 }) => fetchAlertList(pageParam),
     {
       getNextPageParam: (res) => {

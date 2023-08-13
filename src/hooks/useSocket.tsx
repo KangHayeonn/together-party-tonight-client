@@ -76,7 +76,7 @@ const useSocket = () => {
     if (!ws.current) return;
     ws.current.onmessage = (event: MessageEvent) => {
       const response = JSON.parse(event.data);
-      console.log("socket receive : " + JSON.stringify(response));
+      // console.log("socket receive : " + JSON.stringify(response));
       const { type, data } = response;
 
       if (type === "comment") {
