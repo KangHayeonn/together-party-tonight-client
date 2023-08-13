@@ -1,5 +1,4 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   SearchFilterWrapper,
   SearchTable,
@@ -15,39 +14,16 @@ import SliderForm from "@/components/common/SliderForm";
 import SearchStatus from "@/components/search/mapType/SearchStatus";
 import SearchTagList from "@/components/search/mapType/SearchTagList";
 import RoundButton from "@/components/common/RoundButton";
-import { validationSearchByOptions } from "@/utils/func/SearchFunc";
-// api
-import Api from "@/api/search";
 // recoil
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  searchState,
-  searchKeywordState,
-  searchOptionsState,
-  searchResponseState,
-} from "@/recoil/search/searchState";
+import { useRecoilState } from "recoil";
+import { searchOptionsState } from "@/recoil/search/searchState";
 
-const SearchFilter = () => {
-  const setSearchKeyword = useSetRecoilState(searchKeywordState);
-  const [searchAddress, setSearchAddress] = useRecoilState(searchState);
+interface SearchFilterProps {
+  searchByOptions: () => void;
+}
+
+const SearchFilter = ({ searchByOptions }: SearchFilterProps) => {
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
-  const setSearchResponse = useSetRecoilState(searchResponseState);
-
-  const { refetch } = useQuery(
-    ["searchByAddress", searchOptions],
-    () => Api.v1SearchByOptions(searchOptions, 0),
-    {
-      onSuccess: (res) => {
-        const { clubList, count, totalCount } = res.data.data;
-        setSearchResponse({
-          clubList: [...clubList],
-          count: count,
-          totalCount: totalCount,
-        });
-      },
-      enabled: false,
-    },
-  );
 
   const onSearchDistanceChange = (distance: number) => {
     setSearchOptions({
@@ -68,26 +44,6 @@ const SearchFilter = () => {
       ...searchOptions,
       memberNum: maxNum,
     });
-  };
-
-  const onClickSearch = () => {
-    if (validationSearchByOptions(searchOptions)) {
-      refetch();
-      initSearchOptions();
-    }
-  };
-
-  const initSearchOptions = () => {
-    setSearchOptions({
-      ...searchOptions,
-      page: 0,
-      size: 20,
-    });
-    setSearchAddress({
-      ...searchAddress,
-      address_name: "",
-    });
-    setSearchKeyword("");
   };
 
   return (
@@ -140,7 +96,7 @@ const SearchFilter = () => {
                 text="옵션 적용"
                 color="#fff"
                 background="#778da9"
-                onClickEvent={onClickSearch}
+                onClickEvent={searchByOptions}
               />
             </SearchOptionContent>
           </SearchTableRow>

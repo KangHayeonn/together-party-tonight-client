@@ -1,13 +1,11 @@
 import React from "react";
 import SearchTemplate from "@/components/search/SearchTemplate";
-import SearchNav from "@/components/search/listType/SearchNav";
-import SearchResult from "@/components/search/listType/SearchResult";
+import SearchListWrap from "@/components/search/listType/SearchListWrap";
 
 const page = () => {
   return (
     <SearchTemplate classType="list">
-      <SearchNav />
-      <SearchResult />
+      <SearchListWrap />
     </SearchTemplate>
   );
 };

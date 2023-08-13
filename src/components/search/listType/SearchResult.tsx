@@ -8,12 +8,17 @@ import {
   SearchResultBox,
 } from "@/styles/components/search/listType/SearchResult";
 
-const SearchResult = () => {
+interface SearchResultProps {
+  searchByOptions: () => void;
+  ulRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+const SearchResult = ({ searchByOptions, ulRef }: SearchResultProps) => {
   return (
     <SearchResultWrapper>
       <SearchResultBox>
-        <SearchFilter />
-        <SearchList />
+        <SearchFilter searchByOptions={searchByOptions} />
+        <SearchList ulRef={ulRef} />
       </SearchResultBox>
     </SearchResultWrapper>
   );
