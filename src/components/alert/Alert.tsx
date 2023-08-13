@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import {
   AlertWrapper,
   AlertTitle,
@@ -19,7 +19,7 @@ import { IAlertList } from "@/types/alert";
 import Api from "@/api/alert";
 import { getAlertListType } from "@/types/alert";
 // recoil
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { alertUnReadCntState } from "@/recoil/alert/alertState";
 
 interface AlertProps {
@@ -28,6 +28,7 @@ interface AlertProps {
 
 const Alert = ({ setIsOpen }: AlertProps) => {
   const alertWrap = useRef<HTMLDivElement>(null);
+  const alertContentRef = useRef<HTMLDivElement>(null);
   const [alertAll, setAlertAll] = useState<boolean>(true);
   const [options, setOptions] = useState<getAlertListType>({
     isAllOrNotRead: true,
@@ -35,8 +36,7 @@ const Alert = ({ setIsOpen }: AlertProps) => {
     listCount: 20,
   });
   const [alertList, setAlertList] = useState<Array<IAlertList>>([]);
-  const [unReadAlertCnt, setUnReadAlertCnt] =
-    useRecoilState(alertUnReadCntState);
+  const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
 
   const clickWrap = (e: MouseEvent) => {
     if (!alertWrap.current?.contains(e.target as Node)) {
@@ -48,34 +48,86 @@ const Alert = ({ setIsOpen }: AlertProps) => {
     setIsOpen((val) => !val);
   };
 
-  const { isLoading, error, data, refetch } = useQuery(
-    ["alertList"],
-    () => Api.v1GetAlertList(options),
+  const { refetch: fetchUnReadAlert } = useQuery(
+    ["alertUnreadCnt"],
+    () => Api.v1GetUnReadCount(),
     {
-      refetchOnWindowFocus: false,
       onSuccess: (res) => {
         if (res.data.data) {
-          const { alertList } = res.data.data;
-          /*if (!alertAll) {
-            setAlertList((tempArr) =>
-              tempArr.filter((item) => !item.checkStatus),
-            );
-          } else {
-            setAlertList(alertList);
-          }*/
-          let count = 0;
-          alertList.map((item: IAlertList) => {
-            if (!item.checkStatus) count += 1;
-          });
+          const { alertUnreadCount } = res.data.data;
+          setUnReadAlertCnt({ unReadCnt: alertUnreadCount });
+        }
+      },
+      enabled: false,
+    },
+  );
 
-          setUnReadAlertCnt({
-            unReadCnt: count,
-          });
-          setAlertList(alertList);
+  const fetchAlertList = async (lastSeq: number) => {
+    setOptions({
+      ...options,
+      lastSeq: lastSeq,
+    });
+    return Api.v1GetAlertList({ ...options, lastSeq: lastSeq });
+  };
+
+  const {
+    data: searchData,
+    isLoading: searchLoading,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["searchResultByMap"],
+    ({ pageParam = -1 }) => fetchAlertList(pageParam),
+    {
+      getNextPageParam: (res) => {
+        if (res.data.code === 200) {
+          const { alertList } = res.data.data;
+          if (alertList.length >= 20) {
+            return alertList[19].alertId;
+          }
+          return undefined;
         }
       },
     },
   );
+
+  useEffect(() => {
+    if (!!searchData && searchData.pages !== undefined) {
+      if (searchData.pages[0]) {
+        const { data } = searchData.pages[0];
+        if (data.code !== 200) return;
+      }
+      const list = searchData.pages
+        .map((obj) => obj.data.data?.alertList)
+        .flat();
+      if (list) {
+        setAlertList(list);
+        fetchUnReadAlert();
+      }
+    }
+  }, [searchData]);
+
+  const handleScroll = () => {
+    if (!searchLoading && alertContentRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = alertContentRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight; // 스크롤이 가장 아래로
+
+      if (isScrolledToBottom && hasNextPage) {
+        fetchNextPage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (alertContentRef.current) {
+      alertContentRef.current.addEventListener("scroll", handleScroll);
+
+      return () => {
+        alertContentRef.current?.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [alertContentRef, hasNextPage]);
 
   const { mutate: checkAlert } = useMutation({
     mutationFn: (id: number) => Api.v1ReadAlert(id),
@@ -168,7 +220,7 @@ const Alert = ({ setIsOpen }: AlertProps) => {
           읽지않음
         </AlertTab>
       </AlertTabs>
-      <AlertContents>
+      <AlertContents ref={alertContentRef}>
         <AlertList>
           {alertList &&
             alertList.map((item, index) => {
