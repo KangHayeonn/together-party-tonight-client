@@ -10,8 +10,8 @@ import {
   SearchInput,
 } from "@/styles/components/common/SearchForm";
 // recoil
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { searchKeywordState } from "@/recoil/search/searchState";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 
 export interface SearchPreview {
   address: object;
@@ -37,12 +37,15 @@ const SearchForm = ({
   searchByAddress,
   ...props
 }: SearchProps) => {
+  const previewDivRef = useRef<HTMLDivElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
   const searchWrap = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [previewIdx, setPreviewIdx] = useState<number>(-1);
 
   // recoil
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const setSearchAddress = useSetRecoilState(searchState);
   const resetSearchKeyword = useResetRecoilState(searchKeywordState);
 
   const onFocusSearch = () => {
@@ -67,6 +70,38 @@ const SearchForm = ({
     if (searchByAddress) searchByAddress();
   };
 
+  const handleKeyArrow = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case "ArrowDown":
+        setPreviewIdx(previewIdx + 1);
+        if (searchPreviewList && searchPreviewList?.length - 1 === previewIdx) {
+          setPreviewIdx(0);
+        }
+        break;
+      case "ArrowUp":
+        setPreviewIdx(previewIdx - 1);
+        if (previewIdx <= 0) {
+          setPreviewIdx(-1);
+        }
+        break;
+      case "Escape":
+        setPreviewIdx(-1);
+        break;
+      case "Enter":
+        if (searchPreviewList) changeSearchItem(searchPreviewList[previewIdx]);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const changeSearchItem = (item: SearchPreview) => {
+    setSearchKeyword(item.address_name);
+    setSearchAddress(item);
+    setIsFocus(false);
+    setPreviewIdx(-1);
+  };
+
   useEffect(() => {
     document.addEventListener("click", clickWrap);
   }, []);
@@ -81,6 +116,7 @@ const SearchForm = ({
             placeholder={placeholder || "주소나 동네를 검색해보세요."}
             onChange={onChangeSearch}
             onFocus={onFocusSearch}
+            onKeyDown={(e) => handleKeyArrow(e)}
             {...props}
           />
           <Image
@@ -94,7 +130,9 @@ const SearchForm = ({
         {isFocus ? (
           <SearchFormPreview
             searchList={searchPreviewList}
+            selectedIdx={previewIdx}
             isOpen={setIsFocus}
+            ulRef={previewDivRef}
           />
         ) : null}
       </SearchField>

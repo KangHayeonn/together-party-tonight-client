@@ -11,10 +11,17 @@ import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 
 interface SearchPreviewProps {
   searchList?: Array<SearchPreview> | undefined;
+  selectedIdx: number;
   isOpen?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  ulRef: React.RefObject<HTMLDivElement>;
 }
 
-const SearchFormPreview = ({ searchList, isOpen }: SearchPreviewProps) => {
+const SearchFormPreview = ({
+  searchList,
+  selectedIdx = -1,
+  isOpen,
+  ulRef,
+}: SearchPreviewProps) => {
   const setSearchKeyword = useSetRecoilState(searchKeywordState);
   const setSearchAddress = useSetRecoilState(searchState);
 
@@ -25,7 +32,7 @@ const SearchFormPreview = ({ searchList, isOpen }: SearchPreviewProps) => {
   };
 
   return (
-    <SearchPreviewWrapper>
+    <SearchPreviewWrapper ref={ulRef}>
       <SearchPreviewList>
         {searchList &&
           searchList?.map((item, index) => {
@@ -33,7 +40,9 @@ const SearchFormPreview = ({ searchList, isOpen }: SearchPreviewProps) => {
               <SearchPreviewItem
                 key={index}
                 onClick={() => changeSearchItem(item)}
+                className={`${index === selectedIdx ? "checked" : ""}`}
               >
+                {index === selectedIdx}
                 {item.address_name}
               </SearchPreviewItem>
             );
