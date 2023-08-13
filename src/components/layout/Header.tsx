@@ -129,7 +129,7 @@ export default function Header() {
             <MenuItem href="/signup">회원가입</MenuItem>
           </>
         )}
-        {isAlertOpen && <Alert />}
+        {isAlertOpen && <Alert setIsOpen={setIsAlertOpen} />}
       </Menu>
     </WrapHeader>
   );

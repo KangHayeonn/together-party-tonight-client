@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
@@ -22,7 +22,12 @@ import { getAlertListType } from "@/types/alert";
 import { useRecoilState } from "recoil";
 import { alertUnReadCntState } from "@/recoil/alert/alertState";
 
-const Alert = () => {
+interface AlertProps {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Alert = ({ setIsOpen }: AlertProps) => {
+  const alertWrap = useRef<HTMLDivElement>(null);
   const [alertAll, setAlertAll] = useState<boolean>(true);
   const [options, setOptions] = useState<getAlertListType>({
     isAllOrNotRead: true,
@@ -32,6 +37,16 @@ const Alert = () => {
   const [alertList, setAlertList] = useState<Array<IAlertList>>([]);
   const [unReadAlertCnt, setUnReadAlertCnt] =
     useRecoilState(alertUnReadCntState);
+
+  const clickWrap = (e: MouseEvent) => {
+    if (!alertWrap.current?.contains(e.target as Node)) {
+      closeAlert();
+    }
+  };
+
+  const closeAlert = () => {
+    setIsOpen((val) => !val);
+  };
 
   const { isLoading, error, data, refetch } = useQuery(
     ["alertList"],
@@ -89,6 +104,14 @@ const Alert = () => {
     refetch();
   }, [alertAll]);
 
+  useEffect(() => {
+    document.addEventListener("click", clickWrap);
+
+    return () => {
+      document.removeEventListener("click", clickWrap);
+    };
+  }, []);
+
   const formatAlertContent = (content: string, alertType: string) => {
     const newContent = JSON.parse(content);
     let contentResult = "";
@@ -122,7 +145,7 @@ const Alert = () => {
   };
 
   return (
-    <AlertWrapper>
+    <AlertWrapper ref={alertWrap}>
       <AlertTitle>알림</AlertTitle>
       <AlertTabs>
         <AlertTab
