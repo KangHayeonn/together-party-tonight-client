@@ -52,16 +52,26 @@ const Alert = ({ setIsOpen }: AlertProps) => {
     ["alertList"],
     () => Api.v1GetAlertList(options),
     {
+      refetchOnWindowFocus: false,
       onSuccess: (res) => {
         if (res.data.data) {
           const { alertList } = res.data.data;
-          if (!alertAll) {
+          /*if (!alertAll) {
             setAlertList((tempArr) =>
               tempArr.filter((item) => !item.checkStatus),
             );
           } else {
             setAlertList(alertList);
-          }
+          }*/
+          let count = 0;
+          alertList.map((item: IAlertList) => {
+            if (!item.checkStatus) count += 1;
+          });
+
+          setUnReadAlertCnt({
+            unReadCnt: count,
+          });
+          setAlertList(alertList);
         }
       },
     },
@@ -70,9 +80,6 @@ const Alert = ({ setIsOpen }: AlertProps) => {
   const { mutate: checkAlert } = useMutation({
     mutationFn: (id: number) => Api.v1ReadAlert(id),
     onSuccess: (res) => {
-      setUnReadAlertCnt({
-        unReadCnt: unReadAlertCnt.unReadCnt - 1,
-      });
       refetch();
     },
   });
