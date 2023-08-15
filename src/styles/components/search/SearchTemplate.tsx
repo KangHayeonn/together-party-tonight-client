@@ -14,7 +14,7 @@ const SearchTypeBtn = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 999;
+  z-index: 900;
   background-color: #0d3471;
   color: #fff;
   padding: 6px 25px;

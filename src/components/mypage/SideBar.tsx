@@ -72,7 +72,7 @@ export default function SideBar() {
           ))}
           {curId === myId && (
             <li>
-              <ChatBtn href="/">채팅하기</ChatBtn>
+              <ChatBtn href="/chat">채팅하기</ChatBtn>
             </li>
           )}
         </ul>

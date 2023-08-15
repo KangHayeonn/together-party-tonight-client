@@ -1,31 +1,33 @@
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   Line,
   Member,
-  MemberCnt,
   MemberListWrapper,
   MemberWrapper,
   ModalInnerMini,
 } from "@/styles/components/mypage/ApplyDetailModal";
 import Modal from "../common/Modal";
 import Image from "next/image";
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import { ModalAtom } from "@/recoil/modal/atom";
-import { useState } from "react";
-import { ApplicationItem } from "@/types/mypage";
 import { RequestBtnWrapper } from "@/styles/components/mypage/RequestCalcModal";
 import TextButton from "../common/TextButton";
 import {
   Amount,
-  CalcDate,
   CalcInfoWrapper,
   MemberWrap,
   Members,
   SelectWrapper,
 } from "@/styles/components/mypage/CalcAccountModal";
-import { useQuery } from "@tanstack/react-query";
-import MyPage from "@/api/mypage";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
+// api
+import MyPage from "@/api/mypage";
+import ChatApi from "@/api/chat";
+// recoil
+import { useRecoilValue, useResetRecoilState, useRecoilState } from "recoil";
+import { ModalAtom } from "@/recoil/modal/atom";
+import { checkChatRoomState } from "@/recoil/chat/chatState";
 
 interface IMember {
   id: number;
@@ -33,19 +35,31 @@ interface IMember {
   nickname: string;
   price: number;
   billingState: string;
+  memberProfileImage: string;
 }
 
 export default function CalcAccountModal() {
+  const router = useRouter();
+  const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
   const { clubId } = useRecoilValue(ModalAtom);
   const resetModal = useResetRecoilState(ModalAtom);
   const [isCalc, setIsCalc] = useState(false);
   const [yetMember, setYetMember] = useState<IMember[]>([]);
   const [completeMember, setCompleteMember] = useState<IMember[]>([]);
+  const [member, setMember] = useState<IMember>({
+    id: 0,
+    memberId: 0,
+    nickname: "",
+    price: 0,
+    billingState: "",
+    memberProfileImage: "",
+  });
 
   const { isLoading, data } = useQuery(
     ["account", clubId],
     () => MyPage.v1RequestBillingAccount(clubId),
     {
+      refetchOnWindowFocus: false,
       onSuccess: (res) => {
         if (res.success === "true") {
           res.data.clubBillingHistoryDtoList.forEach((member: IMember) => {
@@ -59,6 +73,50 @@ export default function CalcAccountModal() {
       },
     },
   );
+
+  const { refetch: isExitChatRoom } = useQuery(
+    ["isExistChatRoom", member],
+    () => ChatApi.v1IsExistChatRoom(member.memberId),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (res) => {
+        const { chatRoomId, chatRoomName } = res.data.data;
+        if (chatRoomId) {
+          setCheckChatRoom({
+            ...checkChatRoom,
+            chatRoomId: chatRoomId,
+            chatRoomName: chatRoomName,
+          });
+          router.push(`/chat/${chatRoomId}`);
+          resetModal();
+        } else {
+          createChatRoom(member.memberId);
+        }
+      },
+      enabled: !!member,
+    },
+  );
+
+  const { mutate: createChatRoom } = useMutation({
+    mutationFn: (otherMemberId: number) => ChatApi.v1AddChatRoom(otherMemberId),
+    onSuccess: (res) => {
+      if (res.data.code === 200) {
+        const { chatRoomId } = res.data.data;
+        setCheckChatRoom({
+          ...checkChatRoom,
+          chatRoomId: chatRoomId,
+          chatRoomName: member?.nickname,
+        });
+        router.push(`/chat/${chatRoomId}`);
+        resetModal();
+      }
+    },
+  });
+
+  const chatMessage = async (member: IMember) => {
+    setMember(member);
+    await isExitChatRoom();
+  };
 
   const showMember = isCalc ? completeMember : yetMember;
 
@@ -102,11 +160,11 @@ export default function CalcAccountModal() {
           </SelectWrapper>
           {showMember.length > 0 &&
             showMember.map((item) => (
-              <MemberWrapper key={item.memberId}>
+              <MemberWrapper key={`member${item.memberId}`}>
                 <MemberWrap>
                   <Member href="/" onClick={(e) => e.preventDefault()}>
                     <Image
-                      src={"/images/Profile"}
+                      src={item.memberProfileImage || "/images/Profile.svg"}
                       width={40}
                       height={40}
                       alt="멤버 사진"
@@ -115,13 +173,16 @@ export default function CalcAccountModal() {
                   </Member>
                   <TextButton
                     text="채팅하기"
-                    onClick={() => console.log(1)}
+                    onClick={() => {
+                      chatMessage(item);
+                    }}
                     fontSize={14}
                     width={80}
                     height={30}
                     color="#000"
                     background="#fff"
                     border="true"
+                    margin="0 0 0 20px"
                   />
                 </MemberWrap>
                 <p>

@@ -13,7 +13,11 @@ import Api from "@/api/chat";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { checkChatRoomState, chatRoomListState } from "@/recoil/chat/chatState";
 
-const ChatRoomFormBottom = () => {
+interface ChatRoomFormBottomProps {
+  scrollToBottom: () => void;
+}
+
+const ChatRoomFormBottom = ({ scrollToBottom }: ChatRoomFormBottomProps) => {
   const params = useParams();
   const { id } = params;
   const checkChatRoom = useRecoilValue(checkChatRoomState);
@@ -40,6 +44,7 @@ const ChatRoomFormBottom = () => {
     onSuccess: (res) => {
       setMessage("");
       refetch();
+      scrollToBottom();
     },
   });
 

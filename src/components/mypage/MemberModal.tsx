@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ClubInfo,
@@ -18,7 +19,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
-import { useState } from "react";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
 import {
@@ -29,8 +29,9 @@ import { ApplicationItem } from "@/types/mypage";
 // api
 import Api from "@/api/chat";
 // recoil
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { checkChatRoomState } from "@/recoil/chat/chatState";
+import { getUserId } from "@/utils/tokenControl";
 
 interface MemberType {
   id: number;
@@ -39,6 +40,7 @@ interface MemberType {
 }
 
 export default function MemberModal() {
+  const userId = getUserId();
   const setIsOpen = useSetRecoilState(ModalAtom);
   const { clubItem, clubId } = useRecoilValue(ModalAtom);
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
@@ -54,6 +56,7 @@ export default function MemberModal() {
     nickName: "",
     profileImage: "/images/Profile.svg",
   });
+  const resetModal = useResetRecoilState(ModalAtom);
 
   const { isLoading } = useQuery(
     ["application", clubId],
@@ -87,11 +90,12 @@ export default function MemberModal() {
             chatRoomName: chatRoomName,
           });
           router.push(`/chat/${chatRoomId}`);
+          resetModal();
         } else {
           createChatRoom(member.id);
         }
       },
-      enabled: false,
+      enabled: !!member,
     },
   );
 
@@ -106,6 +110,7 @@ export default function MemberModal() {
           chatRoomName: member.nickName,
         });
         router.push(`/chat/${chatRoomId}`);
+        resetModal();
       }
     },
   });
@@ -163,17 +168,19 @@ export default function MemberModal() {
               />
               {masterMember.nickName}
             </Member>
-            <div>
-              <TextButton
-                onClick={() => {
-                  chatMessage(masterMember);
-                }}
-                text="채팅하기"
-                width={75}
-                height={28}
-                fontSize={14}
-              />
-            </div>
+            {masterMember.id !== Number(userId) && (
+              <div>
+                <TextButton
+                  onClick={() => {
+                    chatMessage(masterMember);
+                  }}
+                  text="채팅하기"
+                  width={75}
+                  height={28}
+                  fontSize={14}
+                />
+              </div>
+            )}
           </MemberWrapper>
           <MemberCnt>모임원 {currentMember.length}</MemberCnt>
           {currentMember.length > 0 &&
@@ -193,15 +200,19 @@ export default function MemberModal() {
                   />
                   {item.nickName}
                 </Member>
-                <div>
-                  <TextButton
-                    onClick={() => chatMessage({ ...item, id: item.memberId })}
-                    text="채팅하기"
-                    width={75}
-                    height={28}
-                    fontSize={14}
-                  />
-                </div>
+                {item.memberId !== Number(userId) && (
+                  <div>
+                    <TextButton
+                      onClick={() =>
+                        chatMessage({ ...item, id: item.memberId })
+                      }
+                      text="채팅하기"
+                      width={75}
+                      height={28}
+                      fontSize={14}
+                    />
+                  </div>
+                )}
               </MemberWrapper>
             ))}
         </MemberListWrapper>

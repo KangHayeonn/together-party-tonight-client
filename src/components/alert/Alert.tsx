@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import {
   AlertWrapper,
   AlertTitle,
@@ -19,10 +19,16 @@ import { IAlertList } from "@/types/alert";
 import Api from "@/api/alert";
 import { getAlertListType } from "@/types/alert";
 // recoil
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { alertUnReadCntState } from "@/recoil/alert/alertState";
 
-const Alert = () => {
+interface AlertProps {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Alert = ({ setIsOpen }: AlertProps) => {
+  const alertWrap = useRef<HTMLDivElement>(null);
+  const alertContentRef = useRef<HTMLDivElement>(null);
   const [alertAll, setAlertAll] = useState<boolean>(true);
   const [options, setOptions] = useState<getAlertListType>({
     isAllOrNotRead: true,
@@ -30,34 +36,102 @@ const Alert = () => {
     listCount: 20,
   });
   const [alertList, setAlertList] = useState<Array<IAlertList>>([]);
-  const [unReadAlertCnt, setUnReadAlertCnt] =
-    useRecoilState(alertUnReadCntState);
+  const setUnReadAlertCnt = useSetRecoilState(alertUnReadCntState);
 
-  const { isLoading, error, data, refetch } = useQuery(
-    ["alertList"],
-    () => Api.v1GetAlertList(options),
+  const clickWrap = (e: MouseEvent) => {
+    if (!alertWrap.current?.contains(e.target as Node)) {
+      closeAlert();
+    }
+  };
+
+  const closeAlert = () => {
+    setIsOpen((val) => !val);
+  };
+
+  const { refetch: fetchUnReadAlert } = useQuery(
+    ["alertUnreadCnt"],
+    () => Api.v1GetUnReadCount(),
     {
       onSuccess: (res) => {
         if (res.data.data) {
+          const { alertUnreadCount } = res.data.data;
+          setUnReadAlertCnt({ unReadCnt: alertUnreadCount });
+        }
+      },
+      enabled: false,
+    },
+  );
+
+  const fetchAlertList = async (lastSeq: number) => {
+    setOptions({
+      ...options,
+      lastSeq: lastSeq,
+    });
+    return Api.v1GetAlertList({ ...options, lastSeq: lastSeq });
+  };
+
+  const {
+    data: searchData,
+    isLoading: searchLoading,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ["getAlertList"],
+    ({ pageParam = -1 }) => fetchAlertList(pageParam),
+    {
+      getNextPageParam: (res) => {
+        if (res.data.code === 200) {
           const { alertList } = res.data.data;
-          if (!alertAll) {
-            setAlertList((tempArr) =>
-              tempArr.filter((item) => !item.checkStatus),
-            );
-          } else {
-            setAlertList(alertList);
+          if (alertList.length >= 20) {
+            return alertList[19].alertId;
           }
+          return undefined;
         }
       },
     },
   );
 
+  useEffect(() => {
+    if (!!searchData && searchData.pages !== undefined) {
+      if (searchData.pages[0]) {
+        const { data } = searchData.pages[0];
+        if (data.code !== 200) return;
+      }
+      const list = searchData.pages
+        .map((obj) => obj.data.data?.alertList)
+        .flat();
+      if (list) {
+        setAlertList(list);
+        fetchUnReadAlert();
+      }
+    }
+  }, [searchData]);
+
+  const handleScroll = () => {
+    if (!searchLoading && alertContentRef.current) {
+      const { scrollTop, clientHeight, scrollHeight } = alertContentRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight; // 스크롤이 가장 아래로
+
+      if (isScrolledToBottom && hasNextPage) {
+        fetchNextPage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (alertContentRef.current) {
+      alertContentRef.current.addEventListener("scroll", handleScroll);
+
+      return () => {
+        alertContentRef.current?.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [alertContentRef, hasNextPage]);
+
   const { mutate: checkAlert } = useMutation({
     mutationFn: (id: number) => Api.v1ReadAlert(id),
     onSuccess: (res) => {
-      setUnReadAlertCnt({
-        unReadCnt: unReadAlertCnt.unReadCnt - 1,
-      });
       refetch();
     },
   });
@@ -88,6 +162,14 @@ const Alert = () => {
   useEffect(() => {
     refetch();
   }, [alertAll]);
+
+  useEffect(() => {
+    document.addEventListener("click", clickWrap);
+
+    return () => {
+      document.removeEventListener("click", clickWrap);
+    };
+  }, []);
 
   const formatAlertContent = (content: string, alertType: string) => {
     const newContent = JSON.parse(content);
@@ -122,7 +204,7 @@ const Alert = () => {
   };
 
   return (
-    <AlertWrapper>
+    <AlertWrapper ref={alertWrap}>
       <AlertTitle>알림</AlertTitle>
       <AlertTabs>
         <AlertTab
@@ -138,7 +220,7 @@ const Alert = () => {
           읽지않음
         </AlertTab>
       </AlertTabs>
-      <AlertContents>
+      <AlertContents ref={alertContentRef}>
         <AlertList>
           {alertList &&
             alertList.map((item, index) => {

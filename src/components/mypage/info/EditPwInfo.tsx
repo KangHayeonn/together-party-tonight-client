@@ -1,3 +1,5 @@
+"use client";
+
 import TextField from "@/components/common/TextField";
 import { EditPwInfoWrapper } from "@/styles/page/MyPage/MyInfo";
 import React from "react";

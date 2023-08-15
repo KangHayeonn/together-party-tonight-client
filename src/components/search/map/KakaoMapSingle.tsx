@@ -78,10 +78,12 @@ const KakaoMap = () => {
     const script = document.createElement("script");
     script.src = KAKAO_SDK_URL;
     script.async = true;
+
     script.onload = () => {
       // 스크립트 로드 완료 시점에서 Kakao Maps SDK 초기화
       setMapLoaded(true);
     };
+
     document.head.appendChild(script);
 
     // 컴포넌트 언마운트 시 스크립트를 제거

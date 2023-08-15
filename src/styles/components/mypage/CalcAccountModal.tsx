@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const CalcInfoWrapper = styled.div`
   margin: 20px 0 35px;
@@ -39,7 +39,6 @@ const MemberWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 215px;
 `;
 
 export {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const ModalInnerMini = styled.div`
   width: 530px;

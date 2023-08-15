@@ -1,19 +1,13 @@
 "use client";
-
-import React, { useEffect, useState, useRef } from "react";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import { SearchListAsideWrapper } from "@/styles/components/search/mapType/SearchListAside";
-import SearchForm from "@/components/common/SearchForm";
-import SearchFilter from "@/components/search/mapType/SearchFilter";
-import SearchTagList from "@/components/search/mapType/SearchTagList";
-import SearchOption from "@/components/search/mapType/SearchOption";
-import SearchResult from "@/components/search/mapType/SearchResult";
+import React, { useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import SearchNav from "@/components/search/listType/SearchNav";
+import SearchResult from "@/components/search/listType/SearchResult";
 import { validationSearchByAddress } from "@/utils/func/SearchFunc";
 // api
 import Api from "@/api/search";
-import { SearchPreview } from "@/components/common/SearchForm";
 // recoil
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   searchKeywordState,
   searchState,
@@ -21,24 +15,14 @@ import {
   searchResponseState,
 } from "@/recoil/search/searchState";
 
-const SearchListAside = () => {
-  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+const SearchListWrap = () => {
+  const ulRef = useRef<HTMLDivElement | null>(null);
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
   const [searchAddress, setSearchAddress] = useRecoilState(searchState);
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const [searchResponse, setSearchResponse] =
     useRecoilState(searchResponseState);
-  const [previewList, setPreviewList] = useState<Array<SearchPreview>>([]);
-  const ulRef = useRef<HTMLUListElement | null>(null);
   const page = 0;
-
-  const { data } = useQuery(
-    ["searchAddress", searchKeyword],
-    () => Api.v1SearchAddress({ address: searchKeyword }),
-    {
-      refetchOnWindowFocus: true,
-      enabled: !!searchKeyword, // 특정 조건일 경우에만 useQuery 실행
-    },
-  );
 
   const fetchSearchList = async (pageParam: number) => {
     if (searchOptions.category === "") {
@@ -138,34 +122,15 @@ const SearchListAside = () => {
   }, [searchData]);
 
   useEffect(() => {
-    setPreviewList(data?.data.documents);
-  }, [data]);
-
-  useEffect(() => {
-    setSearchOptions({
-      ...searchOptions,
-      lat: parseFloat(searchAddress.y),
-      lng: parseFloat(searchAddress.x),
-    });
-  }, [searchAddress]);
-
-  useEffect(() => {
     initSearchOptions();
   }, []);
 
   return (
-    <SearchListAsideWrapper>
-      <SearchForm
-        search={searchKeyword}
-        searchPreviewList={previewList}
-        searchByAddress={onClickSearchBtn}
-      />
-      <SearchFilter />
-      <SearchTagList />
-      <SearchOption searchByOptions={onClickSearchBtn} />
-      <SearchResult ulRef={ulRef} />
-    </SearchListAsideWrapper>
+    <>
+      <SearchNav searchByOptions={onClickSearchBtn} />
+      <SearchResult ulRef={ulRef} searchByOptions={onClickSearchBtn} />
+    </>
   );
 };
 
-export default SearchListAside;
+export default SearchListWrap;

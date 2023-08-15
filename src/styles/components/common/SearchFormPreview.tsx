@@ -45,6 +45,10 @@ const SearchPreviewItem = styled.li`
   &:hover {
     background-color: #bfc8cc;
   }
+
+  &.checked {
+    background-color: #bfc8cc;
+  }
 `;
 
 export { SearchPreviewWrapper, SearchPreviewList, SearchPreviewItem };
