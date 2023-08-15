@@ -17,6 +17,7 @@ import { validationClubWrite } from "@/utils/func/ClubWriteFunc";
 import { searchKeywordState, searchState } from "@/recoil/search/searchState";
 import RoundButton from "@/components/common/RoundButton";
 import ConfirmModal from "@/components/common/modal/ConfirmModal";
+import { ToastState } from "@/recoil/common/commonState";
 // api
 import Api from "@/api/club";
 
@@ -44,6 +45,7 @@ const ClubWriteForm = () => {
     meetingDate: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const createFormData = (data: ClubFormType, image: File | null) => {
     const formData = new FormData();
@@ -64,10 +66,17 @@ const ClubWriteForm = () => {
     mutationFn: (formData: FormData) => Api.v1AddClub(formData),
     onSuccess: () => {
       initClubForm();
+      setIsOpenToast({
+        isOpenToast: true,
+        toastMsg: "모임 만들기가 완료되었습니다.",
+      });
       router.back();
     },
     onError: () => {
-      // interceptor에서 공통 error 처리
+      setIsOpenToast({
+        isOpenToast: true,
+        toastMsg: "모임 만들기에 실패하였습니다.",
+      });
     },
   });
 

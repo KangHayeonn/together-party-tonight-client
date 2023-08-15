@@ -28,7 +28,10 @@ import {
   searchResponseState,
 } from "@/recoil/search/searchState";
 
-const SearchList = () => {
+interface SearchListProps {
+  ulRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+const SearchList = ({ ulRef }: SearchListProps) => {
   const router = useRouter();
   const [searchOptions, setSearchOptions] = useRecoilState(searchOptionsState);
   const searchResponse = useRecoilValue(searchResponseState);
@@ -56,7 +59,7 @@ const SearchList = () => {
             changeText={onSearchCategoryChange}
           />
         </SearchListBoxTop>
-        <SearchListBoxBottom>
+        <SearchListBoxBottom ref={ulRef}>
           {searchResponse.clubList.length > 0 ? (
             searchResponse.clubList.map((item, index) => {
               return (

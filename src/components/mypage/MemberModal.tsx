@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ClubInfo,
@@ -18,7 +19,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ModalAtom } from "@/recoil/modal/atom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import MyPage from "@/api/mypage";
-import { useState } from "react";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
 import {
@@ -29,7 +29,7 @@ import { ApplicationItem } from "@/types/mypage";
 // api
 import Api from "@/api/chat";
 // recoil
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { checkChatRoomState } from "@/recoil/chat/chatState";
 import { getUserId } from "@/utils/tokenControl";
 
@@ -56,6 +56,7 @@ export default function MemberModal() {
     nickName: "",
     profileImage: "/images/Profile.svg",
   });
+  const resetModal = useResetRecoilState(ModalAtom);
 
   const { isLoading } = useQuery(
     ["application", clubId],
@@ -89,11 +90,12 @@ export default function MemberModal() {
             chatRoomName: chatRoomName,
           });
           router.push(`/chat/${chatRoomId}`);
+          resetModal();
         } else {
           createChatRoom(member.id);
         }
       },
-      enabled: false,
+      enabled: !!member,
     },
   );
 
@@ -108,6 +110,7 @@ export default function MemberModal() {
           chatRoomName: member.nickName,
         });
         router.push(`/chat/${chatRoomId}`);
+        resetModal();
       }
     },
   });
