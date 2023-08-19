@@ -6,7 +6,7 @@ import {
   Member,
   MemberListWrapper,
   MemberWrapper,
-  ModalInnerMini,
+  CalcModalInner,
 } from "@/styles/components/mypage/ApplyDetailModal";
 import Modal from "../common/Modal";
 import Image from "next/image";
@@ -130,7 +130,7 @@ export default function CalcAccountModal() {
 
   return (
     <Modal title="정산내역">
-      <ModalInnerMini>
+      <CalcModalInner>
         <CalcInfoWrapper>
           <Members>
             {data.data.clubBillingHistoryDtoList[0].nickname} 외{" "}
@@ -205,7 +205,7 @@ export default function CalcAccountModal() {
             height={40}
           />
         </RequestBtnWrapper>
-      </ModalInnerMini>
+      </CalcModalInner>
     </Modal>
   );
 }

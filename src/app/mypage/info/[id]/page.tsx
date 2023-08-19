@@ -262,24 +262,27 @@ export default function Info({ params: { id } }: Props) {
               </>
             )}
             {isEditPw ? (
-              <>
+              <form>
                 <EditPwInfo
                   name="curPassword"
                   label="기존 비밀번호"
                   placeholder="비밀번호를 입력하세요."
                   onChange={handleChange}
+                  value={formValues.curPassword}
                 />
                 <EditPwInfo
                   name="newPassword"
                   label="신규 비밀번호"
                   placeholder="비밀번호를 입력하세요."
                   onChange={handleChange}
+                  value={formValues.newPassword}
                 />
                 <EditPwInfo
                   name="checkNewPassword"
                   label="신규 비밀번호 확인"
                   placeholder="비밀번호를 입력하세요."
                   onChange={handleChange}
+                  value={formValues.checkNewPassword}
                 />
 
                 <ConfirmBox>
@@ -292,7 +295,7 @@ export default function Info({ params: { id } }: Props) {
                   />
                 </ConfirmBox>
                 {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-              </>
+              </form>
             ) : (
               <>
                 <EditInfoWrapper>

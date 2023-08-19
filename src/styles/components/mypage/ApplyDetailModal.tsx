@@ -7,6 +7,14 @@ const ModalInnerMini = styled.div`
   padding: 30px 50px;
 `;
 
+const CalcModalInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 530px;
+  min-height: 400px;
+  padding: 30px 50px;
+`;
+
 const ClubTitle = styled.h2`
   font-size: 26px;
   font-weight: 700;
@@ -63,6 +71,7 @@ const MemberCnt = styled.p`
 
 export {
   ModalInnerMini,
+  CalcModalInner,
   ClubTitle,
   ClubInfo,
   MeetingDate,

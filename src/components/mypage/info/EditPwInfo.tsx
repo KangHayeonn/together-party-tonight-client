@@ -9,6 +9,7 @@ type Props = {
   label: string;
   placeholder?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  value: string;
 };
 
 export default function EditPwInfo({
@@ -16,6 +17,7 @@ export default function EditPwInfo({
   label,
   placeholder,
   onChange,
+  value,
 }: Props) {
   return (
     <EditPwInfoWrapper>
@@ -27,6 +29,8 @@ export default function EditPwInfo({
         inputType="pw"
         textType="password"
         onChangeText={onChange}
+        value={value}
+        autoComplete="off"
       />
     </EditPwInfoWrapper>
   );
