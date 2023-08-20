@@ -10,6 +10,7 @@ import MyInfo from "@/components/mypage/info/MyInfo";
 import MyRating from "@/components/mypage/info/MyRating";
 import MyReviewList from "@/components/mypage/info/MyReviewList";
 import useHandleInput from "@/hooks/useHandleInput";
+import { ToastState } from "@/recoil/common/commonState";
 import {
   EditBtnWrapper,
   ImgEditLabel,
@@ -38,6 +39,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 type Props = {
   params: { id: string };
@@ -51,6 +53,7 @@ export default function Info({ params: { id } }: Props) {
   const [isUpdateDone, setIsUpdateDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpenSignoutModal, setIsOpenSignoutModal] = useState(false);
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const initialValues = {
     profileImg: "",
@@ -107,6 +110,10 @@ export default function Info({ params: { id } }: Props) {
         setErrorMessage("");
         setIsUpdateInfo((val) => !val);
         setIsEditPw(false);
+        setIsOpenToast({
+          isOpenToast: true,
+          toastMsg: "비밀번호 변경이 완료되었습니다.",
+        });
       }
     },
   });
