@@ -9,6 +9,12 @@ interface SubmitValues {
   password: string;
 }
 
+interface NewPwValues {
+  email: string;
+  authCode: string;
+  newPassword: string;
+}
+
 const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_APP_JS_KEY_LOGIN;
 const redirect_uri = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
@@ -52,4 +58,22 @@ export const useEmailCheck = () => {
       .then((response) => response.data),
   );
   return emailCheckMutation;
+};
+
+export const useFindPwMailing = () => {
+  const findPwMailingMutation = useMutation((email: string) =>
+    instance
+      .post("/api/members/password/email", { email })
+      .then((response) => response.data),
+  );
+  return findPwMailingMutation;
+};
+
+export const useChangePassword = () => {
+  const changePassword = useMutation((values: NewPwValues) =>
+    instance
+      .post("api/members/password/reset", values)
+      .then((response) => response.data),
+  );
+  return changePassword;
 };
