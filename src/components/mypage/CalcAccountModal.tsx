@@ -21,6 +21,7 @@ import {
 } from "@/styles/components/mypage/CalcAccountModal";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
+import { getUserId } from "@/utils/tokenControl";
 // api
 import MyPage from "@/api/mypage";
 import ChatApi from "@/api/chat";
@@ -39,6 +40,7 @@ interface IMember {
 }
 
 export default function CalcAccountModal() {
+  const userId = typeof window !== "undefined" && Number(getUserId());
   const router = useRouter();
   const [checkChatRoom, setCheckChatRoom] = useRecoilState(checkChatRoomState);
   const { clubId } = useRecoilValue(ModalAtom);
@@ -171,19 +173,21 @@ export default function CalcAccountModal() {
                     />
                     {item.nickname}
                   </Member>
-                  <TextButton
-                    text="채팅하기"
-                    onClick={() => {
-                      chatMessage(item);
-                    }}
-                    fontSize={14}
-                    width={80}
-                    height={30}
-                    color="#000"
-                    background="#fff"
-                    border="true"
-                    margin="0 0 0 20px"
-                  />
+                  {item.memberId !== Number(userId) && (
+                    <TextButton
+                      text="채팅하기"
+                      onClick={() => {
+                        chatMessage(item);
+                      }}
+                      fontSize={14}
+                      width={80}
+                      height={30}
+                      color="#000"
+                      background="#fff"
+                      border="true"
+                      margin="0 0 0 20px"
+                    />
+                  )}
                 </MemberWrap>
                 <p>
                   {item.price

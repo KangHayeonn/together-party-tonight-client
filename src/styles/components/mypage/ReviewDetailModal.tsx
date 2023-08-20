@@ -77,6 +77,7 @@ const TextArea = styled.textarea`
   border-color: #f5f5f5;
   border-radius: 3px;
   resize: none;
+  padding: 10px;
   &::placeholder {
     color: #a2a2a2;
   }
