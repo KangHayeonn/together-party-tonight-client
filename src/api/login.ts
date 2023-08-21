@@ -72,7 +72,7 @@ export const useFindPwMailing = () => {
 export const useChangePassword = () => {
   const changePassword = useMutation((values: NewPwValues) =>
     instance
-      .post("api/members/password/reset", values)
+      .post("/api/members/password/reset", values)
       .then((response) => response.data),
   );
   return changePassword;
