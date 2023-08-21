@@ -18,6 +18,10 @@ const BtnWrapper = styled.button<ButtonProps>`
       hoverbackgroundcolor || "none"};
     opacity: 0.8;
   }
+
+  &:disabled {
+    opacity: 0.3;
+  }
 `;
 
 export { BtnWrapper };

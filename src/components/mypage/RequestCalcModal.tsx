@@ -23,6 +23,7 @@ import MyPage from "@/api/mypage";
 import { LoadingWrapper } from "@/styles/page/MyPage/MyInfo";
 import Loading from "../common/Loading";
 import { ErrorMessage } from "@/styles/page/Login";
+import { ToastState } from "@/recoil/common/commonState";
 
 export default function RequestCalcModal() {
   const setIsOpen = useSetRecoilState(ModalAtom);
@@ -30,6 +31,7 @@ export default function RequestCalcModal() {
   const [currentMember, setCurrentMember] = useState<ApplicationItem[]>([]);
   const [price, setPrice] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+  const setIsOpenToast = useSetRecoilState(ToastState);
 
   const { isLoading } = useQuery(
     ["application", clubId],
@@ -53,6 +55,10 @@ export default function RequestCalcModal() {
           setErrorMessage(res.errorMessage);
         } else {
           setErrorMessage("");
+          setIsOpenToast({
+            isOpenToast: true,
+            toastMsg: "정산요청이 완료되었습니다.",
+          });
           setIsOpen((val) => ({
             ...val,
             isOpenRequestCalcModal: false,

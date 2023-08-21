@@ -11,19 +11,13 @@ import {
 } from "@/styles/components/chat/ChatDefaultForm";
 import TextButton from "@/components/common/TextButton";
 import { getUserId } from "@/utils/tokenControl";
-import Api from "@/api/chat";
 
 const ChatDefaultForm = () => {
   const router = useRouter();
   const userId = typeof window !== "undefined" && Number(getUserId());
 
   const onClickShowMyClubs = async () => {
-    // const data = await Api.v1AddChatRoom(45);
     router.push(`/mypage/list/apply/${userId}`);
-    /*const data = await Api.v1AddChat({
-      chatMsg: "답장부탁드려요!!",
-      chatRoomId: 2,
-    });*/
   };
 
   return (
