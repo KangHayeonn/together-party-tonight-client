@@ -107,9 +107,9 @@ export default function Login() {
         />
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <LoginMore>
-          <Link href="/">비밀번호 찾기</Link>
+          <Link href="/find">비밀번호 찾기</Link>
           <Line />
-          <Link href="/">회원가입</Link>
+          <Link href="/signup">회원가입</Link>
         </LoginMore>
         <SimpleLogin>
           <Hr />
